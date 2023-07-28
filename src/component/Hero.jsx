@@ -5,8 +5,9 @@ import { useState } from 'react';
 import CarouselAds from './CarouselAds';
 import { BsArrowRight } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
+import $ from 'jquery';
 
-export default function Hero() {
+export default function Hero({setCategory}) {
     const [sub_category, setsub_category] = useState([])
     var baseURL = 'http://product_api.localhost/api/sub_category';
     useEffect(() => {
@@ -14,8 +15,11 @@ export default function Hero() {
             setsub_category(response.data)
         });
     }, []);
+    $(document).on("click",".catlist",function(){
+        setCategory(this.id);  
+    })
     var sub_categorys = sub_category.map((items, index) => {
-        return <a href="#" id={items.id} className="list-group-item list-group-item-action border-0 text-capitalize rounded " key={index}>{items.Sub_category_Name}</a>
+        return <a href="#" id={items.id} className="catlist  list-group-item list-group-item-action border-0 text-capitalize rounded " key={index}>{items.Sub_category_Name}</a>
     });
 
     let mystyle = {

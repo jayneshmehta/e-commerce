@@ -15,7 +15,7 @@ export default function ProductCard({items,RemoveShoppingCart,ChangeQuantity}) {
                         <p className="text-muted">
                             {items.description}
                         </p>
-                        <button className="btn btn-light text-danger btn-sm" id={`del_${items.id}`} onClick={()=>RemoveShoppingCart(items.id)}>Remove</button>
+                        <button className="btn btn-light text-danger btn-sm me-2" id={`del_${items.id}`} onClick={()=>RemoveShoppingCart(items.id)}>Remove</button>
                         <a href="#" className="btn btn-light btn-sm">Save for later</a>
                     </figcaption>
                 </figure>

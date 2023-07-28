@@ -16,9 +16,7 @@ function App() {
 
   function RemoveShoppingCart(id) {
     setbuyproduct(Buyproduct.filter((items, index) => {
-      if (id == items.id) {
-        Buyproduct.splice(index, 1);
-      } else {
+      if (id !== items.id) {
         return items;
       }
     }))
