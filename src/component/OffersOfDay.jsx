@@ -1,8 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Productcard from './Productcard';
 
 
-export default function OffersOfDay({product}) {
+export default function OffersOfDay({ product }) {
+    var countDownDate = new Date("Aug 1 , 2023 15:37:25").getTime();
+
+    // Update the count down every 1 second
+    const [days, setDays] = useState(0)
+    const [hours, setHours] = useState(0)
+    const [minutes, setMinutes] = useState(0)
+    const [seconds, setSeconds] = useState(0)
+    useEffect(() => {
+        var x = setInterval(function () {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+
+            // Display the result in the element with id="demo"
+            // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+            //     + minutes + "m " + seconds + "s ";
+
+            setDays(Math.floor(distance / (1000 * 60 * 60 * 24)))
+            setHours(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)))
+            setMinutes(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)))
+            setSeconds(Math.floor((distance % (1000 * 60)) / 1000))
+
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+            }
+        }, 1000);
+    }, [])
 
     return (
         <div className="container mt-3 ">
@@ -15,7 +48,7 @@ export default function OffersOfDay({product}) {
                             <div className='d-flex text-center'>
                                 <div className='ms-2'>
                                     <div className=" bg-secondary text-light px-2 rounded-2 fs-2">
-                                        02
+                                        {days}
                                     </div>
                                     <div>
                                         <p>Days</p>
@@ -23,7 +56,7 @@ export default function OffersOfDay({product}) {
                                 </div>
                                 <div className='ms-3'>
                                     <div className=" bg-secondary text-light px-2 rounded-2 fs-2">
-                                        05
+                                        {hours}
                                     </div>
                                     <div>
                                         <p>Hours</p>
@@ -31,7 +64,7 @@ export default function OffersOfDay({product}) {
                                 </div>
                                 <div className='ms-3'>
                                     <div className=" bg-secondary text-light px-2 rounded-2 fs-2">
-                                        {24}
+                                        {minutes}
                                     </div>
                                     <div>
                                         <p>Min</p>
@@ -39,7 +72,7 @@ export default function OffersOfDay({product}) {
                                 </div>
                                 <div className='ms-3'>
                                     <div className=" bg-secondary text-light px-2 rounded-2 fs-2">
-                                        {33}
+                                        {seconds}
                                     </div>
                                     <div>
                                         <p>Sec</p>
@@ -53,11 +86,11 @@ export default function OffersOfDay({product}) {
                                     product.map((items, index) => {
                                         if (items.discountPercentage > 16) {
                                             return (
-                                                <Productcard items = {items} key={index} index={index}/>
-                                                );
-                                            }
-                                        })
-                                    }
+                                                <Productcard items={items} key={index} index={index} />
+                                            );
+                                        }
+                                    })
+                                }
                             </div>
                         </div>
                     </div>

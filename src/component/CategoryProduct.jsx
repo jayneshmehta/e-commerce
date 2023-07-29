@@ -6,14 +6,18 @@ import CategoryName from './CategoryName'
 import { Link } from 'react-router-dom'
 import Productcard from './Productcard';
 
-export default function CategoryProduct({ url, title, id }) {
+export default function CategoryProduct({ url, title, Category,Sub_Category }) {
     const [product, setProduct] = useState([])
-    var baseURL = `http://product_api.localhost/api/products/GettingProductByCategoryId-${id}`;
     useEffect(() => {
+        if(Sub_Category){
+            var baseURL = `http://product_api.localhost/api/products/GettingProductBySub_CategoryId-${Sub_Category}`;
+        }else{
+            var baseURL = `http://product_api.localhost/api/products/GettingProductByCategoryId-${Category}`;
+        }
         axios.get(baseURL).then((response) => {
             setProduct(response.data);
         });
-    }, []);
+    }, [Sub_Category]);
     return (
         <div className='container mt-3' >
             <div className="card">

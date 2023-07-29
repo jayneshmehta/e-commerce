@@ -8,7 +8,7 @@ import { BsLinkedin } from 'react-icons/bs'
 export default function Footer() {
   return (
 
-    <section className="footer-main bg-dark  py-3">
+    <section className="footer-main bg-dark  py-3 mt-3">
       <div className="container">
         <div className="row gx-0">
           <aside className="col-12 col-sm-12 col-lg-4">
@@ -60,25 +60,5 @@ export default function Footer() {
     </section>
 
   )
-}
-{/* // <div className='bg-secondary text-light  '  >
-    //   <div className='container'>
-    //     <div className="row gx-0">
-
-    //       <div className='col-2 d-flex p-2 '>
-    //         <img src={logo192} className='App-logo me-2' alt="logo" style={{ height: "40px" }} />
-    //         <span className='pt-1 fw-bold fs-4 '>React</span>
-    //       </div>
-    //       <div className="col-8 p-2 pt-3">
-    //         <p className='fs-4  text-center'> © Copyright 2023, All Rights Reserved</p>
-    //       </div>
-    //       <div className="col-2 d-flex gap-3 fs-3 p-3">
-    //         <GrInstagram/>
-    //         <FiFacebook />
-    //         <FaTwitterSquare />
-    //         <BsLinkedin />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div> */}
+} 
 

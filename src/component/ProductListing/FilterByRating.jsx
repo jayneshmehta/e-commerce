@@ -15,19 +15,19 @@ export default function FilterByRating({filter}) {
     <div className='ps-4'>
       <form action="" >
         <div className="form-check">
-          <input  id="5star" className="form-check-input" type="checkbox" value="5"  />
+          <input  id="5star" className="form-check-input ratingfilter" name='ratingfilter' type="checkbox" value="5"  />
           <Rating htmlFor='5star' name="read-only[]"  value={5} style={{ color: "#fc8200" }} readOnly />
         </div>
         <div className="form-check">
-          <input  id="4star" className="form-check-input" type="checkbox" value="4"  />
+          <input  id="4star" className="form-check-input ratingfilter" name='ratingfilter' type="checkbox" value="4"  />
           <Rating htmlFor='4star' name="read-only[]"  value={4} style={{ color: "#fc8200" }} readOnly />
         </div>
         <div className="form-check">
-          <input  id="3star" className="form-check-input" type="checkbox" value="3"  />
+          <input  id="3star" className="form-check-input ratingfilter" name='ratingfilter' type="checkbox" value="3"  />
           <Rating htmlFor='3star' name="read-only[]"  value={3} style={{ color: "#fc8200" }} readOnly />
         </div>
         <div className="form-check">
-          <input  id="2star" className="form-check-input" type="checkbox" value="2"  />
+          <input  id="2star" className="form-check-input ratingfilter" name='ratingfilter' type="checkbox" value="2"  />
           <Rating htmlFor='2star' name="read-only[]"  value={2} style={{ color: "#fc8200" }} readOnly />
         </div>
       </form>

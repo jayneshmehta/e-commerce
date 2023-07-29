@@ -10,6 +10,8 @@ import ViewProduct from './pages/ViewProduct';
 import Cart from './pages/Cart';
 import Orders from './pages/Orders';
 import ProductListing from './pages/ProductListing';
+import Footer from './component/Footer'
+
 function App() {
   const [product, setProduct] = useState([])
   const [Buyproduct, setbuyproduct] = useState([])
@@ -56,7 +58,7 @@ function App() {
           <Route exact path='/cart' element={<Cart Buyproduct={Buyproduct} RemoveShoppingCart={RemoveShoppingCart} ChangeQuantity={ChangeQuantity} />} />
           <Route exact path='/orders' Component={Orders} />
         </Routes>
-        {/* <Footer />e */}
+        <Footer/>
       </BrowserRouter>
     </>
   );

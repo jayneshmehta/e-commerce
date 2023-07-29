@@ -19,7 +19,7 @@ export default function Hero({setCategory}) {
         setCategory(this.id);  
     })
     var sub_categorys = sub_category.map((items, index) => {
-        return <a href="#" id={items.id} className="catlist  list-group-item list-group-item-action border-0 text-capitalize rounded " key={index}>{items.Sub_category_Name}</a>
+        return <a  id={items.id} className="catlist  list-group-item list-group-item-action border-0 text-capitalize rounded " key={index}>{items.Sub_category_Name}</a>
     });
 
     let mystyle = {

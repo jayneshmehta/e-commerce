@@ -36,21 +36,8 @@ export default function Navbar({count}) {
                         <span className='pt-1 fw-bold fs-4 text-primary'>React</span></Link>
 
                 </div>
-                <div className='col-7  d-flex justify-content-center '>
-                    <div className='col-11 '>
-                        <form className="d-flex input-group" role="search" id='navForm' >
 
-                            <input className="form-control border  bg-light " style={{ width: "180px" }} type="search" placeholder="Search" aria-label="Search" />
-
-                            <select className="form-select  bg-light " name="category_Id" placeholder='All category' id="navCategory">
-                                <option value=''>All category</option>
-                                {categorys}
-                            </select>
-                            <button className="btn btn-primary" type="submit">Search</button>
-                        </form>
-                    </div>
-                </div>
-                <div className='col-4 d-flex  gap-4'>
+                <div className='col-4 d-flex justify-content-end gap-4'>
                     <div >
                         <div className='text-center'>
                             <PersonPinIcon />
