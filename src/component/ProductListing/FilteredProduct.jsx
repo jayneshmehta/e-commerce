@@ -8,7 +8,7 @@ import { FaSadCry } from 'react-icons/fa';
 export default function FilteredProduct({ products }) {
 
   if (products.length === 0) {
-    return (<div class="container ">
+    return (<div className="container ">
       <div className="row align-items-center mt-5">
         <div className="offset-lg-3 col-lg-6 col-md-12 col-12 text-center ">
           <img src="https://cdni.iconscout.com/illustration/premium/thumb/page-not-found-6210462-5115902.png?f=webp" alt="" style={{ width: '450px', height: '400' }} className="img-fluid  mb-4" />
@@ -20,9 +20,8 @@ export default function FilteredProduct({ products }) {
       </div>
     </div>
     )
-  } else {
-
   }
+
   return (
     products.map((item, index) => {
       return (
@@ -57,7 +56,8 @@ export default function FilteredProduct({ products }) {
               </div>
             </div>
           </div>
-        </div>);
+        </div>
+      );
     })
   )
 }

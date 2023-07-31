@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 export default function Productcard({ items , index}) {
     return (
         <div className='border-end p-2 border-1' key={index}>
-            <div className="card col-2 border-0 p-2 " style={{ width: '11rem', height: '17rem' }} >
+            <div className="card col-2 border-0 p-2 " style={{ width: '13rem', height: '17rem' }} >
                 <div className='h-50'>
                 <img src={items.thumbnail} style={{ height: '130px', objectFit: 'cover' }} className="card-img-top rounded zoom" alt="..." />
                 </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Productcard from './Productcard';
+import Carousel from 'react-multi-carousel';
 
 
 export default function OffersOfDay({ product }) {
@@ -36,6 +37,23 @@ export default function OffersOfDay({ product }) {
             }
         }, 1000);
     }, [])
+    const responsive = {
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 4,
+            slidesToSlide: 4 // optional, default to 1.
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 768 },
+            items: 3,
+            slidesToSlide: 3 // optional, default to 1.
+        },
+        mobile: {
+            breakpoint: { max: 767, min: 464 },
+            items: 2,
+            slidesToSlide: 1 // optional, default to 1.
+        }
+    };
 
     return (
         <div className="container mt-3 ">
@@ -81,7 +99,16 @@ export default function OffersOfDay({ product }) {
                             </div>
                         </div>
                         <div className="col-9 ps-2" >
-                            <div className='d-flex scroller'>
+                            <div className='row d-flex m-1'>
+                            <Carousel
+                                responsive={responsive}
+                                // autoPlay={true}
+                                swipeable={true}
+                                draggable={true}
+                                infinite={true}
+                                partialVisible={false}
+                                dotListClass="custom-dot-list-style"
+                            >
                                 {
                                     product.map((items, index) => {
                                         if (items.discountPercentage > 16) {
@@ -91,6 +118,7 @@ export default function OffersOfDay({ product }) {
                                         }
                                     })
                                 }
+                                </Carousel>
                             </div>
                         </div>
                     </div>

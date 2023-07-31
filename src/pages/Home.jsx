@@ -4,7 +4,17 @@ import OffersOfDay from '../component/OffersOfDay'
 import CategoryProduct from '../component/CategoryProduct'
 import NewProducts from '../component/NewProducts';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 export default function Home({ product }) {
+  if(sessionStorage.getItem('login')){
+    Swal.fire({
+      title: 'Login',
+      type: 'success',
+      icon: 'success',  
+      text: sessionStorage.getItem('login'),
+  });
+  sessionStorage.removeItem('login')
+  }
   const [Category, setCategory] = useState(1)
   useEffect(() => {
     setCategory(Category)

@@ -5,19 +5,38 @@ import { useState } from 'react';
 import CategoryName from './CategoryName'
 import { Link } from 'react-router-dom'
 import Productcard from './Productcard';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
-export default function CategoryProduct({ url, title, Category,Sub_Category }) {
+export default function CategoryProduct({ url, title, Category, Sub_Category }) {
     const [product, setProduct] = useState([])
     useEffect(() => {
-        if(Sub_Category){
+        if (Sub_Category) {
             var baseURL = `http://product_api.localhost/api/products/GettingProductBySub_CategoryId-${Sub_Category}`;
-        }else{
+        } else {
             var baseURL = `http://product_api.localhost/api/products/GettingProductByCategoryId-${Category}`;
         }
         axios.get(baseURL).then((response) => {
             setProduct(response.data);
         });
     }, [Sub_Category]);
+    const responsive = {
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 4,
+            slidesToSlide: 4 // optional, default to 1.
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 768 },
+            items: 3,
+            slidesToSlide: 3 // optional, default to 1.
+        },
+        mobile: {
+            breakpoint: { max: 767, min: 464 },
+            items: 2,
+            slidesToSlide: 1 // optional, default to 1.
+        }
+    };
     return (
         <div className='container mt-3' >
             <div className="card">
@@ -27,15 +46,25 @@ export default function CategoryProduct({ url, title, Category,Sub_Category }) {
                             <Link to="/" className="btn btn-light ms-2 mt-4" >Source Now</Link>
                         </CategoryName>
                     </div>
-                    <div className=' col-9 border-start ps-2 '>
-                        <div className='d-flex scroller'>
-                            {
-                                product.map((items, index) => {
-                                    return (
-                                        <Productcard items={items} key={index} index={index} />
-                                    );
-                                })
-                            }
+                    <div className=' col-9 border-start  '>
+                        <div className='row d-flex m-1'>
+                            <Carousel
+                                responsive={responsive}
+                                // autoPlay={true}
+                                swipeable={true}
+                                draggable={true}
+                                infinite={true}
+                                partialVisible={false}
+                                dotListClass="custom-dot-list-style"
+                            >
+                                {
+                                    product.map((items, index) => {
+                                        return (
+                                            <Productcard items={items} key={index} index={index} />
+                                        );
+                                    })
+                                }
+                                </Carousel>
                         </div>
                     </div>
                 </div>

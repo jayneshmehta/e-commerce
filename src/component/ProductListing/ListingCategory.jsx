@@ -2,7 +2,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { Collapse, List, ListItemButton, ListItemText } from '@mui/material'
 import React from 'react'
 
-export default function ListingCategory({ items, index, sub_category , filter }) {
+export default function ListingCategory({ items, index, sub_category, filter }) {
 
     const [selectedIndex, setSelectedIndex] = React.useState("")
 
@@ -24,8 +24,8 @@ export default function ListingCategory({ items, index, sub_category , filter })
                     {
                         sub_category.map((item, i) => {
                             return (
-                                <ListItemButton id={`list${item.id}`} className='filterlist' key={'list'+i}>
-                                    <ListItemText primary={item.Sub_category_Name} onClick={()=>{filter(item.id)}} />
+                                <ListItemButton id={`list${item.id}`} className='filterlist' key={'list' + i}>
+                                    <ListItemText primary={item.Sub_category_Name} onClick={() => { filter(item.id) }} />
                                 </ListItemButton>
                             )
                         })
