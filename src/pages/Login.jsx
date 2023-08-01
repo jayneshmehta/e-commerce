@@ -5,19 +5,19 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 
-export default function Login({setLoggedIn}) {
+export default function Login({ setLoggedIn }) {
 
     const navigate = useNavigate();
-    if(sessionStorage.getItem('register')){
+    if (sessionStorage.getItem('register')) {
         Swal.fire({
             title: 'Register',
             type: 'success',
-            icon: 'success',  
+            icon: 'success',
             text: sessionStorage.getItem('register'),
         });
         sessionStorage.removeItem('register')
     }
-    $(document).on("submit","#loginform",async function (e) {
+    $(document).on("submit", "#loginform", async function (e) {
         e.preventDefault();
         var baseURL = 'http://product_api.localhost/api/login';
         var formdata = new FormData(e.target);
@@ -30,7 +30,7 @@ export default function Login({setLoggedIn}) {
                 sessionStorage.setItem("login", "Login Successfull :) ");
                 $("#msg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
                 setLoggedIn(sessionStorage.getItem('user'))
-                navigate("/");  
+                navigate("/");
             }).catch(
                 (error) => {
                     $(`#Err_email`).text('');
@@ -44,6 +44,108 @@ export default function Login({setLoggedIn}) {
                 }
             )
     })
+
+    const changePassword = async (e) => {
+        e.preventDefault();
+        var error = false;
+        $("#Err_Cpassword").text("");
+        $("#Err_fpassword").text("");
+        if ($("#confrim_password").val() == "") {
+            $("#Err_Cpassword").text("This field is require");
+            error = true;
+        }
+
+        var fpassword = $("#fpassword").val();
+        var confrim_password = $("#confrim_password").val();
+        if (!error) {
+
+            if ($("#password").val() !== $("#confrim_password").val()) {
+                $("#Err_Cpassword").text("Passward Doesn't match..");
+            } else {
+                $("#fmsg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
+                let data = {
+                    fpassword: fpassword,
+                    confrim_password: confrim_password
+                }
+                var baseURL = 'http://product_api.localhost/api/changePassword';
+                await axios.post(baseURL, (data))
+                    .then(response => {
+                        let message = response.data.message;
+                        $("#fmsg").html(`<p class='text-center text-success'>${message}</p>`)
+                    }).catch(
+                        (error) => {
+                            if (error.response.data.errors) {
+                                var errors = error.response.data.errors;
+                                for (let x in errors) {
+                                    $(`#Err_f${x}`).text(errors[x]);
+                                }
+                            }
+                            let message = error.response.data.message;
+                            $("#fmsg").html(`<p class='text-center text-danger'>${message}</p>`)
+                        }
+                    )
+            }
+
+        }
+    }
+    async function verifyOtp() {
+        $("#sendotp").attr("disabled", true);
+        $("#contactNo").attr("disabled", true);
+
+        var otp = $("#otp").val();
+        var contactNo = $("#contactNo").val();
+        $("#fmsg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
+        let data = {
+            otp: otp,
+            contactNo: contactNo
+        }
+        var baseURL = 'http://product_api.localhost/api/verifysmsotp';
+        await axios.post(baseURL, (data))
+            .then(response => {
+                let message = response.data.message;
+                $("#fmsg").html(`<p class='text-center text-success'>${message}</p>`)
+                $("#otp").attr("disabled", true);
+                $("#verifyotp").attr("disabled", true);
+                $("#newpasswordDetails").removeAttr("hidden");
+            }).catch(
+                (error) => {
+                    if (error.response.data.errors) {
+                        var errors = error.response.data.errors;
+                        for (let x in errors) {
+                            $(`#Err_${x}`).text(errors[x]);
+                        }
+                    }
+                    let message = error.response.data.message;
+                    $("#fmsg").html(`<p class='text-center text-danger'>${message}</p>`)
+                }
+            )
+    }
+
+    async function sendsmsotp() {
+        $(`#Err_contactNo`).text('');
+        var baseURL = 'http://product_api.localhost/api/sendsmsotp';
+        var contactNo = $("#contactNo").val();
+        var data = {
+            contactNo: contactNo,
+        }
+        $("#fmsg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
+        await axios.post(baseURL, data)
+            .then(response => {
+                $("#verifyOtp").removeAttr('hidden')
+                $("#fmsg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
+            }).catch(
+                (error) => {
+                    if (error.response.data.errors) {
+                        var errors = error.response.data.errors;
+                        for (let x in errors) {
+                            $(`#Err_${x}`).text(errors[x]);
+                        }
+                    }
+                    let message = error.response.data.message;
+                    $("#fmsg").html(`<p class='text-center text-danger'>${message}</p>`)
+                }
+            )
+    }
 
     return (
         <div className="container">
@@ -74,7 +176,7 @@ export default function Login({setLoggedIn}) {
                                     <input className="form-check-input" type="checkbox" value="" id="checked" />
                                     <label className="form-check-label" htmlFor="checked"> Remember me </label>
                                 </div>
-                                <a href="#!">Forgot password?</a>
+                                <button type='button' className="btn " data-bs-toggle="modal" data-bs-target="#exampleModal">Forgot password?</button>
                             </div>
                             <div className='row justify-content-center '>
                                 <button type="submit" className="col-6 btn btn-primary btn-lg btn-block">Sign in</button>
@@ -82,6 +184,57 @@ export default function Login({setLoggedIn}) {
                                     className="link-danger">Register</Link></p>
                             </div>
                             <div className='text-center d-flex justify-content-center mt-2' id='msg'>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Forget password</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="" onSubmit={changePassword}>
+                            <div className="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Contact No : </label>
+                                    <div class="row gx-0 m-0 p-0 input-group">
+                                        <input class="col-7 form-control" placeholder="Contact No" name="contactNo" id="contactNo" type="number" />
+                                        <button type="button" name="sendotp" id="sendotp" class="col-4 btn btn-primary" onClick={() => sendsmsotp()} >Send otp </button>
+                                    </div>
+                                    <small id="Err_contactNo" class="text-danger form-text"></small>
+                                </div>
+                                <div className='' id='verifyOtp' hidden>
+                                    <div className="mb-3 " id='otpverify' >
+                                        <label className="form-label">Verify user : </label>
+                                        <div className='row gx-0 m-0 p-0 input-group'>
+                                            <input className="col-7 form-control" placeholder="Enter OTP" name='otp' id='otp' type="number" />
+                                            <button type="button" name="verifyotp" id="verifyotp" className="col-4 btn btn-success" onClick={() => verifyOtp()} >Verify otp </button>
+                                        </div>
+                                        <small id="Err_otp" className="text-danger form-text"></small>
+                                    </div>
+                                </div>
+                                <div className='' id='newpasswordDetails' hidden>
+                                    <div className="mb-3">
+                                        <label className="form-label">New password</label>
+                                        <input className="form-control" placeholder="At least 6 characters." name='fpassword' id='fpassword' type="password" />
+                                        <small id="Err_fpassword" className="text-danger form-text "></small>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Confrim password</label>
+                                        <input className="form-control" id='confrim_password' placeholder="" type="password" />
+                                        <small id="Err_Cpassword" className="text-danger form-text "></small>
+                                    </div>
+                                </div>
+                                <div className='text-center d-flex justify-content-center mt-2' id='fmsg'></div>
+
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" className="btn btn-primary">Save changes</button>
                             </div>
                         </form>
                     </div>
