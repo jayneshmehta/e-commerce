@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import $ from 'jquery';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-
 export default function Login({ setLoggedIn }) {
 
+    const [Passwordchanged, setPasswordchanged] = useState(false)
+    
     const navigate = useNavigate();
     if (sessionStorage.getItem('register')) {
         Swal.fire({
@@ -17,6 +18,17 @@ export default function Login({ setLoggedIn }) {
         });
         sessionStorage.removeItem('register')
     }
+    useEffect(() => {
+        if (sessionStorage.getItem('fpassword')) {
+            Swal.fire({
+                title: 'Forget password',
+                type: 'success',
+                icon: 'success',
+                text: sessionStorage.getItem('fpassword'),
+            });
+            sessionStorage.removeItem('fpassword')
+        }
+    }, [Passwordchanged])
     $(document).on("submit", "#loginform", async function (e) {
         e.preventDefault();
         var baseURL = 'http://product_api.localhost/api/login';
@@ -57,23 +69,28 @@ export default function Login({ setLoggedIn }) {
 
         var fpassword = $("#fpassword").val();
         var confrim_password = $("#confrim_password").val();
+        
+        var contactNo = $("#contactNo").val();
         if (!error) {
-
-            if ($("#password").val() !== $("#confrim_password").val()) {
+            if (fpassword !== confrim_password) {
                 $("#Err_Cpassword").text("Passward Doesn't match..");
             } else {
                 $("#fmsg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
                 let data = {
                     fpassword: fpassword,
-                    confrim_password: confrim_password
+                    contactNo: contactNo,
                 }
                 var baseURL = 'http://product_api.localhost/api/changePassword';
                 await axios.post(baseURL, (data))
                     .then(response => {
                         let message = response.data.message;
                         $("#fmsg").html(`<p class='text-center text-success'>${message}</p>`)
+                        sessionStorage.setItem('fpassword',"password has been changed pls login & check..");
+                        setPasswordchanged(true);
+                        $("#closemodal").trigger("click");
                     }).catch(
                         (error) => {
+                            console.log(error);
                             if (error.response.data.errors) {
                                 var errors = error.response.data.errors;
                                 for (let x in errors) {
@@ -190,7 +207,7 @@ export default function Login({ setLoggedIn }) {
                 </div>
             </div>
 
-            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -199,13 +216,13 @@ export default function Login({ setLoggedIn }) {
                         </div>
                         <form action="" onSubmit={changePassword}>
                             <div className="modal-body">
-                                <div class="mb-3">
-                                    <label class="form-label">Contact No : </label>
-                                    <div class="row gx-0 m-0 p-0 input-group">
-                                        <input class="col-7 form-control" placeholder="Contact No" name="contactNo" id="contactNo" type="number" />
-                                        <button type="button" name="sendotp" id="sendotp" class="col-4 btn btn-primary" onClick={() => sendsmsotp()} >Send otp </button>
+                                <div className="mb-3">
+                                    <label className="form-label">Contact No : </label>
+                                    <div className="row gx-0 m-0 p-0 input-group">
+                                        <input className="col-7 form-control" placeholder="Contact No" name="contactNo" id="contactNo" type="number" />
+                                        <button type="button" name="sendotp" id="sendotp" className="col-4 btn btn-primary" onClick={() => sendsmsotp()} >Send otp </button>
                                     </div>
-                                    <small id="Err_contactNo" class="text-danger form-text"></small>
+                                    <small id="Err_contactNo" className="text-danger form-text"></small>
                                 </div>
                                 <div className='' id='verifyOtp' hidden>
                                     <div className="mb-3 " id='otpverify' >
@@ -233,7 +250,7 @@ export default function Login({ setLoggedIn }) {
 
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" className="btn btn-secondary" id='closemodal' data-bs-dismiss="modal">Close</button>
                                 <button type="submit" className="btn btn-primary">Save changes</button>
                             </div>
                         </form>

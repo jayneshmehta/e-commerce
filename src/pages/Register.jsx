@@ -63,7 +63,7 @@ export default function Register() {
                     $("#otpverify").removeAttr(`hidden`);
 
                     $("#msg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
-                    $("#email").attr('disabled',true);
+                    $("#email").attr('readonly',true);
                 }).catch(
                     (error) => {
                         let message = error.response.data.message;
@@ -87,6 +87,8 @@ export default function Register() {
             $("#Err_Cpassword").text("Passward Doesn't match..");
         } else {
             var formdata = new FormData(e.target);
+            let email = $('#email').val();
+            formdata.append("email",email);
             $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
             await axios.post(baseURL, formdata)
                 .then(response => {
@@ -172,9 +174,7 @@ export default function Register() {
 
                     </div>
                 </div>
-
                 <br /><br />
-
             </div>
         </div>
     )

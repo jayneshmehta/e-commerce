@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import AfterLogin from './AfterLogin';
 import BeforeLogin from './BeforeLogin';
 
-export default function Navbar({ count,setLoggedIn }) {
+export default function Navbar({ count }) {
     const [category, setcategory] = useState([])
     var baseURL = 'http://product_api.localhost/api/categorys';
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function Navbar({ count,setLoggedIn }) {
                         <span className='pt-1 fw-bold fs-4 text-primary'>React</span></Link>
                 </div>
                 {
-                    userExist ? <AfterLogin count={count} setLoggedIn={setLoggedIn} /> : <BeforeLogin />
+                    userExist ? <AfterLogin count={count}  /> : <BeforeLogin />
                 }
             </div>
         </nav>

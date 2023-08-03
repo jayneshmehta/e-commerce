@@ -21,7 +21,7 @@ export default function Home({ product }) {
   }, [Category])
   return (
     <div className='container-fluid bg-light'>
-      <Hero setCategory={setCategory} />
+      <Hero setCategory={setCategory}/>
       <CategoryProduct url="https://bootstrap-ecommerce-web.netlify.app/images/banners/interior.jpg" title="Products According to your Selected Category" Sub_Category={Category} />
       <OffersOfDay product={product} />
       <CategoryProduct url="https://bootstrap-ecommerce-web.netlify.app/images/banners/tech.jpg" title="Consumer electronics and gadgets" Category={1} />

@@ -4,10 +4,13 @@ import { GrInstagram } from 'react-icons/gr'
 import { FiFacebook } from 'react-icons/fi'
 import { FaTwitterSquare } from 'react-icons/fa'
 import { BsLinkedin } from 'react-icons/bs'
+import { useLocation } from 'react-router-dom';
 
 export default function Footer() {
-  return (
-
+  const { pathname } = useLocation();
+  return (pathname == "/login" || pathname == "/register")
+  ?("")
+  :(
     <section className="footer-main bg-dark  py-3 mt-3">
       <div className="container">
         <div className="row gx-0">
