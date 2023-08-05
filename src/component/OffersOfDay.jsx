@@ -4,7 +4,7 @@ import Carousel from 'react-multi-carousel';
 
 
 export default function OffersOfDay({ product }) {
-    var countDownDate = new Date("Aug 1 , 2023 15:37:25").getTime();
+    var countDownDate = new Date("Aug 10 , 2023 15:37:25").getTime();
 
     // Update the count down every 1 second
     const [days, setDays] = useState(0)

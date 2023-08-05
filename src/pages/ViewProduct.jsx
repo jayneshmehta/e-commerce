@@ -14,7 +14,7 @@ export default function ViewProduct({setBuyproduct}) {
     const [product, setProduct] = useState([]);
     const [images, setImages] = useState([]);
     useEffect(() => {
-      let Baseurl = `http://product_api.localhost/api/products/GettingProductById-${product_id}`;
+      let Baseurl = `http://192.168.101.102/api/products/GettingProductById-${product_id}`;
       axios.get(Baseurl).then(async (responce) => {
         setProduct(responce.data);
         setImages(await responce.data.images.split(','));

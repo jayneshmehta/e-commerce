@@ -31,7 +31,7 @@ export default function Login({ setLoggedIn }) {
     }, [Passwordchanged])
     $(document).on("submit", "#loginform", async function (e) {
         e.preventDefault();
-        var baseURL = 'http://product_api.localhost/api/login';
+        var baseURL = 'http://192.168.101.102/api/login';
         var formdata = new FormData(e.target);
         $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
         await axios.post(baseURL, formdata)
@@ -39,6 +39,7 @@ export default function Login({ setLoggedIn }) {
                 $(`#Err_email`).text('');
                 $(`#Err_password`).text('');
                 sessionStorage.setItem("user", JSON.stringify(response.data.user));
+                sessionStorage.setItem("wishlist", JSON.stringify(response.data.wishlist));
                 sessionStorage.setItem("login", "Login Successfull :) ");
                 $("#msg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
                 setLoggedIn(sessionStorage.getItem('user'))
@@ -80,7 +81,7 @@ export default function Login({ setLoggedIn }) {
                     fpassword: fpassword,
                     contactNo: contactNo,
                 }
-                var baseURL = 'http://product_api.localhost/api/changePassword';
+                var baseURL = 'http://192.168.101.102/api/changePassword';
                 await axios.post(baseURL, (data))
                     .then(response => {
                         let message = response.data.message;
@@ -116,7 +117,7 @@ export default function Login({ setLoggedIn }) {
             otp: otp,
             contactNo: contactNo
         }
-        var baseURL = 'http://product_api.localhost/api/verifysmsotp';
+        var baseURL = 'http://192.168.101.102/api/verifysmsotp';
         await axios.post(baseURL, (data))
             .then(response => {
                 let message = response.data.message;
@@ -140,7 +141,7 @@ export default function Login({ setLoggedIn }) {
 
     async function sendsmsotp() {
         $(`#Err_contactNo`).text('');
-        var baseURL = 'http://product_api.localhost/api/sendsmsotp';
+        var baseURL = 'http://192.168.101.102/api/sendsmsotp';
         var contactNo = $("#contactNo").val();
         var data = {
             contactNo: contactNo,

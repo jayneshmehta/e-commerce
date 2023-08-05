@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 
 
-export default function ViewDetails({ product,setBuyproduct }) {
+export default function ViewDetails({ product,setBuyproduct}) {
     const rating = (parseInt(product.rating));
 
     function ChangeQuantity(id,quantity){

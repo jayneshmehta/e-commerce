@@ -12,9 +12,9 @@ export default function CategoryProduct({ url, title, Category, Sub_Category }) 
     const [product, setProduct] = useState([])
     useEffect(() => {
         if (Sub_Category) {
-            var baseURL = `http://product_api.localhost/api/products/GettingProductBySub_CategoryId-${Sub_Category}`;
+            var baseURL = `http://192.168.101.102/api/products/GettingProductBySub_CategoryId-${Sub_Category}`;
         } else {
-            var baseURL = `http://product_api.localhost/api/products/GettingProductByCategoryId-${Category}`;
+            var baseURL = `http://192.168.101.102/api/products/GettingProductByCategoryId-${Category}`;
         }
         axios.get(baseURL).then((response) => {
             setProduct(response.data);

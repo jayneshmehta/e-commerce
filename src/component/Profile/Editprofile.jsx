@@ -6,14 +6,14 @@ import Swal from 'sweetalert2';
 
 
 export default function Editprofile({ userdata,setUserdata }) {
-    
-    var profile = (userdata.profile == null) ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThxpx8l6QoJJO1-jbWEyJikEZblAfQutrYbzwPMZHCNA&s" : userdata.profile;
+    var profile = (userdata.profile == null) ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThxpx8l6QoJJO1-jbWEyJikEZblAfQutrYbzwPMZHCNA&s" : "http://192.168.101.102/"+userdata.profile;
     const navigate = useNavigate();
     async function edit(e) {
         e.preventDefault();
         $("small").text("");
         var data = new FormData(e.target);
-        var baseURL = `http://product_api.localhost/api/UpdateUserbyid-${userdata.id}`;
+        var baseURL = `http://192.168.101.102/api/UpdateUserbyid-${userdata.id}`;
+        $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
         await axios.post(baseURL, data)
             .then(response => {
                 setUserdata(response.data.user);
@@ -61,7 +61,6 @@ export default function Editprofile({ userdata,setUserdata }) {
     
     });
 
-
     return (
         <div>
             <div className="card">
@@ -76,7 +75,7 @@ export default function Editprofile({ userdata,setUserdata }) {
                                         <img className='p-2 col-3 rounded' id='imgsrc' style={{ width: "180px", height: "150px" }} src={profile} alt="" />
                                         <input type="file"
                                             className="col-2 mt-2 form-control" name="profile" id="profile" aria-describedby="helpId" placeholder="" />
-                                        <small id="helpId" className="form-text text-muted"></small>
+                                        <small id="helpId" className="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div className='row d-flex align-items-center flex-column'>
@@ -87,25 +86,25 @@ export default function Editprofile({ userdata,setUserdata }) {
                                         <label htmlFor="name" className="form-label">Name</label>
                                         <input type="name"
                                             className="form-control" name="name" id="name" defaultValue={userdata.name} aria-describedby="Err_name" placeholder="Enter name" />
-                                        <small id="Err_name" className="form-text text-muted"></small>
+                                        <small id="Err_name" className="form-text text-danger"></small>
                                     </div>
                                     <div className="col-8 mb-3">
                                         <label htmlFor="email" className="form-label">Email</label>
                                         <input type="email"
                                             className="form-control" name="email" id="email" defaultValue={userdata.email} aria-describedby="Err_email" placeholder="Enter email" />
-                                        <small id="email" className="form-text text-muted"></small>
+                                        <small id="email" className="form-text text-danger"></small>
                                     </div>
                                     <div className="col-8 mb-3">
                                         <label htmlFor="contactNo" className="form-label">Contact No </label>
                                         <input type="text"
                                             className="form-control" name="contactNo" id="contactNo" defaultValue={userdata.contactNo} aria-describedby="Err_contactNo" placeholder="Enter contact no" />
-                                        <small id="Err_contactNo" className="form-text text-muted"></small>
+                                        <small id="Err_contactNo" className="form-text text-danger"></small>
                                     </div>
                                     <div className="col-8 mb-3">
                                         <label htmlFor="address" className="form-label">Address</label>
                                         <input type="text"
                                             className="form-control" name="address" id="address" defaultValue={userdata.address} aria-describedby="Err_address" placeholder="Enter Address" />
-                                        <small id="Err_address" className="form-text text-muted"></small>
+                                        <small id="Err_address" className="form-text text-danger"></small>
                                     </div>
                                     <button type="submit" className="col-3 btn btn-outline-primary">Submit</button>
                                 </div>

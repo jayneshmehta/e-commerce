@@ -4,23 +4,28 @@ import { Link } from 'react-router-dom'
 import Main from '../component/Profile/Main'
 import Swal from 'sweetalert2';
 import Editprofile from '../component/Profile/Editprofile';
+import Orders from './Orders';
 
-export default function Profile({ setLoggedIn }) {
-   const [userdata, setUserdata] = useState(JSON.parse(sessionStorage.getItem('user')));
-   useEffect(() => {
-    setUserdata(JSON.parse(sessionStorage.getItem('user')));
-   }, [userdata])
+export default function Profile({setLoggedIn,userdata,setUserdata}) {
   const Logout = () => {
-    if (window.confirm("Are you sure you want to logout..?")) {
-      sessionStorage.removeItem('user')
-      setLoggedIn(sessionStorage.getItem('user'))
-      Swal.fire({
-        title: 'Logout',
-        type: 'success',
-        icon: 'success',
-        text: 'You are loged out successfully..',
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure you want to logout..?',
+      showDenyButton: true,
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sessionStorage.removeItem('user')
+        sessionStorage.removeItem('cart')
+        setLoggedIn(sessionStorage.getItem('user'))
+        Swal.fire({
+          title: 'Logout',
+          type: 'success',
+          icon: 'success',
+          text: 'You are loged out successfully..',
+        });
+      }
+    })
   }
 
   return (
@@ -30,8 +35,8 @@ export default function Profile({ setLoggedIn }) {
         <Typography color="text.primary">profile</Typography>
       </Breadcrumbs>
       <div className="row">
-        <aside className="col-lg-3 col-xl-3">
-          <ul className="nav nav-tabs card-header-tabs bg-light flex-nowrap flex-column gap-2 rounded">
+        <aside className="col-lg-3 col-xl-3 ">
+          <ul className="nav nav-tabs card-header-tabs bg-light flex-nowrap flex-column gap-2 rounded shadow">
             <li className="nav-item">
               <a className="nav-link active" data-bs-toggle="tab" data-bs-target="#profileInfo" aria-current="true" href="#">Personal Info</a>
             </li>
@@ -52,11 +57,10 @@ export default function Profile({ setLoggedIn }) {
         <div className="col-9">
           <div className="tab-content card-body">
             <article className="tab-pane active" id="profileInfo" role="tabpanel">
-              <Main userdata={userdata} />
+              <Main userdata={userdata}/>
             </article>
             <article className="tab-pane" id="Orders" role="tabpanel">
-              <h6>Orders</h6>
-              Culpa reprehenderit, nam doloribus possimus sapiente quo cumque maxime rerum. Sit repellat nisi consequuntur assumenda, ipsam ab aut hic sint laboriosam tempore!
+              <Orders userdata={userdata}/>
             </article>
 
             <article className="tab-pane" id="wishlist" role="tabpanel">
@@ -68,7 +72,6 @@ export default function Profile({ setLoggedIn }) {
               <Editprofile userdata={userdata} setUserdata={setUserdata} />
             </article>
           </div>
-
         </div>
       </div>
     </div>

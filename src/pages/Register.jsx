@@ -10,7 +10,7 @@ export default function Register() {
         $(`#Err_email`).text('');
         var otp = $("#otp").val();
         var email = $("#email").val().trim();
-        var baseURL = 'http://product_api.localhost/api/verifyOtp';
+        var baseURL = 'http://192.168.101.102/api/verifyOtp';
         var data = {
             email: email,
             otp: otp,
@@ -53,7 +53,7 @@ export default function Register() {
             $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
             var name = $("#name").val().trim()
             var email = $("#email").val().trim()
-            var baseURL = 'http://product_api.localhost/api/sendmail';
+            var baseURL = 'http://192.168.101.102/api/sendmail';
             var data = {
                 email: email,
                 name: name,
@@ -82,7 +82,7 @@ export default function Register() {
         $(`#Err_name`).text('');
         $(`#Err_contactNo`).text('');
         $("#Err_Cpassword").text("");
-        var baseURL = 'http://product_api.localhost/api/register';
+        var baseURL = 'http://192.168.101.102/api/register';
         if ($("#password").val() !== $("#confrim_password").val()) {
             $("#Err_Cpassword").text("Passward Doesn't match..");
         } else {

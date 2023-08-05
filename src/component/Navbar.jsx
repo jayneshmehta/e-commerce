@@ -10,9 +10,9 @@ import { Link } from 'react-router-dom';
 import AfterLogin from './AfterLogin';
 import BeforeLogin from './BeforeLogin';
 
-export default function Navbar({ count }) {
+export default function Navbar({ count,wishlistcount }) {
     const [category, setcategory] = useState([])
-    var baseURL = 'http://product_api.localhost/api/categorys';
+    var baseURL = 'http://192.168.101.102/api/categorys';
     useEffect(() => {
         axios.get(baseURL).then((response) => {
             setcategory(response.data)
@@ -38,7 +38,7 @@ export default function Navbar({ count }) {
                         <span className='pt-1 fw-bold fs-4 text-primary'>React</span></Link>
                 </div>
                 {
-                    userExist ? <AfterLogin count={count}  /> : <BeforeLogin />
+                    userExist ? <AfterLogin count={count} wishlistcount={wishlistcount}/> : <BeforeLogin />
                 }
             </div>
         </nav>

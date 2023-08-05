@@ -10,7 +10,7 @@ import Sortingdiv from '../component/ProductListing/Sortingdiv';
 import { BsArrowRight } from 'react-icons/bs';
 import { Refresh } from '@mui/icons-material';
 import $ from 'jquery';
-export default function ProductListing({ products }) {
+export default function ProductListing({ products,userdata,addWishList }) {
 
   const [filterProduct, setFilterProduct] = useState([]);
   const [newrating, setRating] = useState([1, 2, 3, 4, 5]);
@@ -141,7 +141,7 @@ $("#search").on('keyup',function(){
           <FilterByRating filter={handleRatingChange} />
         </div>
         <div className="col-9 overflow-auto " >
-          <FilteredProduct products={_DATA.currentData()} />
+          <FilteredProduct products={_DATA.currentData()} userdata={userdata} addWishList={addWishList} />
         </div>
       </div>
     </div >

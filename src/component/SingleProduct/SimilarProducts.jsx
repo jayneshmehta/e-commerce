@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function SimilarProducts({ category }) {
 
     const [product, setProduct] = useState([])
-    var baseURL = `http://product_api.localhost/api/products/GettingProductBySub_CategoryId-${category}`;
+    var baseURL = `http://192.168.101.102/api/products/GettingProductBySub_CategoryId-${category}`;
     useMemo(() => {
         axios.get(baseURL).then((response) => {
             setProduct(response.data);

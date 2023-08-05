@@ -4,7 +4,7 @@ import NewProducts from '../NewProducts';
 export default function RelatedProducts({ product }) {
     const [products, setProduct] = useState([])
     
-    var baseURL = `http://product_api.localhost/api/products/GettingProductBySub_CategoryId-${parseInt(product.category_id)}`;
+    var baseURL = `http://192.168.101.102/api/products/GettingProductBySub_CategoryId-${parseInt(product.category_id)}`;
     useMemo(() => {
         axios.get(baseURL).then((response) => {
             setProduct(response.data);

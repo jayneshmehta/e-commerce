@@ -9,7 +9,7 @@ import $ from 'jquery';
 
 export default function Hero({setCategory}) {
     const [sub_category, setsub_category] = useState([])
-    var baseURL = 'http://product_api.localhost/api/sub_category';
+    var baseURL = 'http://192.168.101.102/api/sub_category';
     useEffect(() => {
         axios.get(baseURL).then((response) => {
             setsub_category(response.data)
@@ -32,8 +32,8 @@ export default function Hero({setCategory}) {
                     <div className="card p-2">
                         <div className="card-body ">
                             <div className='d-flex gx-0 me-1 justify-content-between ' style={{ height: '400px' }}>
-                                <div className='col-3 overflow-auto pe-1' >
-                                    <div className="list-group scroller-y">
+                                <div className='col-3 overflow-auto pe-1 scroller' >
+                                    <div className="list-group ">
                                     <Link to={'/allproductlisting'} className="text-center border border-primary list-group-item list-group-item-action border-3 me-3 text-capitalize rounded fw-bolder" key={'allProducts'}>All Products<span className='ps-3 fw-bolder text-dark pb-2'><BsArrowRight strokeWidth="2" viewBox="0 2 16 16"/></span></Link>
                                         {sub_categorys}
                                     </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default function FilterByProduct({filter}) {
     const [category, setCategory] = useState([])
-    var baseURL1 = 'http://product_api.localhost/api/categorys';
+    var baseURL1 = 'http://192.168.101.102/api/categorys';
     useEffect(() => {
         axios.get(baseURL1).then((response1) => {
             setCategory(response1.data);
@@ -12,7 +12,7 @@ export default function FilterByProduct({filter}) {
     }, []);
 
     const [sub_category, setSub_Category] = useState([])
-    var baseURL2 = 'http://product_api.localhost/api/sub_category';
+    var baseURL2 = 'http://192.168.101.102/api/sub_category';
     useEffect(() => {
         axios.get(baseURL2).then((response2) => {
             setSub_Category(response2.data);

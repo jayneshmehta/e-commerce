@@ -4,8 +4,12 @@ import { PiDotOutlineFill } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
 import { BiSolidRightArrowAlt } from 'react-icons/bi'
 import { FaSadCry } from 'react-icons/fa';
+import { BsBookmarkHeartFill } from 'react-icons/bs';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import $ from 'jquery';
 
-export default function FilteredProduct({ products }) {
+export default function FilteredProduct({ products, userdata, addWishList }) {
 
   if (products.length === 0) {
     return (<div className="container ">
@@ -22,6 +26,13 @@ export default function FilteredProduct({ products }) {
     )
   }
 
+  const addToWishlist = async (id) => {
+    let product = products.find(item => {
+      return item.id == id;
+    })
+    addWishList(product);
+  }
+
   return (
     products.map((item, index) => {
       return (
@@ -32,6 +43,9 @@ export default function FilteredProduct({ products }) {
                 <img src={item.thumbnail} className='img-fluid p-1 rounded ' style={{ width: '300px', height: '180px' }} alt={item.title} />
               </div>
               <div className='col-8 p-2'>
+                <button className="fs-4 p-1 m-0 pt-0 btn btn-outline-danger btn-icon float-end me-2" id={`wishlist_${item.id}`} onClick={() => addToWishlist(item.id)}>
+                  <BsBookmarkHeartFill />
+                </button>
                 <Link to={'/product'} state={item.id} className='text-decoration-none text-dark'><h5 className='text-capitalize productlink' >{item.title}</h5></Link>
                 <div className="row gx-0">
                   <p className='p-0 m-0 text-muted'>{item.brand}</p>
