@@ -16,6 +16,7 @@ export default function Profile({setLoggedIn,userdata,setUserdata}) {
     }).then((result) => {
       if (result.isConfirmed) {
         sessionStorage.removeItem('user')
+        sessionStorage.removeItem('wishlist')
         sessionStorage.removeItem('cart')
         setLoggedIn(sessionStorage.getItem('user'))
         Swal.fire({
@@ -67,7 +68,7 @@ export default function Profile({setLoggedIn,userdata,setUserdata}) {
               <h6>Wishlist</h6>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa reprehenderit, nam doloribus possimus sapiente quo cumque maxime rerum. Sit repellat nisi consequuntur assumenda, ipsam ab aut hic sint laboriosam tempore!
             </article>
-
+    
             <article className="tab-pane " id="edit" role="tabpanel">
               <Editprofile userdata={userdata} setUserdata={setUserdata} />
             </article>

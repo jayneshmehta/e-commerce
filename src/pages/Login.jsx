@@ -39,10 +39,10 @@ export default function Login({ setLoggedIn }) {
                 $(`#Err_email`).text('');
                 $(`#Err_password`).text('');
                 sessionStorage.setItem("user", JSON.stringify(response.data.user));
+                setLoggedIn(sessionStorage.getItem('user'))
                 sessionStorage.setItem("wishlist", JSON.stringify(response.data.wishlist));
                 sessionStorage.setItem("login", "Login Successfull :) ");
                 $("#msg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
-                setLoggedIn(sessionStorage.getItem('user'))
                 navigate("/");
             }).catch(
                 (error) => {

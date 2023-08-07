@@ -1,5 +1,5 @@
 import Navbar from './component/Navbar';
-import { Navigate, Route, } from 'react-router-dom';
+import { Navigate, Route, useLocation, } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -17,17 +17,24 @@ import Profile from './pages/Profile';
 import Payment from './pages/Payment';
 import Swal from 'sweetalert2';
 import Wishlist from './pages/Wishlist';
+import AdminNavbar from './component/Admin/AdminNavbar';
+import AddProduct from './component/Admin/AddProducts/AddProduct';
+import AdminProductlisting from './component/Admin/Productlisting/AdminProductlisting';
+import UpdateProduct from './component/Admin/UpdateProducts/UpdateProduct';
 
-function App() {
+
+export default function App() {
   const [product, setProduct] = useState([])
   const [Buyproduct, setbuyproduct] = useState([])
-  var wishlisitems = JSON.parse(sessionStorage.getItem('wishlist')).wishlist.split(",");
+  var wishlisitems = (sessionStorage.getItem('wishlist') ? JSON.parse(sessionStorage.getItem('wishlist')) : "");
   const [wishlist, setWishlist] = useState(wishlisitems);
   const [loggedIn, setLoggedIn] = useState((sessionStorage.getItem('user') === null) ? false : true)
-  const [userdata, setUserdata] = useState(JSON.parse(sessionStorage.getItem('user')));
+  const [userdata, setUserdata] = useState((sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : "");
   useEffect(() => {
     setUserdata(JSON.parse(sessionStorage.getItem('user')));
   }, [])
+
+
   function RemoveShoppingCart(id) {
     setbuyproduct(Buyproduct.filter((items, index) => {
       if (id !== items.id) {
@@ -71,7 +78,9 @@ function App() {
               icon: 'success',
               text: `${response.data.message}`,
             });
-            (setWishlist(wishlist => [...wishlist,product.id.toString()]));
+
+            (setWishlist(wishlist => [...wishlist, product.id]));
+            sessionStorage.setItem('wishlist', JSON.stringify([...wishlist, product.id]));
             console.log(wishlist);
           }).catch(
             (error) => {
@@ -98,6 +107,7 @@ function App() {
       setProduct(response.data);
     });
   }, []);
+
   return (
     <>
       <BrowserRouter>
@@ -112,11 +122,13 @@ function App() {
           <Route exact path='/payment' element={<Payment Buyproduct={Buyproduct} />} />
           <Route exact path='/profile' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Profile setLoggedIn={setLoggedIn} userdata={userdata} setUserdata={setUserdata} />} />
           <Route exact path='/orders' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Orders setLoggedIn={setLoggedIn} userdata={userdata} setUserdata={setUserdata} />} />
-          <Route exact path='/wishlist' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Wishlist products={product} wishlist={wishlist} />} />
+          <Route exact path='/wishlist' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Wishlist products={product} wishlist={wishlist} setWishlist={setWishlist} userdata={userdata} setBuyproduct={setBuyproduct} />} />
+          <Route exact path='/admin/allproductlisting' element={<AdminProductlisting products={product} />} />
+          <Route exact path='/admin/AddProduct' element={<AddProduct />} />
+          <Route exact path='/admin/UpdateProduct' state={1} element={<UpdateProduct />} />
         </Routes>
         <Footer />
       </BrowserRouter>
     </>
   );
 }
-export default App;

@@ -2,7 +2,7 @@ import React from 'react'
 import SelectQuantity from '../SingleProduct/SelectQuantity'
 import { Link } from 'react-router-dom'
 
-export default function ProductCard({items,RemoveShoppingCart,ChangeQuantity}) {  
+export default function ProductCard({items,RemoveShoppingCart,ChangeQuantity,setBuyproduct,wishlistpage}) {  
     return (
         <article className="row mb-4">
             <div className="col-lg-9 ">
@@ -16,7 +16,7 @@ export default function ProductCard({items,RemoveShoppingCart,ChangeQuantity}) {
                             {items.description}
                         </p>
                         <button className="btn btn-light text-danger btn-sm me-2" id={`del_${items.id}`} onClick={()=>RemoveShoppingCart(items.id)}>Remove</button>
-                        <a href="#" className="btn btn-light btn-sm">Save for later</a>
+                        {(wishlistpage)&&<button href="#" className="btn btn-light btn-sm" onClick={()=>setBuyproduct(items)}>Add to cart</button>}
                     </figcaption>
                 </figure>
             </div>
@@ -25,7 +25,7 @@ export default function ProductCard({items,RemoveShoppingCart,ChangeQuantity}) {
                     <var className="h6">$ {parseFloat(items.price - ( (items.price * items.discountPercentage)/100)).toFixed(2)}</var>
                 </div>
                 <div className='d-flex justify-content-end mb-2'>
-                    <SelectQuantity products={items} ChangeQuantity={ChangeQuantity}/>
+                {(ChangeQuantity)&&<SelectQuantity products={items} ChangeQuantity={ChangeQuantity}/>}
                 </div>
             </div>
         </article>

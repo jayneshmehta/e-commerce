@@ -8,7 +8,6 @@ import FilterByPrice from '../component/ProductListing/FilterByPrice';
 import usePagination from '../component/ProductListing/usePagination';
 import Sortingdiv from '../component/ProductListing/Sortingdiv';
 import { BsArrowRight } from 'react-icons/bs';
-import { Refresh } from '@mui/icons-material';
 import $ from 'jquery';
 export default function ProductListing({ products,userdata,addWishList }) {
 
