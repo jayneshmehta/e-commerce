@@ -18,9 +18,13 @@ import Payment from './pages/Payment';
 import Swal from 'sweetalert2';
 import Wishlist from './pages/Wishlist';
 import AdminNavbar from './component/Admin/AdminNavbar';
-import AddProduct from './component/Admin/AddProducts/AddProduct';
-import AdminProductlisting from './component/Admin/Productlisting/AdminProductlisting';
-import UpdateProduct from './component/Admin/UpdateProducts/UpdateProduct';
+import AddProduct from './component/Admin/Products/AddProduct';
+import AdminProductlisting from './component/Admin/Products/AdminProductlisting';
+import UpdateProduct from './component/Admin/Products/UpdateProduct';
+import AddUsers from './component/Admin/Users/AddUsers';
+import UpdateUsers from './component/Admin/Users/UpdateUsers';
+import AdminUserlisting from './component/Admin/Users/AdminUserlisting';
+import AdminOrderslisting from './component/Admin/Orders/AdminOrderslisting';
 
 
 export default function App() {
@@ -97,7 +101,6 @@ export default function App() {
         icon: 'success',
         text: `Already in cart..`,
       });
-
     }
   }
 
@@ -123,9 +126,13 @@ export default function App() {
           <Route exact path='/profile' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Profile setLoggedIn={setLoggedIn} userdata={userdata} setUserdata={setUserdata} />} />
           <Route exact path='/orders' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Orders setLoggedIn={setLoggedIn} userdata={userdata} setUserdata={setUserdata} />} />
           <Route exact path='/wishlist' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Wishlist products={product} wishlist={wishlist} setWishlist={setWishlist} userdata={userdata} setBuyproduct={setBuyproduct} />} />
-          <Route exact path='/admin/allproductlisting' element={<AdminProductlisting products={product} />} />
+          <Route exact path='/admin/allproductlisting' element={<AdminProductlisting />} />
+          <Route exact path='/admin/allUsers' element={<AdminUserlisting />} />
           <Route exact path='/admin/AddProduct' element={<AddProduct />} />
-          <Route exact path='/admin/UpdateProduct' state={1} element={<UpdateProduct />} />
+          <Route exact path='/admin/UpdateProduct' element={<UpdateProduct />} />
+          <Route exact path='/admin/AddUsers' element={<AddUsers />} />
+          <Route exact path='/admin/allOrders' element={<AdminOrderslisting/>} />
+          <Route exact path='/admin/UpdateUsers' element={<UpdateUsers />} />
         </Routes>
         <Footer />
       </BrowserRouter>

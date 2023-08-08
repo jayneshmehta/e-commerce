@@ -46,7 +46,7 @@ export default function AddProduct() {
     var baseURL2 = `http://192.168.101.102/api/getSub_categoryByCategoryId-${id}`;
     axios.get(baseURL2).then((response2) => {
       response2.data.map((item) => {
-        $("#category_id").append(`<option value=${item.id}>${item.Sub_category_Name}</option>`);
+      return item.Sub_category_Name
       })
     });
   }

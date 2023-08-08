@@ -7,8 +7,11 @@ export default function CouponDiv() {
                 <div>
                     <label className="form-label">Have coupon?</label>
                     <div className="input-group">
-                        <input type="text" className="form-control" name="" placeholder="Add coupon" />
-                        <button className="btn btn-light">Apply</button>
+                        <form action="" onClick={(e)=>{checkCoupon(e)}}>
+                        <input type="text" className="form-control" name="name" placeholder="Add coupon" />
+                        <button className="btn btn-light" type='submit' >Apply</button>
+                        <small id='coupanErr' className='text-danger'></small>
+                        </form>
                     </div>
                 </div>
             </form>

@@ -9,6 +9,7 @@ import $ from 'jquery';
 import { Link } from 'react-router-dom';
 import AfterLogin from './AfterLogin';
 import BeforeLogin from './BeforeLogin';
+import AdminNavbar from './Admin/AdminNavbar';
 
 export default function Navbar({ count,wishlistcount }) {
     const [category, setcategory] = useState([])
@@ -21,7 +22,7 @@ export default function Navbar({ count,wishlistcount }) {
     var categorys = category.map((items, index) => {
         return <option value={items.id} key={index}>{items.name}</option>
     });
-
+    var admin = false;
     var userExist = false;
     if (sessionStorage.getItem('user')) {
         userExist = true;
@@ -37,8 +38,7 @@ export default function Navbar({ count,wishlistcount }) {
                     <Link to={'/'} className='text-muted text-decoration-none '><img src={logo192} className='App-logo me-2' alt="logo" style={{ height: "40px" }} />
                         <span className='pt-1 fw-bold fs-4 text-primary'>React</span></Link>
                 </div>
-                {
-                    userExist ? <AfterLogin count={count} wishlistcount={wishlistcount}/> : <BeforeLogin />
+                {   admin?<AdminNavbar/>:userExist ? <AfterLogin count={count} wishlistcount={wishlistcount}/> : <BeforeLogin />
                 }
             </div>
         </nav>

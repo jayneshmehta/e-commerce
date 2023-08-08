@@ -15,13 +15,13 @@ export default function ViewImages({images,thumbnail}) {
             </div>
             <div className='mt-2 d-flex py-3 gap-2 overflow-auto  '>
                 {   
-                    images.map((items, index) => {
+                    images?.map((items, index) => {
                         if(items == ""){
                             return "";
                         }
                         return (
                             <div className=''key={index}>
-                                <img className='border p-1 rounded allimages'   src={items} alt={"img" + index} style={{ width: '80px', height: "80px" }} ></img>
+                                <img className='border p-1 rounded allimages'  src={items} alt={"img" + index} style={{ width: '80px', height: "80px" }} ></img>
                             </div>
                         )
                     })

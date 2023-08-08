@@ -17,7 +17,7 @@ export default function ViewProduct({setBuyproduct}) {
       let Baseurl = `http://192.168.101.102/api/products/GettingProductById-${product_id}`;
       axios.get(Baseurl).then(async (responce) => {
         setProduct(responce.data);
-        setImages(await responce.data.images.split(','));
+        setImages(await responce.data.images?.split(','));
       });
     }, [product_id])
 
