@@ -11,7 +11,7 @@ import SmallBuyProcuct from '../component/Payment/SmallBuyProcuct'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-export default function Payment({ Buyproduct }) {
+export default function Payment({ Buyproduct,setbuyproduct }) {
 
     function expDateValidate(month, year) {
         if (Number(year) > 2035) {
@@ -35,11 +35,10 @@ export default function Payment({ Buyproduct }) {
     const [Cartitems, setCartitems] = useState(JSON.parse(sessionStorage.getItem('cart')));
 
     const navigate = useNavigate();
-
+    const [coupon, setcoupon] = useState(0);
 
     const handelSubmit = () => {
         var error = false;
-
         var paymentType = $('[name="payment"]:checked').val();
         var shippingType = delivery;
         var ShippingAddress = $("#ShippingAddress").val();
@@ -98,7 +97,9 @@ export default function Payment({ Buyproduct }) {
                 shippingType: shippingType,
                 ShippingAddress: ShippingAddress,
                 allProducts: allProducts,
+                coupon:coupon,
                 user: user,
+
             }
             var baseURL = 'http://192.168.101.102/api/orders';
             axios.post(baseURL, (data))
@@ -110,6 +111,7 @@ export default function Payment({ Buyproduct }) {
                         text: `${response.data.message}`,
                     });
                     sessionStorage.removeItem("cart");
+                    setbuyproduct([]);
                     navigate('/');
                 }).catch(
                     (error) => {
@@ -337,8 +339,8 @@ export default function Payment({ Buyproduct }) {
                             </div>
                         </div >
                         <div className="col-3">
-                            <CouponDiv />
-                            <PriceSummary Buyproduct={Cartitems} delivery={delivery} handelSubmit={handelSubmit} />
+                            <CouponDiv setcoupon={setcoupon}/>
+                            <PriceSummary coupon={coupon} Buyproduct={Cartitems} delivery={delivery} handelSubmit={handelSubmit} />
                             <hr />
                             <div>
                                 <span className='text-muted'>Items in cart</span>

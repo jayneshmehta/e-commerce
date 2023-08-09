@@ -58,6 +58,29 @@ export default function AdminOrderslisting() {
         var id = (e.target.id).split("_")[1];
         setOrderdata(orders.filter((items) => (items.id == id)));
     }
+    const deletebtn = async (e) => {
+        e.preventDefault();
+        var id = (e.target.id).split("_")[1];
+        try {
+            var baseURL = `http://192.168.101.102/api/products/DeletingProductById-${id}`;
+            await axios.delete(baseURL)
+                .then(response => {
+                    Swal.fire({
+                        title: 'Delete..',
+                        type: 'success',
+                        icon: 'success',
+                        text: `${response.data.message}`,
+                    });
+                    getOrders();
+                }).catch(
+                    (error) => {
+                        console.log(error);
+                    }
+                )
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     setTimeout(() => {
         let table = new DataTable('#table');

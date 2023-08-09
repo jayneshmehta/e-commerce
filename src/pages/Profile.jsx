@@ -5,8 +5,9 @@ import Main from '../component/Profile/Main'
 import Swal from 'sweetalert2';
 import Editprofile from '../component/Profile/Editprofile';
 import Orders from './Orders';
+import Wishlist from './Wishlist';
 
-export default function Profile({setLoggedIn,userdata,setUserdata}) {
+export default function Profile({ setLoggedIn, userdata, setUserdata, products, wishlist, setWishlist, setBuyproduct }) {
   const Logout = () => {
     Swal.fire({
       title: 'Are you sure you want to logout..?',
@@ -30,7 +31,7 @@ export default function Profile({setLoggedIn,userdata,setUserdata}) {
   }
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3" style={{minHeight:"100vh"}}>
       <Breadcrumbs aria-label="breadcrumb" className='my-3'>
         <Link className='text-decoration-none' color="text.primary" to="/">Home</Link>
         <Typography color="text.primary">profile</Typography>
@@ -58,17 +59,16 @@ export default function Profile({setLoggedIn,userdata,setUserdata}) {
         <div className="col-9">
           <div className="tab-content card-body">
             <article className="tab-pane active" id="profileInfo" role="tabpanel">
-              <Main userdata={userdata}/>
+              <Main userdata={userdata} />
             </article>
             <article className="tab-pane" id="Orders" role="tabpanel">
-              <Orders userdata={userdata}/>
+              <Orders userdata={userdata} />
             </article>
 
             <article className="tab-pane" id="wishlist" role="tabpanel">
-              <h6>Wishlist</h6>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa reprehenderit, nam doloribus possimus sapiente quo cumque maxime rerum. Sit repellat nisi consequuntur assumenda, ipsam ab aut hic sint laboriosam tempore!
+              <Wishlist products={products} wishlist={wishlist} setWishlist={setWishlist} userdata={userdata} setBuyproduct={setBuyproduct} />
             </article>
-    
+
             <article className="tab-pane " id="edit" role="tabpanel">
               <Editprofile userdata={userdata} setUserdata={setUserdata} />
             </article>

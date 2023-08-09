@@ -9,8 +9,9 @@ import { BiSolidDoorOpen } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { BsBookmarkStarFill, BsFillSuitHeartFill } from 'react-icons/bs';
 import { FaBookmark } from 'react-icons/fa';
-export default function AfterLogin({ count,wishlistcount }) {
-
+import { Badge } from '@mui/material';
+export default function AfterLogin({ count, wishlistcount }) {
+    wishlistcount = (wishlistcount == 0 )?1:wishlistcount;
     return (
         <div className='col-4 d-flex justify-content-end gap-4'>
             <div >
@@ -23,14 +24,15 @@ export default function AfterLogin({ count,wishlistcount }) {
             </div>
             <div>
                 <div className='text-center position-relative'>
-                    <FaBookmark />
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {wishlistcount-1}
-                    </span>
+                    <Badge color="secondary" badgeContent={wishlistcount - 1}>
+                        <FaBookmark />
+                    </Badge>
+                    {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {wishlistcount - 1}
+                    </span> */}
                 </div>
                 <div className='text-muted'>
-                <Link to={'/Wishlist'} className='text-muted text-decoration-none '><p>wishlist</p></Link>
-                    
+                    <Link to={'/Wishlist'} className='text-muted text-decoration-none '><p>wishlist</p></Link>
                 </div>
             </div>
             <div>
@@ -43,10 +45,12 @@ export default function AfterLogin({ count,wishlistcount }) {
             </div>
             <div>
                 <div className='text-center position-relative'>
-                    <ShoppingCartIcon />
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{backgroundColor:"orange"}}>
+                    <Badge color="success" badgeContent={count}>
+                        <ShoppingCartIcon />
+                    </Badge>
+                    {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{ backgroundColor: "orange" }}>
                         {count}
-                    </span>
+                    </span> */}
                 </div>
                 <div className='text-muted'>
                     <Link to={'/cart'} className='text-muted text-decoration-none '><p>my cart</p></Link>

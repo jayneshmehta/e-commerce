@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import OrdersGroupCard from '../component/Orders/OrdersGroupCard';
 import TrackOrderModal from '../component/Orders/TrackOrderModal';
+import EmptyOrderlist from '../component/Orders/EmptyOrderlist';
 
 export default function Orders({ userdata }) {
   const [allOrders, setallOrders] = useState([])
@@ -18,26 +19,26 @@ export default function Orders({ userdata }) {
             let message = error.response.data.message;
           }
         )
-      } catch (err) {
-        console.log(err);
+    } catch (err) {
+      console.log(err);
     }
   }
   useEffect(() => {
     getOrders();
   }, []);
-  
+
   useEffect(() => {
     setordersByGroupId([...new Set(allOrders.map(item => item.orderGroupId))]);
   }, [allOrders]);
   return (
-    <div className='container'>
-      <TrackOrderModal/>
-      <h1>My orders</h1>
-      {
-        ordersByGroupId.map((items, index) => {
-          return <OrdersGroupCard groupId={items} key={index} /> ;
-        })
-      }
-    </div>
+    allOrders.length < 1 ? < EmptyOrderlist /> :
+      <div className='container mt-5'>
+        <TrackOrderModal />
+        {
+          ordersByGroupId.map((items, index) => {
+            return <OrdersGroupCard groupId={items} key={index} />;
+          })
+        }
+      </div>
   )
 }

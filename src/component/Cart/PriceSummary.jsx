@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
-export default function PriceSummary({ Buyproduct, delivery, handelSubmit }) {
+export default function PriceSummary({coupon, Buyproduct, delivery, handelSubmit }) {
 
     var Subtotal = 0;
     var lastprice = 0;
     var Discount = 0;
     var Shipping = delivery ? parseInt(delivery) : 30;
+    var CoupanDiscount = coupon ? parseInt(coupon) : 0;
+  
     Buyproduct.map((items) => {
         if (!items.quantity) {
             items.quantity = 1
@@ -16,13 +18,15 @@ export default function PriceSummary({ Buyproduct, delivery, handelSubmit }) {
         Discount += lastprice - Subtotal;
     })
     var Tax = 14
-
-    var Total = Subtotal + Tax + Shipping;
-    setTimeout(() => {
-        if (Subtotal != 0) {
-            Total = Subtotal + Tax + Shipping;
-        }
-    }, 1000);
+    const [Total, setTotal] = useState(Subtotal + Shipping)
+    useEffect(() => {
+        setTimeout(() => {
+            if (Subtotal != 0) {
+                setTotal(Subtotal + Shipping);
+                setTotal(Total - (Total*CoupanDiscount)/100);
+            }
+        }, 1000);
+    }, [coupon])
     const handelClick = () => {
         sessionStorage.setItem('cart', JSON.stringify(Buyproduct));
     }
@@ -41,6 +45,9 @@ export default function PriceSummary({ Buyproduct, delivery, handelSubmit }) {
 
                     <dt className="col-7 fw-normal text-muted">Shipping:</dt>
                     <dd className="col-5 text-end">+ ${(Subtotal != 0) ? Shipping : 0} </dd>
+
+                    <dt className="col-7 fw-normal text-muted">Coupon discount:</dt>
+                    <dd className="col-5 text-end"> {(coupon) ? "- "+coupon+"%": 0} </dd>
                 </dl>
                 <hr />
                 <dl className="row">
