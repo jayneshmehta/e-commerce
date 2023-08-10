@@ -20,7 +20,12 @@ export default function AdminOrderslisting() {
     useEffect(() => {
         getOrders();
     }, []);
-
+    let table;
+    useEffect(() => {
+        setTimeout(() => {
+            table = new DataTable('#table');
+        }, 500);
+    }, [orders]);
     const Statusbtn = async (e) => {
         e.preventDefault();
         var status = (e.target.value);
@@ -38,6 +43,7 @@ export default function AdminOrderslisting() {
                         icon: 'success',
                         text: `${response.data.message}`,
                     });
+                    setOrders([]);
                     getOrders();
                 }).catch(
                     (error) => {
@@ -71,6 +77,7 @@ export default function AdminOrderslisting() {
                         icon: 'success',
                         text: `${response.data.message}`,
                     });
+                    table.destroy();
                     getOrders();
                 }).catch(
                     (error) => {
@@ -81,11 +88,6 @@ export default function AdminOrderslisting() {
             console.log(err);
         }
     }
-
-    setTimeout(() => {
-        let table = new DataTable('#table');
-    }, 300);
-
 
     return (
         <div className=' m-5'>
@@ -129,11 +131,11 @@ export default function AdminOrderslisting() {
                                                 <td width='60px'>{items.contactNo}</td>
                                                 <td width='60px'>{items.TotalAmount}</td>
                                                 <td>
-                                                    <select className='border border-2 py-1 border-primary rounded orderstatus' name="status" id={'status_' + items.id} defaultValue={items.status} onChange={(e) => { Statusbtn(e) }}>
+                                                    <select className='border border-2 py-1 border-primary rounded orderstatus' name="status" id={'status_' + items.orderGroupId} defaultValue={items.status} onChange={(e) => { Statusbtn(e) }}>
                                                         <StatusOptions />
                                                     </select>
                                                 </td>
-                                                <td><a className='btn btn-danger delete' id='del_${items.id}' ><AiTwotoneDelete /></a>
+                                                <td><a className='btn btn-danger delete' id='del_${items.id}' onClick={(e) => deletebtn(e)} ><AiTwotoneDelete /></a>
                                                     <button className='btn btn-warning ms-3 update' data-bs-toggle="modal" data-bs-target="#staticBackdrop" id={'upd_' + items.id} onClick={(e) => updateFormData(e)} ><FaPencilAlt /></button></td>
                                             </tr>)
                                         })

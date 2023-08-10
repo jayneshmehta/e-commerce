@@ -121,7 +121,7 @@ export default function App() {
           <Route exact path='/login' element={loggedIn ? <Navigate replace to={"/"} /> : <Login setLoggedIn={setLoggedIn} />} />
           <Route exact path='/register' element={loggedIn ? <Navigate replace to={"/"} /> : <Register />} />
           <Route exact path='/allproductlisting' element={<ProductListing products={product} addWishList={addWishList} userdata={userdata} />} />
-          <Route exact path='/product' element={<ViewProduct setBuyproduct={setBuyproduct} />} />
+          <Route exact path='/product' element={<ViewProduct setBuyproduct={setBuyproduct} userdata={userdata} />} />
           <Route exact path='/cart' element={<Cart Buyproduct={Buyproduct} RemoveShoppingCart={RemoveShoppingCart} ChangeQuantity={ChangeQuantity} />} />
           <Route exact path='/payment' element={<Payment Buyproduct={Buyproduct} setbuyproduct={setbuyproduct} />} />
           <Route exact path='/orders' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Orders userdata={userdata} />} />

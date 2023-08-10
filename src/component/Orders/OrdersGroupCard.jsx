@@ -2,11 +2,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import SmallBuyProcuct from '../Payment/SmallBuyProcuct';
 import $ from 'jquery';
+import Swal from 'sweetalert2';
 
-export default function OrdersGroupCard({ groupId, key }) {
+export default function OrdersGroupCard({ groupId }) {
     const [ordersByGroup, setordersByGroup] = useState([]);
 
     const [data, setdata] = useState({
+        id: 0,
         status: '',
         shipping: 0,
         created_at: 0,
@@ -24,6 +26,7 @@ export default function OrdersGroupCard({ groupId, key }) {
                     setordersByGroup(response.data);
                     total += parseInt(response.data.map((items) => { return items.TotalAmount }));
                     setdata({
+                        id: response.data.id,
                         status: response.data[0]?.status,
                         shipping: (response.data[0]?.shippingType == "Normal") ? 30 : ((response.data[0]?.shippingType == "Express") ? 90 : 120),
                         created_at: response.data[0]?.orderedDate,
@@ -44,6 +47,46 @@ export default function OrdersGroupCard({ groupId, key }) {
         getOrders();
     }, []);
 
+    const CancleOrder = async (id) => {
+        var data = {
+            status: 'Cancelled',
+        }
+        try {
+            var baseURL = `http://192.168.101.102/api/UpdateStatus-${id}`;
+            Swal.fire({
+                title: 'Are you sure you want to cancel this order..?',
+                showDenyButton: true,
+                icon: 'warning',
+                confirmButtonText: 'Yes',
+            }).then(async (result) => {
+                await axios.post(baseURL, data)
+                    .then(response => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Order Status..',
+                                type: 'success',
+                                icon: 'success',
+                                text: 'Your Order has been cancelled..',
+                            });
+                        }
+                        getOrders();
+                    })
+            }).catch(
+                (error) => {
+                    Swal.fire({
+                        title: 'Status..',
+                        type: 'error',
+                        icon: 'error',
+                        text: `${error.data.message}`,
+                    });
+
+                }
+            )
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     const Openmodel = (id) => {
 
         $("#trackOrderModel").click();
@@ -53,24 +96,24 @@ export default function OrdersGroupCard({ groupId, key }) {
 
         var date = new Date(data.created_at);
 
-        var maxTime  = (data.shipping == 30)?12:(data.shipping == 60)?6:3
+        var maxTime = (data.shipping == 30) ? 12 : (data.shipping == 60) ? 6 : 3
         var status = 0;
         switch (data.status) {
             case 'In process':
-                date.setDate(date.getDate() + maxTime-0);
+                date.setDate(date.getDate() + maxTime - 0);
                 var deleveryDate = date.toLocaleString('en-us', { day: '2-digit', month: 'short', year: 'numeric' })
                 status = 0;
                 break;
 
             case 'Pending':
                 status = 0;
-                date.setDate(date.getDate() + maxTime-1);
+                date.setDate(date.getDate() + maxTime - 1);
                 var deleveryDate = date.toLocaleString('en-us', { day: '2-digit', month: 'short', year: 'numeric' })
                 break;
 
             case 'Ready for dispatch':
                 status = 1;
-                date.setDate(date.getDate() + maxTime-1);
+                date.setDate(date.getDate() + maxTime - 1);
                 var deleveryDate = date.toLocaleString('en-us', { day: '2-digit', month: 'short', year: 'numeric' })
                 break;
 
@@ -106,7 +149,7 @@ export default function OrdersGroupCard({ groupId, key }) {
         }
     }
     return (
-        <div className="card border-primary mb-4">
+        <div className="card border-primary mb-4 ">
             <div className="card-body">
                 <header className="d-lg-flex">
                     <div className="flex-grow-1">
@@ -115,10 +158,13 @@ export default function OrdersGroupCard({ groupId, key }) {
                         </h6>
                         <span className="text-muted">Date: {data.created_at}</span>
                     </div>
-                    <div className='gap-2'>
-                        <a href="#" className="btn me-2 btn-outline-danger">Cancel order</a>
-                        <button className=" btn btn-primary" onClick={() => Openmodel(groupId)}> Track order</button>
-                    </div>
+                    {
+                        (data.status != "Cancelled") &&
+                        <div className='gap-2'>
+                            <button className="btn me-2 btn-outline-danger" onClick={() => CancleOrder(groupId)}>Cancel order</button>
+                            <button className=" btn btn-primary" onClick={() => Openmodel(groupId)}> Track order</button>
+                        </div>
+                    }
                 </header>
                 <hr />
                 <div className="row gx-0">

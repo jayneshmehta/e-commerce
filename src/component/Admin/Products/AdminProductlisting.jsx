@@ -6,34 +6,42 @@ import Swal from 'sweetalert2';
 import DataTable from 'datatables.net-dt';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import { FaPencilAlt } from 'react-icons/fa';
-
+import $ from 'jquery';
 
 export default function AdminProductlisting() {
   const [product, setProduct] = useState([])
-  const getProducts = () => {
+
+
+  const getProducts = async () => {
     var baseURL = 'http://192.168.101.102/api/productsWithSub_category';
-    axios.get(baseURL).then((response) => {
+    await axios.get(baseURL).then(async (response) => {
       setProduct(response.data);
     });
   }
-
+  let table
+  
   useEffect(() => {
     getProducts();
   }, []);
-
+  
+  useEffect(() => {
+    setTimeout(() => {
+      table = new DataTable('#table');
+    }, 500);
+  }, [product]);
   const deletebtn = async (e) => {
-    e.preventDefault();
     var id = (e.target.id).split("_")[1];
     try {
       var baseURL = `http://192.168.101.102/api/products/DeletingProductById-${id}`;
       await axios.delete(baseURL)
-        .then(response => {
+        .then((response) => {
           Swal.fire({
             title: 'Delete..',
             type: 'success',
             icon: 'success',
             text: `${response.data.message}`,
           });
+          table.destroy();
           getProducts();
         }).catch(
           (error) => {
@@ -45,9 +53,7 @@ export default function AdminProductlisting() {
     }
   }
 
-  setTimeout(() => {
-    let table = new DataTable('#table');
-  }, 200);
+
   return (
     <div className='container'>
       <div className="row justify-content-center mt-5">
@@ -55,9 +61,9 @@ export default function AdminProductlisting() {
           (product?.length == 0) ? <Loading pageName={"product"} /> : (
             <>
               <div className="row flex-row-reverse ">
-              <h5>Product Listing : </h5>
+                <h5>Product Listing : </h5>
               </div>
-              <hr/>
+              <hr />
               <div className="row flex-row-reverse ">
                 <div className="col-2 d-flex justify-content-center">
                   <Link className="btn btn-primary mb-4" to="/admin/AddProduct" >Add Product </Link>
@@ -79,15 +85,15 @@ export default function AdminProductlisting() {
                     <tbody id="listing">
                       {
                         product.map((items, index) => {
-                          return (<tr className='text-center' key={index}>
+                          return (<tr className='text-center' key={index}  >
                             <td width='100px' className=" border border-dark border-2 " >{index + 1}</td>
                             <td width='170px' className=" border border-dark border-2 "  >{items.title}</td>
                             <td width='500px' className=" border border-dark border-2 " >{items.description}</td>
                             <td className=" border border-dark border-2 " >{items.price}</td>
                             <td className=" border border-dark border-2 " >{items.Sub_categories}</td>
                             <td className=" border border-dark border-2 " >
-                              <button className='btn btn-danger delete' id={"del_" + items.id} onClick={(e) => { deletebtn(e) }} ><AiTwotoneDelete/></button>
-                              <Link to={"/admin/UpdateProduct"} className='btn btn-warning ms-3' state={items.id}><FaPencilAlt/></Link>
+                              <button className='btn btn-danger delete' id={"del_" + items.id} onClick={(e) => { deletebtn(e) }}><AiTwotoneDelete /></button>
+                              <Link to={"/admin/UpdateProduct"} className='btn btn-warning ms-3' state={items.id}><FaPencilAlt /></Link>
                             </td>
                           </tr>
                           )

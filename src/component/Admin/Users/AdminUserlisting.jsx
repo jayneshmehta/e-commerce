@@ -15,10 +15,16 @@ export default function AdminUserlisting() {
             setUsers(response.data);
         });
     }
-
+    let table;
     useEffect(() => {
         getUsers();
     }, []);
+    useEffect(() => {
+        setTimeout(() => {
+            table = new DataTable('#table');
+        }, 500);
+    }, [users]);
+
     const deletebtn = async (e) => {
         e.preventDefault();
         var id = (e.target.id).split("_")[1];
@@ -32,7 +38,9 @@ export default function AdminUserlisting() {
                         icon: 'success',
                         text: `${response.data.message}`,
                     });
+                    table.destroy();
                     getUsers();
+
                 }).catch(
                     (error) => {
                         console.log(error);
@@ -42,9 +50,6 @@ export default function AdminUserlisting() {
             console.log(err);
         }
     }
-    setTimeout(() => {
-        let table = new DataTable('#table');
-    }, 200);
 
     return (
         <div className='container'>
@@ -55,7 +60,7 @@ export default function AdminUserlisting() {
                             <div className="row flex-row-reverse ">
                                 <h5>User's Listing : </h5>
                             </div>
-                            <hr/>
+                            <hr />
                             <div className="row flex-row-reverse ">
                                 <div className="col-2 d-flex justify-content-center">
                                     <Link to={"/admin/AddUsers"} className="btn btn-primary mb-4" href="Adduser.html" >Add users </Link>
