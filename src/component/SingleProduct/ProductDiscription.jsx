@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReviewProduct from './ReviewProduct'
 import ShowReview from './ShowReview'
+import axios from 'axios';
+import ReviewGraph from './ReviewGraph';
 
 export default function ProductDiscription({ product, userdata }) {
-
+    const [review, setreview] = useState([]);
+    function getreviews() {
+        let Baseurl = `http://192.168.101.102/api/review/GettingreviewBproductId-${product.id}`;
+        axios.get(Baseurl).then(async (responce) => {
+            setreview([]);
+            setreview(responce.data);
+        });
+    }
+    useEffect(() => {
+        getreviews();
+    }, [product])
     return (
         <div className="card text-start ">
             <div className="card-body">
@@ -27,12 +39,13 @@ export default function ProductDiscription({ product, userdata }) {
                         {product.description}
                     </article>
                     <article className="tab-pane active" id="reviews" role="tabpanel">
+                        <ReviewGraph  review={review} />
                         <div className='overflow-auto p-3 bg-light rounded' style={{ maxHeight: '260px' }}>
-                            <ShowReview product={product} />
+                            <ShowReview review={review} />
                         </div>
                         <hr />
                         <h3 className="fw-bolder">Write a Review</h3>
-                        <ReviewProduct product={product} userdata={userdata} />
+                        <ReviewProduct product={product} userdata={userdata} getreviews={getreviews} />
                     </article>
                     <article className="tab-pane" id="shipping" role="tabpanel">
                         <h6>Shipping information </h6>

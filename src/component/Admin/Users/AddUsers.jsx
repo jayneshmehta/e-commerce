@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { imagesPreview } from '../AllStates';
 
 export default function AddUsers() {
     const Addusers = async (e) => {
@@ -33,21 +34,6 @@ export default function AddUsers() {
             })
     }
 
-    var imagesPreview = function (input, placeToInsertImagePreview) {
-
-        if (input.files) {
-            var filesAmount = input.files.length;
-
-            $(placeToInsertImagePreview).html(``);
-            for (let i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    $(placeToInsertImagePreview).attr({ 'src': `${event.target.result}` });
-                }
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
-    };
     return (
         <div className="container">
             <div className="row justify-content-center mt-5">
@@ -68,7 +54,7 @@ export default function AddUsers() {
 
                                 <div className="form-outline mb-4">
                                     <label htmlFor="profile">Profile Pic : </label>
-                                    <input type="file" id="profile" name='profile' className="form-control" accept="image/jpe,image/jpeg,image/png,image/webp" placeholder="profile" onChange={(e) => imagesPreview(e.target, '#prevprofile')} />
+                                    <input type="file" id="profile" name='profile' className="form-control" accept="image/jpe,image/jpeg,image/png,image/webp" placeholder="profile" onChange={(e) => imagesPreview(e.target, '#prevprofile',"src")} />
                                     <small id="errprofile" className="text-danger"></small>
                                 </div>
                             </div>

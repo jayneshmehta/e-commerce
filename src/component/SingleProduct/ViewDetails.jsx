@@ -10,7 +10,7 @@ import { BsBookmarkHeartFill } from 'react-icons/bs';
 
 
 
-export default function ViewDetails({ product, setBuyproduct }) {
+export default function ViewDetails({ product, setBuyproduct,addWishList }) {
     const addToWishlist = (id)=>{
 
     }
@@ -43,7 +43,7 @@ export default function ViewDetails({ product, setBuyproduct }) {
 
     return (
         <>
-            <button className="fs-4 p-1 m-0 pt-0 btn btn-outline-danger btn-icon float-end m-2" id={`wishlist_${product.id}`} onClick={() => addToWishlist(product.id)}>
+            <button className="fs-4 p-1 m-0 pt-0 btn btn-outline-danger btn-icon float-end m-2" id={`wishlist_${product.id}`} onClick={() => addWishList(product)}>
                 <BsBookmarkHeartFill />
             </button>
             <p className="mb-2 mt-3 fw-bolder "> {stock()} </p>

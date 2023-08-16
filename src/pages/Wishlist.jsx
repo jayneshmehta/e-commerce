@@ -42,10 +42,12 @@ export default function Wishlist({ products, wishlist, setWishlist, userdata, se
                     <h5>WishList: </h5>
                     <div className="card-text">
                       {
-                        products.map((items) => {
+                        products.map((items, index) => {
                           if (wishlist.includes(items.id)) {
                             return (
-                              <ProductCard items={items} RemoveShoppingCart={removeWishlist} setBuyproduct={setBuyproduct} wishlistpage={true} />
+                              <div key={index}>
+                                <ProductCard items={items} RemoveShoppingCart={removeWishlist} setBuyproduct={setBuyproduct} wishlistpage={true} />
+                              </div>
                             )
                           }
                         }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import $ from 'jquery';
 import { useLocation } from 'react-router-dom';
+import { imagesPreview } from '../AllStates';
 export default function UpdateUsers() {
     const location = useLocation()
     const user_id = location.state;
@@ -42,21 +43,7 @@ export default function UpdateUsers() {
                 $("#message").html(`<p class='text-center text-danger'>${message}</p>`)
             })
     }
-    var imagesPreview = function (input, placeToInsertImagePreview) {
 
-        if (input.files) {
-            var filesAmount = input.files.length;
-
-            $(placeToInsertImagePreview).html(``);
-            for (let i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    $(placeToInsertImagePreview).attr({ 'src': `${event.target.result}` });
-                }
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
-    };
     return (
         <div className="container">
             <div className="row justify-content-center mt-5">
@@ -64,7 +51,7 @@ export default function UpdateUsers() {
                     <div className="row justify-content-center fs-3 text-primary mb-4">
                         -: Update User :-
                     </div>
-                    <form action="" method="post" enctype="multipart/form-data" id="adduser" onSubmit={(e) => Updateusers(e)}>
+                    <form action="" method="post" encType="multipart/form-data" id="adduser" onSubmit={(e) => Updateusers(e)}>
 
                         <div className="row justify-content-center">
                             <div className="col-3 p-2 d-flex justify-content-center mb-4" width='200px' height="150px" >
@@ -78,7 +65,7 @@ export default function UpdateUsers() {
 
                                 <div className="form-outline mb-4">
                                     <label htmlFor="profile">Profile Pic : </label>
-                                    <input type="file" id="profile" name='profile' className="form-control" accept="image/jpe,image/jpeg,image/png,image/webp" placeholder="profile" onChange={(e) => imagesPreview(e.target, '#prevprofile')} />
+                                    <input type="file" id="profile" name='profile' className="form-control" accept="image/jpe,image/jpeg,image/png,image/webp" placeholder="profile" onChange={(e) => imagesPreview(e.target, '#prevprofile', "src")} />
                                     <small id="errprofile" className="text-danger"></small>
                                 </div>
                             </div>

@@ -11,7 +11,7 @@ import SmallBuyProcuct from '../component/Payment/SmallBuyProcuct'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-export default function Payment({ Buyproduct,setbuyproduct }) {
+export default function Payment({ Buyproduct, setbuyproduct }) {
 
     function expDateValidate(month, year) {
         if (Number(year) > 2035) {
@@ -36,7 +36,7 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
 
     const navigate = useNavigate();
     const [coupon, setcoupon] = useState(0);
-
+    console.log(coupon);
     const handelSubmit = () => {
         var error = false;
         var paymentType = $('[name="payment"]:checked').val();
@@ -52,7 +52,7 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
         } else {
             $("#Err_ShippingAddress").text("");
         }
-        if (paymentType == 'creditcard') {
+        if (paymentType == 'card') {
 
             if ($("#expiryDate").val() == "") {
                 $("#err_expiredate").text("Enter a expire date..");
@@ -97,7 +97,7 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
                 shippingType: shippingType,
                 ShippingAddress: ShippingAddress,
                 allProducts: allProducts,
-                coupon:coupon,
+                coupon: coupon,
                 user: user,
 
             }
@@ -182,24 +182,6 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
                                             <input type="text" className="form-control" name='ShippingAddress' id='ShippingAddress' placeholder="Enter full address" />
                                             <small className=" text-danger" id='Err_ShippingAddress'></small>
                                         </div>
-
-                                        {/* <div className="col-sm-4 mb-3">
-                                                <label htmlFor="" className="form-label">City </label>
-                                                <input type="text" className="form-control" name='city' placeholder="Enter city" />
-                                                <small className="text-muted text-danger" id='Err_city'></small>
-                                            </div>
-
-                                            <div className="col-sm-4 mb-3">
-                                                <label htmlFor="" className="form-label">House</label>
-                                                <input type="text" className="form-control" name='house' placeholder="Flat No. / Floor no. / House name " />
-                                                <small className="text-muted text-danger" id='Err_house'></small>
-                                            </div>
-
-                                            <div className="col-sm-4 col-6 mb-3">
-                                                <label htmlFor="" className="form-label">Postal code</label>
-                                                <input type="number" className="form-control" name='zip' maxLength={6} placeholder="789456" />
-                                                <small className="text-muted text-danger" id='Err_zip'></small>
-                                            </div> */}
                                     </div>
                                     <hr></hr>
                                     <h5 className="card-title"> Payment info </h5>
@@ -208,19 +190,39 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
                                         <div className="form-check border my-3 py-2 bg-light shadow rounded">
                                             <div className='d-flex justify-content-between '>
                                                 <div>
-                                                    <input className="form-check-input m-1" type="radio" name="payment" id="creditcard" value="creditcard"
-                                                        onClick={() => { $(".paymentView").addClass("d-none"); $("#creditcarddiv").removeClass("d-none"); }} />
-                                                    <label className="form-check-label " htmlFor="creditcard">
-                                                        <span className='fw-bolder'>Credit Card</span>
+                                                    <input className="form-check-input m-1" type="radio" name="payment" value="cod"
+                                                        onClick={() => { $(".paymentView").addClass("d-none"); $("#cod").removeClass("d-none"); }} />
+                                                    <label className="form-check-label " htmlFor="cod">
+                                                        <span className='fw-bolder'>Cash on Delivery(cod)</span>
                                                     </label>
                                                 </div>
                                                 <div className='d-flex gap-2 pe-5'>
+                                                    <img className='p-0 border rounded me-auto' src="https://www.svgrepo.com/show/406653/money-with-wings.svg" style={{ width: '45px', height: "25px" }} alt="" />
                                                     <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/visa.svg" style={{ width: '45px', height: "25px" }} alt="" />
                                                     <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/Mastercard.svg" style={{ width: '45px', height: "25px" }} alt="" />
                                                     <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/Maestro.svg" style={{ width: '45px', height: "25px" }} alt="" />
                                                 </div>
                                             </div>
-                                            <div className='px-4 d-none paymentView' id="creditcarddiv">
+                                            <div className='px-4 d-none paymentView' id="cod">
+                                                <hr></hr>
+                                                <p>You can pay with QR upi card & cash in cod also.</p>
+                                            </div>
+                                        </div>
+                                        <div className="form-check border my-3 py-2 bg-light shadow rounded">
+                                            <div className='d-flex justify-content-between '>
+                                                <div>
+                                                    <input className="form-check-input m-1" type="radio" name="payment" id="debitcard" value="card" onClick={() => { $(".paymentView").addClass("d-none"); $("#card").removeClass("d-none") }} />
+                                                    <label className="form-check-label " htmlFor="debitcard">
+                                                        <span className='fw-bolder'>Debit Card</span>
+                                                    </label>
+                                                </div>
+                                                <div className='d-flex gap-2 pe-5'>
+                                                    <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/Mastercard.svg" style={{ width: '45px', height: "25px" }} alt="" />
+                                                    <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/visa.svg" style={{ width: '45px', height: "25px" }} alt="" />
+                                                    <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/Maestro.svg" style={{ width: '45px', height: "25px" }} alt="" />
+                                                </div>
+                                            </div>
+                                            <div className='px-4 d-none paymentView' id="card">
                                                 <hr></hr>
                                                 <div className="form-outline mb-4 mt-1">
                                                     <label htmlFor="name">Name on card : </label>
@@ -265,55 +267,6 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
                                         <div className="form-check border my-3 py-2 bg-light shadow rounded">
                                             <div className='d-flex justify-content-between '>
                                                 <div>
-                                                    <input className="form-check-input m-1" type="radio" name="payment" id="debitcard" value="debitcard" onClick={() => { $(".paymentView").addClass("d-none"); $("#Debitcarddiv").removeClass("d-none") }} />
-                                                    <label className="form-check-label " htmlFor="debitcard">
-                                                        <span className='fw-bolder'>Debit Card</span>
-                                                    </label>
-                                                </div>
-                                                <div className='d-flex gap-2 pe-5'>
-                                                    <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/Mastercard.svg" style={{ width: '45px', height: "25px" }} alt="" />
-                                                    <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/visa.svg" style={{ width: '45px', height: "25px" }} alt="" />
-                                                    <img className='p-1 border rounded me-auto' src="http://192.168.101.102/uploads/Maestro.svg" style={{ width: '45px', height: "25px" }} alt="" />
-                                                </div>
-                                            </div>
-                                            <div className='px-4 d-none paymentView' id="Debitcarddiv">
-                                                <hr></hr>
-                                                <div className="form-outline mb-4 mt-1">
-                                                    <label htmlFor="name">Name on card : </label>
-                                                    <input type="text" id="Dname" name='Dname' className="form-control mt-2" placeholder="Name on card" />
-                                                    <small id="errDName" className="text-danger">Full name as displayed on card </small>
-                                                </div>
-
-                                                <div className="form-outline mb-4">
-                                                    <label htmlFor="name">Card Number : </label>
-                                                    <input type="number" id="Dnumber" name='Dnumber' className="form-control mt-2"
-                                                        placeholder="Enter card number" />
-                                                    <small id="errDNumber" className="text-danger"></small>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-6 form-outline mb-4">
-                                                        <label htmlFor="name">Expiration : </label>
-                                                        <input type="date" id="Dexpdate" name='expdate' className="form-control"
-                                                            placeholder="Expire date " />
-                                                        <small id="errDExpiration" className="text-danger"></small>
-                                                    </div>
-
-                                                    <div className="col-6 form-outline mb-4">
-                                                        <label htmlFor="cvv">CVV : </label>
-                                                        <input type="password" id="Dcvv" name='cvv' className="form-control" maxLength="3"
-                                                            placeholder="cvv number " />
-                                                        <small id="errDCvv" className="text-danger"></small>
-                                                    </div>
-
-                                                </div>
-                                                <div className="h-25 text-center" id="message">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="form-check border my-3 py-2 bg-light shadow rounded">
-                                            <div className='d-flex justify-content-between '>
-                                                <div>
                                                     <input className="form-check-input m-1" type="radio" name="payment" id="upi" value="upi" onClick={() => { $(".paymentView").addClass("d-none"); $("#upidiv").removeClass("d-none") }} defaultChecked />
                                                     <label className="form-check-label" htmlFor="upi">
                                                         <span className='fw-bolder'>UPI</span>
@@ -339,7 +292,7 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
                             </div>
                         </div >
                         <div className="col-3">
-                            <CouponDiv setcoupon={setcoupon}/>
+                            <CouponDiv setcoupon={setcoupon} />
                             <PriceSummary coupon={coupon} Buyproduct={Cartitems} delivery={delivery} handelSubmit={handelSubmit} />
                             <hr />
                             <div>
@@ -355,6 +308,7 @@ export default function Payment({ Buyproduct,setbuyproduct }) {
                         </div>
                     </div >
                 </div >
+
             }
         </>
     )

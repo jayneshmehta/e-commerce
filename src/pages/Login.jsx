@@ -3,11 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import $ from 'jquery';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import FormInput from '../component/Forms/FormInput';
 
 export default function Login({ setLoggedIn }) {
 
     const [Passwordchanged, setPasswordchanged] = useState(false)
-    
+
     const navigate = useNavigate();
     if (sessionStorage.getItem('register')) {
         Swal.fire({
@@ -29,7 +30,7 @@ export default function Login({ setLoggedIn }) {
             sessionStorage.removeItem('fpassword')
         }
     }, [Passwordchanged])
-    $(document).on("submit", "#loginform", async function (e) {
+    const loginform = async function (e) {
         e.preventDefault();
         var baseURL = 'http://192.168.101.102/api/login';
         var formdata = new FormData(e.target);
@@ -56,7 +57,7 @@ export default function Login({ setLoggedIn }) {
                     $("#msg").html(`<p class='text-center text-danger'>${message}</p>`)
                 }
             )
-    })
+    }
 
     const changePassword = async (e) => {
         e.preventDefault();
@@ -70,7 +71,7 @@ export default function Login({ setLoggedIn }) {
 
         var fpassword = $("#fpassword").val();
         var confrim_password = $("#confrim_password").val();
-        
+
         var contactNo = $("#contactNo").val();
         if (!error) {
             if (fpassword !== confrim_password) {
@@ -86,7 +87,7 @@ export default function Login({ setLoggedIn }) {
                     .then(response => {
                         let message = response.data.message;
                         $("#fmsg").html(`<p class='text-center text-success'>${message}</p>`)
-                        sessionStorage.setItem('fpassword',"password has been changed pls login & check..");
+                        sessionStorage.setItem('fpassword', "password has been changed pls login & check..");
                         setPasswordchanged(true);
                         $("#closemodal").trigger("click");
                     }).catch(
@@ -176,18 +177,10 @@ export default function Login({ setLoggedIn }) {
                     </div>
                     <div className="card p-3  shadow col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                         <h2 className='text-dark'>Login : </h2>
-                        <form className='pt-3 py-5' id='loginform' method='POST'>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="email">Email address : </label>
-                                <input type="email" id="email" name='email' className="form-control form-control-xl" placeholder='Email' />
-                                <small id="Err_email" className="form-text text-danger"></small>
-                            </div>
+                        <form className='pt-3 py-5' id='loginform' method='POST' onSubmit={(e) => loginform(e)}>
+                            <FormInput label={"Email address : "} placeholder={"Enter email"} name={"email"} type={'email'} id={'email'} />
 
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="password">Password : </label>
-                                <input type="password" id="password" name='password' className="form-control form-control-xl" placeholder='Password' />
-                                <small id="Err_password" className="form-text text-danger"></small>
-                            </div>
+                            <FormInput label={"Password : "} placeholder={"Enter password"} name={"password"} type={'password'} id={'password'} />
 
                             <div className="d-flex justify-content-around align-items-center mb-4">
                                 <div className="form-check">

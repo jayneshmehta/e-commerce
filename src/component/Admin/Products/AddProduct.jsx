@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
+import { imagesPreview } from '../AllStates';
 export default function AddProduct() {
   const Addproduct = async (e) => {
     e.preventDefault();
@@ -51,22 +52,7 @@ export default function AddProduct() {
     });
   }
 
-    var imagesPreview = function (input, placeToInsertImagePreview) {
 
-      if (input.files) {
-        var filesAmount = input.files.length;
-
-        $(placeToInsertImagePreview).html(``);
-        for (let i = 0; i < filesAmount; i++) {
-          console.log(filesAmount);
-          var reader = new FileReader();
-          reader.onload = function (event) {
-            $(placeToInsertImagePreview).append(`<img class=' border border-2 border-dark rounded p-1' src="${event.target.result}" width ='100px' height="70px" alt="" srcset="" >`);
-          }
-          reader.readAsDataURL(input.files[i]);
-        }
-      }
-    };
 
   return (
     <div className="container">

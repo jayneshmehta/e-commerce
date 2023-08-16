@@ -6,7 +6,7 @@ import EmptyCart from './EmptyCart';
 import { Breadcrumbs, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-export default function ShowBuyProducts({ Buyproduct, RemoveShoppingCart, ChangeQuantity }) {
+export default function ShowBuyProducts({ Buyproduct, RemoveShoppingCart, ChangeQuantity ,loggedIn}) {
 
     const [Cartitems, setCartitems] = useState([])
     useEffect(() => {
@@ -29,14 +29,14 @@ export default function ShowBuyProducts({ Buyproduct, RemoveShoppingCart, Change
                                         <h5>Shopping Cart </h5>
                                         <div className="card-text">
                                             {
-                                                <BuyProductCard allitems={Cartitems} RemoveShoppingCart={RemoveShoppingCart} ChangeQuantity={ChangeQuantity} />
+                                                <BuyProductCard  allitems={Cartitems} RemoveShoppingCart={RemoveShoppingCart} ChangeQuantity={ChangeQuantity} />
                                             }
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-3">
-                                <PriceSummary Buyproduct={Buyproduct} />
+                                <PriceSummary Buyproduct={Buyproduct} loggedIn={loggedIn} />
                             </div>
                         </div>
                     </div>

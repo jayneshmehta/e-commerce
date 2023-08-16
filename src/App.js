@@ -17,7 +17,6 @@ import Profile from './pages/Profile';
 import Payment from './pages/Payment';
 import Swal from 'sweetalert2';
 import Wishlist from './pages/Wishlist';
-import AdminNavbar from './component/Admin/AdminNavbar';
 import AddProduct from './component/Admin/Products/AddProduct';
 import AdminProductlisting from './component/Admin/Products/AdminProductlisting';
 import UpdateProduct from './component/Admin/Products/UpdateProduct';
@@ -26,15 +25,24 @@ import UpdateUsers from './component/Admin/Users/UpdateUsers';
 import AdminUserlisting from './component/Admin/Users/AdminUserlisting';
 import AdminOrderslisting from './component/Admin/Orders/AdminOrderslisting';
 import AdminCouponslisting from './component/Admin/Coupons/AdminCouponslisting';
+import { ToastContainer } from 'react-toastify';
+import Error404 from './component/Error404';
+import Dashboard from './component/Admin/Dashboard/Dashboard';
+import ApiCalls from './ApiCalls';
+import AdminLogin from './component/Admin/AdminLogin';
+import AddCoupons from './component/Admin/Coupons/AddCoupons';
+import Updatecoupon from './component/Admin/Coupons/Updatecoupon';
 
 
 export default function App() {
-  const [product, setProduct] = useState([])
   const [Buyproduct, setbuyproduct] = useState([])
   var wishlisitems = (sessionStorage.getItem('wishlist') ? JSON.parse(sessionStorage.getItem('wishlist')) : "");
   const [wishlist, setWishlist] = useState(wishlisitems);
   const [loggedIn, setLoggedIn] = useState((sessionStorage.getItem('user') === null) ? false : true)
+  const [adminLoggedIn, setAdminLoggedIn] = useState((sessionStorage.getItem('admin') === null) ? false : true)
   const [userdata, setUserdata] = useState((sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : "");
+
+  const product = ApiCalls();
   useEffect(() => {
     setUserdata(JSON.parse(sessionStorage.getItem('user')));
   }, [])
@@ -67,9 +75,19 @@ export default function App() {
   }
 
   async function addWishList(product) {
-    var data = {
-      userId: userdata.id,
-      productId: product.id,
+    try {
+      var data = {
+        userId: userdata.id,
+        productId: product.id,
+      }
+    } catch (err) {
+      Swal.fire({
+        title: 'Wishlist..',
+        type: 'error',
+        icon: 'error',
+        text: "Please logn in first..!",
+      });
+      return err;
     }
     const found = wishlist.some(items => items == product.id);
     if (!found) {
@@ -86,7 +104,6 @@ export default function App() {
 
             (setWishlist(wishlist => [...wishlist, product.id]));
             sessionStorage.setItem('wishlist', JSON.stringify([...wishlist, product.id]));
-            console.log(wishlist);
           }).catch(
             (error) => {
               console.log(error);
@@ -105,36 +122,35 @@ export default function App() {
     }
   }
 
-  var baseURL = 'http://192.168.101.102/api/products';
-  useEffect(() => {
-    axios.get(baseURL).then((response) => {
-      setProduct(response.data);
-    });
-  }, []);
-
   return (
     <>
       <BrowserRouter>
-        <Navbar count={Buyproduct.length} wishlistcount={wishlist.length} />
+        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
+        <Navbar count={Buyproduct.length} wishlistcount={wishlist.length} setAdminLoggedIn={setAdminLoggedIn} adminLoggedIn={adminLoggedIn} />
         <Routes>
-          <Route exact path='/' element={<Home product={product} />} />
+          <Route exact path='/' element={<Home />} />
           <Route exact path='/login' element={loggedIn ? <Navigate replace to={"/"} /> : <Login setLoggedIn={setLoggedIn} />} />
           <Route exact path='/register' element={loggedIn ? <Navigate replace to={"/"} /> : <Register />} />
-          <Route exact path='/allproductlisting' element={<ProductListing products={product} addWishList={addWishList} userdata={userdata} />} />
-          <Route exact path='/product' element={<ViewProduct setBuyproduct={setBuyproduct} userdata={userdata} />} />
-          <Route exact path='/cart' element={<Cart Buyproduct={Buyproduct} RemoveShoppingCart={RemoveShoppingCart} ChangeQuantity={ChangeQuantity} />} />
-          <Route exact path='/payment' element={<Payment Buyproduct={Buyproduct} setbuyproduct={setbuyproduct} />} />
+          <Route exact path='/allproductlisting' element={<ProductListing addWishList={addWishList} userdata={userdata} />} />
+          <Route exact path='/product' element={<ViewProduct setBuyproduct={setBuyproduct} userdata={userdata} addWishList={addWishList} />} />
+          <Route exact path='/cart' element={<Cart Buyproduct={Buyproduct} RemoveShoppingCart={RemoveShoppingCart} ChangeQuantity={ChangeQuantity} loggedIn={loggedIn} />} />
+          <Route exact path='/payment' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Payment Buyproduct={Buyproduct} setbuyproduct={setbuyproduct} />} />
           <Route exact path='/orders' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Orders userdata={userdata} />} />
           <Route exact path='/profile' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Profile setLoggedIn={setLoggedIn} userdata={userdata} setUserdata={setUserdata} products={product} wishlist={wishlist} setWishlist={setWishlist} setBuyproduct={setBuyproduct} />} />
           <Route exact path='/wishlist' element={!loggedIn ? <Navigate replace to={"/login"} /> : <Wishlist products={product} wishlist={wishlist} setWishlist={setWishlist} userdata={userdata} setBuyproduct={setBuyproduct} />} />
-          <Route exact path='/admin/allproductlisting' element={<AdminProductlisting />} />
-          <Route exact path='/admin/allUsers' element={<AdminUserlisting />} />
-          <Route exact path='/admin/AddProduct' element={<AddProduct />} />
-          <Route exact path='/admin/UpdateProduct' element={<UpdateProduct />} />
-          <Route exact path='/admin/AddUsers' element={<AddUsers />} />
-          <Route exact path='/admin/allOrders' element={<AdminOrderslisting />} />
-          <Route exact path='/admin/UpdateUsers' element={<UpdateUsers />} />
-          <Route exact path='/admin/AllCoupons' element={<AdminCouponslisting />} />
+          <Route exact path='/admin/allproductlisting' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <AdminProductlisting />} />
+          <Route exact path='/admin/allUsers' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <AdminUserlisting />} />
+          <Route exact path='/admin/AddProduct' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <AddProduct />} />
+          <Route exact path='/admin/UpdateProduct' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <UpdateProduct />} />
+          <Route exact path='/admin/AddUsers' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <AddUsers />} />
+          <Route exact path='/admin/allOrders' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <AdminOrderslisting />} />
+          <Route exact path='/admin/UpdateUsers' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <UpdateUsers />} />
+          <Route exact path='/admin/AllCoupons' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <AdminCouponslisting />} />
+          <Route exact path='/admin/AddCoupon' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <AddCoupons />} />
+          <Route exact path='/admin/updateCoupon' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <Updatecoupon />} />
+          <Route exact path='/admin' element={!adminLoggedIn ? <Navigate replace to={"/admin/login"} /> : <Dashboard />} />
+          <Route exact path='/admin/login' element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
+          <Route exact path='*' element={<Error404 />} />
         </Routes>
         <Footer />
       </BrowserRouter>

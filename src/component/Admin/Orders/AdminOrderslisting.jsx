@@ -7,63 +7,26 @@ import StatusOptions from './StatusOptions';
 import UpdateStatusForm from './UpdateStatusForm';
 import { FaPencilAlt } from 'react-icons/fa';
 import { AiTwotoneDelete } from 'react-icons/ai';
+import { GetOrders, Statusbtn } from '../AllStates';
 
 export default function AdminOrderslisting() {
-    const [orders, setOrders] = useState([])
     const [orderdata, setOrderdata] = useState([])
-    var baseURL = 'http://192.168.101.102/api/orders';
-    const getOrders = () => {
-        axios.get(baseURL).then((response) => {
-            setOrders(response.data);
-        });
-    }
-    useEffect(() => {
-        getOrders();
-    }, []);
+
+    const orders = GetOrders();
     let table;
     useEffect(() => {
         setTimeout(() => {
             table = new DataTable('#table');
         }, 500);
     }, [orders]);
-    const Statusbtn = async (e) => {
-        e.preventDefault();
-        var status = (e.target.value);
-        var data = {
-            status: status,
-        }
-        var id = (e.target.id).split("_")[1];
-        try {
-            var baseURL = `http://192.168.101.102/api/UpdateStatus-${id}`;
-            await axios.post(baseURL, data)
-                .then(response => {
-                    Swal.fire({
-                        title: 'Status..',
-                        type: 'success',
-                        icon: 'success',
-                        text: `${response.data.message}`,
-                    });
-                    setOrders([]);
-                    getOrders();
-                }).catch(
-                    (error) => {
-                        Swal.fire({
-                            title: 'Status..',
-                            type: 'error',
-                            icon: 'error',
-                            text: `${error.data.message}`,
-                        });
-                    }
-                )
-        } catch (err) {
-            console.log(err);
-        }
-    }
+
+    console.log(orders);
 
     const updateFormData = (e) => {
         var id = (e.target.id).split("_")[1];
         setOrderdata(orders.filter((items) => (items.id == id)));
     }
+
     const deletebtn = async (e) => {
         e.preventDefault();
         var id = (e.target.id).split("_")[1];
@@ -78,7 +41,7 @@ export default function AdminOrderslisting() {
                         text: `${response.data.message}`,
                     });
                     table.destroy();
-                    getOrders();
+                    GetOrders();
                 }).catch(
                     (error) => {
                         console.log(error);

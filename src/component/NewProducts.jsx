@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import ApiCalls from '../ApiCalls';
 
-export default function NewProducts({ product, title, countOfProduct }) {
+export default function NewProducts({ title, countOfProduct }) {
+  const product = ApiCalls();
   function getMultipleRandom(product, num) {
     const shuffled = [...product].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, num);

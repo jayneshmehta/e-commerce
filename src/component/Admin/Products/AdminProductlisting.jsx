@@ -6,53 +6,20 @@ import Swal from 'sweetalert2';
 import DataTable from 'datatables.net-dt';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import { FaPencilAlt } from 'react-icons/fa';
+import ProductsWithSub_category from '../AllStates';
+import { deleteProduct } from '../AllStates';
 import $ from 'jquery';
 
 export default function AdminProductlisting() {
-  const [product, setProduct] = useState([])
 
-
-  const getProducts = async () => {
-    var baseURL = 'http://192.168.101.102/api/productsWithSub_category';
-    await axios.get(baseURL).then(async (response) => {
-      setProduct(response.data);
-    });
-  }
+  const product = ProductsWithSub_category();
   let table
-  
-  useEffect(() => {
-    getProducts();
-  }, []);
-  
+
   useEffect(() => {
     setTimeout(() => {
       table = new DataTable('#table');
     }, 500);
   }, [product]);
-  const deletebtn = async (e) => {
-    var id = (e.target.id).split("_")[1];
-    try {
-      var baseURL = `http://192.168.101.102/api/products/DeletingProductById-${id}`;
-      await axios.delete(baseURL)
-        .then((response) => {
-          Swal.fire({
-            title: 'Delete..',
-            type: 'success',
-            icon: 'success',
-            text: `${response.data.message}`,
-          });
-          table.destroy();
-          getProducts();
-        }).catch(
-          (error) => {
-            console.log(error);
-          }
-        )
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
 
   return (
     <div className='container'>
@@ -75,6 +42,7 @@ export default function AdminProductlisting() {
                     <thead>
                       <tr className='border border-2 border-dark  text-center'>
                         <th scope="col">SrNo.</th>
+                        <th scope="col">Thumbnail</th>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Price</th>
@@ -84,15 +52,18 @@ export default function AdminProductlisting() {
                     </thead>
                     <tbody id="listing">
                       {
-                        product.map((items, index) => {
+                        product?.map((items, index) => {
                           return (<tr className='text-center' key={index}  >
-                            <td width='100px' className=" border border-dark border-2 " >{index + 1}</td>
-                            <td width='170px' className=" border border-dark border-2 "  >{items.title}</td>
-                            <td width='500px' className=" border border-dark border-2 " >{items.description}</td>
+                            <td width='50px' className=" border border-dark border-2 " >{index + 1}</td>
+                            <td width='100px' className=" border border-dark border-2  pt-2 " >
+                              <img src={items.thumbnail ? items.thumbnail : "https://img.freepik.com/free-icon/user_318-150866.jpg"} alt='' width='70px' height='65px' className='rounded-5' />
+                            </td>
+                            <td width='120px' className=" border border-dark border-2 "  >{items.title}</td>
+                            <td width='400px' className=" border border-dark border-2 " >{items.description}</td>
                             <td className=" border border-dark border-2 " >{items.price}</td>
                             <td className=" border border-dark border-2 " >{items.Sub_categories}</td>
                             <td className=" border border-dark border-2 " >
-                              <button className='btn btn-danger delete' id={"del_" + items.id} onClick={(e) => { deletebtn(e) }}><AiTwotoneDelete /></button>
+                              <button className='btn btn-danger delete' id={"del_" + items.id} onClick={(e) => { deleteProduct(e, table) }}><AiTwotoneDelete /></button>
                               <Link to={"/admin/UpdateProduct"} className='btn btn-warning ms-3' state={items.id}><FaPencilAlt /></Link>
                             </td>
                           </tr>

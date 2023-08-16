@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Productcard from './Productcard';
 import Carousel from 'react-multi-carousel';
+import ApiCalls from '../ApiCalls';
 
 
-export default function OffersOfDay({ product }) {
-    var countDownDate = new Date("Aug 10 , 2023 15:37:25").getTime();
-
+export default function OffersOfDay() {
+    var countDownDate = new Date("Aug 20 , 2023 15:37:25").getTime();
+    const product = ApiCalls();
     // Update the count down every 1 second
     const [days, setDays] = useState(0)
     const [hours, setHours] = useState(0)
@@ -100,24 +101,24 @@ export default function OffersOfDay({ product }) {
                         </div>
                         <div className="col-9 ps-2" >
                             <div className='row d-flex m-1'>
-                            <Carousel
-                                responsive={responsive}
-                                // autoPlay={true}
-                                swipeable={true}
-                                draggable={true}
-                                infinite={true}
-                                partialVisible={false}
-                                dotListClass="custom-dot-list-style"
-                            >
-                                {
-                                    product.map((items, index) => {
-                                        if (items.discountPercentage > 16) {
-                                            return (
-                                                <Productcard items={items} key={index} index={index} />
-                                            );
-                                        }
-                                    })
-                                }
+                                <Carousel
+                                    responsive={responsive}
+                                    // autoPlay={true}
+                                    swipeable={true}
+                                    draggable={true}
+                                    infinite={true}
+                                    partialVisible={false}
+                                    dotListClass="custom-dot-list-style"
+                                >
+                                    {
+                                        product.map((items, index) => {
+                                            if (items.discountPercentage > 16) {
+                                                return (
+                                                    <Productcard items={items} key={index} index={index} />
+                                                );
+                                            }
+                                        })
+                                    }
                                 </Carousel>
                             </div>
                         </div>

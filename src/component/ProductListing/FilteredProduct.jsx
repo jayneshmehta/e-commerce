@@ -8,8 +8,8 @@ import { BsBookmarkHeartFill } from 'react-icons/bs';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import $ from 'jquery';
-
-export default function FilteredProduct({ products, userdata, addWishList }) {
+ 
+export default function FilteredProduct({addWishList, products, userdata }) {
 
   if (products.length === 0) {
     return (<div className="container ">

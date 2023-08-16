@@ -8,7 +8,7 @@ import ExtraDetails from '../component/SingleProduct/ExtraDetails'
 import RelatedProducts from '../component/SingleProduct/RelatedProducts';
 import FooterAdd from '../component/SingleProduct/FooterAdd';
 
-export default function ViewProduct({setBuyproduct,userdata}) {
+export default function ViewProduct({setBuyproduct,userdata,addWishList}) {
     const location = useLocation()
     const product_id = location.state;
     const [product, setProduct] = useState([]);
@@ -24,7 +24,7 @@ export default function ViewProduct({setBuyproduct,userdata}) {
     return (
         <div className='bg-light'>
         <Breadcrump/>
-        <ProductDetails product={product} images={images} setBuyproduct={setBuyproduct}/>
+        <ProductDetails product={product} images={images} setBuyproduct={setBuyproduct} addWishList={addWishList}/>
         <ExtraDetails product={product} userdata={userdata}/>
         <RelatedProducts product={product}/>
         <FooterAdd/>

@@ -8,6 +8,7 @@ import Orders from './Orders';
 import Wishlist from './Wishlist';
 
 export default function Profile({ setLoggedIn, userdata, setUserdata, products, wishlist, setWishlist, setBuyproduct }) {
+ 
   const Logout = () => {
     Swal.fire({
       title: 'Are you sure you want to logout..?',

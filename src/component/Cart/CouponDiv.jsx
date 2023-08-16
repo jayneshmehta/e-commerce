@@ -18,6 +18,7 @@ export default function CouponDiv({setcoupon}) {
                     $("#Err_coupon").html(`<p class='text-center text-success'>${response.data.message}</p>`);
                     setcoupon(parseInt(response.data.discount));
                 }else{
+                    setcoupon(0);
                     $("#Err_coupon").html(`<p class='text-center text-danger'>${response.data.message}</p>`);
                 }
                 }).catch(
@@ -28,6 +29,7 @@ export default function CouponDiv({setcoupon}) {
                                 $(`#Err_${x}`).text(errors[x]);
                             }
                         }
+                        
                         let message = error.response.data.message;
                         $("#Err_coupon").html(`<p class='text-center text-danger'>${message}</p>`)
                     }

@@ -3,15 +3,16 @@ import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
-export default function ReviewProduct({ product, userdata }) {
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+export default function ReviewProduct({ product, userdata, getreviews }) {
     var features = []
-    if(!userdata){
-        $('#submit').attr("disabled",true);
+
+    if (!sessionStorage.getItem("user")) {
+        $('#submit').attr("disabled", true);
     }
     const addReview = async (e) => {
         e.preventDefault();
-
         let formdata = new FormData(e.target);
         formdata.append('features', features)
         formdata.append('userId', userdata['id'])
@@ -19,14 +20,17 @@ export default function ReviewProduct({ product, userdata }) {
         var baseURL = "http://192.168.101.102/api/addReview";
         await axios.post(baseURL, formdata)
             .then(response => {
-                Swal.fire({
-                    title: 'Review..',
-                    type: 'success',
-                    icon: 'success',
-                    text: `${response.data.message}`,
-                  });
+                toast.success(response.data.message);
+                getreviews();
+                // Swal.fire({
+                //     title: 'Review..',
+                //     type: 'success',
+                //     icon: 'success',
+                //     text: `${response.data.message}`,
+                //   });
             }).catch(
                 (error) => {
+                    toast.warning(error.response.data.error);
                     console.log(error);
                 })
     }
@@ -45,6 +49,7 @@ export default function ReviewProduct({ product, userdata }) {
     })
     return (
         <div className="">
+
             <span className="d-block ">Rate the Product?</span>
             <form onSubmit={(e) => addReview(e)}>
                 <Rating name="rating" id={'rating'} defaultValue={2.5} precision={0.5} /><br />
@@ -59,5 +64,6 @@ export default function ReviewProduct({ product, userdata }) {
                 <button type="submit" className='btn btn-primary rounded mt-3' id='submit'>Submit</button>
             </form>
         </div>
+
     )
 }

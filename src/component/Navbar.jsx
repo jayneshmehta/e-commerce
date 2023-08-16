@@ -11,7 +11,7 @@ import AfterLogin from './AfterLogin';
 import BeforeLogin from './BeforeLogin';
 import AdminNavbar from './Admin/AdminNavbar';
 
-export default function Navbar({ count,wishlistcount }) {
+export default function Navbar({ count,wishlistcount,setAdminLoggedIn,adminLoggedIn }) {
     const [category, setcategory] = useState([])
     const {pathname} = useLocation();
     const isAdmin = /(.*)\/admin(.*)/;
@@ -38,7 +38,7 @@ export default function Navbar({ count,wishlistcount }) {
                     <Link to={'/'} className='text-muted text-decoration-none '><img src={logo192} className='App-logo me-2' alt="logo" style={{ height: "40px" }} />
                         <span className='pt-1 fw-bold fs-4 text-primary'>React</span></Link>
                 </div>
-                {   admin?<AdminNavbar/>:userExist ? <AfterLogin count={count} wishlistcount={wishlistcount}/> : <BeforeLogin />
+                {   admin?<AdminNavbar setAdminLoggedIn={setAdminLoggedIn} adminLoggedIn={adminLoggedIn}/>:userExist ? <AfterLogin count={count} wishlistcount={wishlistcount}/> : <BeforeLogin />
                 }
             </div>
         </nav>

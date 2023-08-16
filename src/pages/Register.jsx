@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import $ from 'jquery';
 import axios from 'axios';
+import FormInput from '../component/Forms/FormInput';
 export default function Register() {
     const navigate = useNavigate();
 
@@ -108,8 +109,6 @@ export default function Register() {
         }
     }
 
-
-
     return (
         <div className="container mt-5">
             <div className="row d-flex align-items-center justify-content-center h-100">
@@ -121,16 +120,8 @@ export default function Register() {
                     <div className="card-body">
                         <h4 className="card-title mb-4">Sign in</h4>
                         <form method='post' id='registerForm' onSubmit={(e) => register(e)}>
-                            <div className="row gx-2">
-                                <label className="form-label">Name : </label>
-                                <input type="text" className="form-control" name="name" id='name' />
-                                <small id="Err_name" className="text-danger form-text "></small>
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Email : </label>
-                                <input className="col- form-control" placeholder="Enter email" name='email' id='email' type="email" />
-                                <small id="Err_email" className="text-danger form-text "></small>
-                            </div>
+                            <FormInput label={"Name  : "} placeholder={"Enter name"} name={"name"} type={'name'} id={'name'} />
+                            <FormInput label={"Email : "} placeholder={"Enter email"} name={"email"} type={'email'} id={'email'} />
                             {/* <div className="mb-3 " id='otpverify' hidden>
                                 <label className="form-label">Verify Email : </label>
                                 <div className='row gx-0 m-0 p-0 input-group'>
@@ -139,22 +130,9 @@ export default function Register() {
                                 </div>
                                 <small id="Err_otp" className="text-danger form-text "></small>
                             </div> */}
-                            <div className="mb-3">
-                                <label className="form-label">Phone </label>
-                                <div className="row gx-2">
-                                    <input className="form-control" name='contactNo' placeholder="Phone" type="number" /> </div>
-                                <small id="Err_contactNo" className="text-danger form-text "></small>
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Create password</label>
-                                <input className="form-control" placeholder="At least 6 characters." name='password' id='password' type="password" />
-                                <small id="Err_password" className="text-danger form-text "></small>
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Confrim password</label>
-                                <input className="form-control" id='confrim_password' placeholder="" type="password" />
-                                <small id="Err_Cpassword" className="text-danger form-text "></small>
-                            </div>
+                            <FormInput label={"Phone : "} placeholder={"Enter Phone"} name={"contactNo"} type={'number'} id={'contactNo'} />
+                            <FormInput label={"Create password : "} placeholder={"At least 6 characters."} name={"password"} type={'password'} id={'password'} />
+                            <FormInput label={"Confrim password : "} placeholder={"Confrim password"} name={"Cpassword"} type={'text'} id={'confrim_password'} />
                             <div className="mb-4">
                                 <button type="submit" className="btn btn-primary w-100 " id='register' > Register </button>
                             </div>

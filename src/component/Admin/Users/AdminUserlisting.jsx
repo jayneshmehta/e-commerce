@@ -6,50 +6,78 @@ import Swal from 'sweetalert2';
 import DataTable from 'datatables.net-dt';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import { FaPencilAlt } from 'react-icons/fa';
-
+import { GetUsers } from '../AllStates';
+import deleteUser from '../AllStates';
+import { Switch } from '@mui/material';
+import $ from 'jquery';
 export default function AdminUserlisting() {
-    const [users, setUsers] = useState([])
-    const getUsers = () => {
-        var baseURL = 'http://192.168.101.102/api/user/getUsers';
-        axios.get(baseURL).then((response) => {
-            setUsers(response.data);
-        });
-    }
+    const users = GetUsers();
     let table;
-    useEffect(() => {
-        getUsers();
-    }, []);
+
     useEffect(() => {
         setTimeout(() => {
             table = new DataTable('#table');
         }, 500);
     }, [users]);
+    const [status, setStatus] = useState(false);
+    const [isAdmin, setisAdmin] = useState(false);
 
-    const deletebtn = async (e) => {
-        e.preventDefault();
-        var id = (e.target.id).split("_")[1];
-        try {
-            var baseURL = `http://192.168.101.102/api/user/DeletingUserById-${id}`;
-            await axios.delete(baseURL)
-                .then(response => {
-                    Swal.fire({
-                        title: 'Delete..',
-                        type: 'success',
-                        icon: 'success',
-                        text: `${response.data.message}`,
-                    });
-                    table.destroy();
-                    getUsers();
-
-                }).catch(
-                    (error) => {
-                        console.log(error);
-                    }
-                )
-        } catch (err) {
-            console.log(err);
+    const handleStatus = async (event, id) => {
+        const data = {
+            status: event.target.checked,
         }
-    }
+        const BaseUrl = `http://192.168.101.102/api/UpdateuserStatus-${id}`;
+        await axios.post(BaseUrl, data)
+            .then((response) => {
+                let message = response.data.message;
+                Swal.fire({
+                    title: 'status Updated..',
+                    type: 'success',
+                    icon: 'success',
+                    text: `${message}`,
+                });
+                setStatus(event.target.checked);
+            })
+            .catch((error) => {
+                if (error.response.data.errors) {
+                    var errors = error.response.data.errors;
+                    Swal.fire({
+                        title: 'status Updated..',
+                        type: 'error',
+                        icon: 'error',
+                        text: `${errors}`,
+                    });
+                }
+            })
+    };
+    const handleisAdmin = async(event,id) => {
+        const data = {
+            status: event.target.checked,
+        }
+        const BaseUrl = `http://192.168.101.102/api/changePrivilege-${id}`;
+        await axios.post(BaseUrl, data)
+            .then((response) => {
+                let message = response.data.message;
+                Swal.fire({
+                    title: 'Privilege Updated..',
+                    type: 'success',
+                    icon: 'success',
+                    text: `${message}`,
+                });
+                setisAdmin(event.target.checked);
+            })
+            .catch((error) => {
+                if (error.response.data.errors) {
+                    var errors = error.response.data.errors;
+                    Swal.fire({
+                        title: 'Privilege Updated..',
+                        type: 'error',
+                        icon: 'error',
+                        text: `${errors}`,
+                    });
+                }
+            })
+    };
 
     return (
         <div className='container'>
@@ -78,26 +106,45 @@ export default function AdminUserlisting() {
                                                 <th scope="col">Address</th>
                                                 <th scope="col">ContactNo</th>
                                                 <th scope="col">Email</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Admin Access</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="listing">
                                             {
                                                 users.map((items, index) => {
-                                                    return (<tr className='text-center'>
-                                                        <td width='100px' className=" border border-dark border-2 " >{index + 1}</td>
-                                                        <td width='140px' className=" border border-dark border-2 " >
-                                                            <img src={items.profile ? "http://192.168.101.102/" + items.profile : "https://img.freepik.com/free-icon/user_318-150866.jpg"} alt='' width='100px' height='80px' />
-                                                        </td>
-                                                        <td width='150px' className=" border border-dark border-2 " >{items.name}</td>
-                                                        <td width='400px' className=" border border-dark border-2 " >{(items.address) ? items.address : "No Address"}</td>
-                                                        <td className=" border border-dark border-2 " >{items.contactNo}</td>
-                                                        <td className=" border border-dark border-2 " >{items.email}</td>
-                                                        <td width='220px' className=" border border-dark border-2 " >
-                                                            <button className='btn btn-danger delete' id={'del_' + items.id} onClick={(e) => deletebtn(e)} ><AiTwotoneDelete /></button>
-                                                            <Link to={"/admin/UpdateUsers"} className='btn btn-warning ms-3' state={items.id} ><FaPencilAlt /></Link>
-                                                        </td>
-                                                    </tr>)
+                                                    return (
+                                                        <tr className='text-center' key={index}>
+                                                            <td width='100px' className=" border border-dark border-2 " >{index + 1}</td>
+                                                            <td width='140px' className=" border border-dark border-2  pt-2 " >
+                                                                <img src={items.profile ? "http://192.168.101.102/" + items.profile : "https://img.freepik.com/free-icon/user_318-150866.jpg"} alt='' width='70px' height='70px' className='rounded-5' />
+                                                            </td>
+                                                            <td width='150px' className=" border border-dark border-2 " >{items.name}</td>
+                                                            <td width='400px' className=" border border-dark border-2 " >{(items.address) ? items.address : "No Address"}</td>
+                                                            <td className=" border border-dark border-2 " >{items.contactNo}</td>
+                                                            <td className=" border border-dark border-2 " >{items.email}</td>
+                                                            <td className=" border border-dark border-2 " >
+                                                                <div className="form-check form-switch ms-3">
+                                                                    <Switch
+                                                                        defaultChecked={(items.status == '1') ? 1 : 0}
+                                                                        onChange={(e) => handleStatus(e, items.id)}
+                                                                        inputProps={{ 'aria-label': 'controlled' }}
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td className=" border border-dark border-2 " >
+                                                                <Switch
+                                                                    defaultChecked={(items.isAdmin == '1') ? 1 : 0}
+                                                                    onChange={(e) => handleisAdmin(e, items.id)}
+                                                                    inputProps={{ 'aria-label': 'controlled' }}
+                                                                />
+                                                            </td>
+                                                            <td width='220px' className=" border border-dark border-2 " >
+                                                                <button className='btn btn-danger delete' id={'del_' + items.id} onClick={(e) => deleteUser(e, table)} ><AiTwotoneDelete /></button>
+                                                                <Link to={"/admin/UpdateUsers"} className='btn btn-warning ms-3' state={items.id} ><FaPencilAlt /></Link>
+                                                            </td>
+                                                        </tr>)
                                                 })
                                             }
                                         </tbody>

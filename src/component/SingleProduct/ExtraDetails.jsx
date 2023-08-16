@@ -1,11 +1,13 @@
 import React from 'react'
 import ProductDiscription from './ProductDiscription'
 import SimilarProducts from './SimilarProducts'
+import { ToastContainer } from 'react-toastify'
 
 export default function ExtraDetails({ product, userdata }) {
     return (
         <div className='container'>
-            <div className="row mt-3 mb-3" style={{ height: '600px' }}>
+
+            <div className="row mt-3 mb-3" >
                 <div className="col-8" >
                     <ProductDiscription product={product} userdata={userdata} />
                 </div>
