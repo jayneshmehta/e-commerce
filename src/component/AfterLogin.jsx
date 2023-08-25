@@ -5,13 +5,17 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
-import { BiSolidDoorOpen } from 'react-icons/bi';
+import { BiSolidDoorOpen, BiSolidMessageAltDots, BiSolidMessageDetail } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { BsBookmarkStarFill, BsFillSuitHeartFill } from 'react-icons/bs';
 import { FaBookmark } from 'react-icons/fa';
 import { Badge } from '@mui/material';
-export default function AfterLogin({ count, wishlistcount }) {
-    wishlistcount = (wishlistcount == 0 )?1:wishlistcount;
+import { useSelector } from 'react-redux';
+export default function AfterLogin() {
+    const wishlist = useSelector((state) => state.wishlist);
+    const Buyproduct = useSelector((state) => state.buyproduct);
+    console.log(Buyproduct);
+    const wishlistcount = (wishlist.length == 0) ? 1 : wishlist.length;
     return (
         <div className='col-4 d-flex justify-content-end gap-4'>
             <div >
@@ -44,8 +48,18 @@ export default function AfterLogin({ count, wishlistcount }) {
                 </div>
             </div>
             <div>
+                <div className='text-center'>
+                    <Badge color="success" badgeContent={"new"}>
+                        <BiSolidMessageDetail className='fs-4' />
+                    </Badge>
+                </div>
+                <div className='text-muted'>
+                    <Link to={'/notification'} className='text-muted text-decoration-none '><p>messages</p></Link>
+                </div>
+            </div>
+            <div>
                 <div className='text-center position-relative'>
-                    <Badge color="success" badgeContent={count}>
+                    <Badge color="success" badgeContent={Buyproduct.length}>
                         <ShoppingCartIcon />
                     </Badge>
                     {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{ backgroundColor: "orange" }}>

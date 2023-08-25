@@ -11,8 +11,8 @@ import SmallBuyProcuct from '../component/Payment/SmallBuyProcuct'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-export default function Payment({ Buyproduct, setbuyproduct }) {
-
+export default function Payment() {
+  
     function expDateValidate(month, year) {
         if (Number(year) > 2035) {
             return 'Expiry Date Year cannot be greater than 2035';
@@ -101,8 +101,10 @@ export default function Payment({ Buyproduct, setbuyproduct }) {
                 user: user,
 
             }
+            var token = JSON.parse(sessionStorage.getItem("token"));
+            const config = { headers: { 'Authorization': 'Bearer ' + token } };
             var baseURL = 'http://192.168.101.102/api/orders';
-            axios.post(baseURL, (data))
+            axios.post(baseURL, (data),config)
                 .then(response => {
                     Swal.fire({
                         title: 'Order Placed..',
@@ -110,13 +112,20 @@ export default function Payment({ Buyproduct, setbuyproduct }) {
                         icon: 'success',
                         text: `${response.data.message}`,
                     });
-                    sessionStorage.removeItem("cart");
-                    setbuyproduct([]);
-                    navigate('/');
+                    // sessionStorage.removeItem("cart");
+                    // setbuyproduct([]);
+                    // navigate('/');
                 }).catch(
                     (error) => {
-                        let message = error.response.data.message;
-                        $("#msg").html(`<p class='text-center text-danger'>${message}</p>`)
+                        console.log(error);
+                        // let message = error.response.data.message;
+                        // Swal.fire({
+                        //     title: 'Order ',
+                        //     type: 'error',
+                        //     icon: 'error',
+                        //     text: `${message}`,
+                        // });
+                        // $("#msg").html(`<p class='text-center text-danger'>${message}</p>`)
                     }
                 )
         } else {

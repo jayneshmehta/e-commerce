@@ -27,12 +27,15 @@ export default function AdminOrderslisting() {
         setOrderdata(orders.filter((items) => (items.id == id)));
     }
 
-    const deletebtn = async (e) => {
-        e.preventDefault();
-        var id = (e.target.id).split("_")[1];
+    const deletebtn = async (id) => {
+        // e.preventDefault();
+        // var id = (e.target.id).split("_")[1];
         try {
-            var baseURL = `http://192.168.101.102/api/products/DeletingProductById-${id}`;
-            await axios.delete(baseURL)
+            console.log(id);
+            var token = JSON.parse(sessionStorage.getItem("token"));
+            const config = { headers: { 'Authorization': 'Bearer ' + token } };
+            var baseURL = `http://192.168.101.102/api/DeletingOrderById-${id}`;
+            await axios.delete(baseURL,config)
                 .then(response => {
                     Swal.fire({
                         title: 'Delete..',
@@ -98,7 +101,7 @@ export default function AdminOrderslisting() {
                                                         <StatusOptions />
                                                     </select>
                                                 </td>
-                                                <td><a className='btn btn-danger delete' id='del_${items.id}' onClick={(e) => deletebtn(e)} ><AiTwotoneDelete /></a>
+                                                <td><a className='btn btn-danger delete' id='del_${items.id}' onClick={(e) => deletebtn(items.id)} ><AiTwotoneDelete /></a>
                                                     <button className='btn btn-warning ms-3 update' data-bs-toggle="modal" data-bs-target="#staticBackdrop" id={'upd_' + items.id} onClick={(e) => updateFormData(e)} ><FaPencilAlt /></button></td>
                                             </tr>)
                                         })

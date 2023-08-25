@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import $ from 'jquery';
+import { useSelector } from 'react-redux';
+import { SET_WISHLIST } from '../../ReduxStore/Action';
+import store from '../../ReduxStore/Store';
 
-export default function SelectQuantity({ products, ChangeQuantity }) {
+export default function SelectQuantity({ products }) {
 
   const [quantity, setQuantity] = useState()
 
@@ -9,10 +12,25 @@ export default function SelectQuantity({ products, ChangeQuantity }) {
     setQuantity(1)
   }, [products])
 
+  const Buyproduct = useSelector((state) => state.buyproduct);
+
   function handelclick(e) {
     setQuantity(e.target.value);
   }
 
+
+
+  function ChangeQuantity(quantity, id) {
+    var changeQuantity = (Buyproduct.filter((items, index) => {
+      if (id == items.id) {
+        items.quantity = quantity
+        return items;
+      } else {
+        return items;
+      }
+    }))
+    store.dispatch({ type: SET_WISHLIST, payload: changeQuantity });
+  }
 
   $(document).on("change", `#quantity${products.id}`, function () {
     Object.assign(products, { quantity: $(`#quantity${products.id}`).val() });

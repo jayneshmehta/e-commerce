@@ -9,9 +9,11 @@ export default function Updatecoupon() {
     const location = useLocation()
     const coupon_id = location.state;
     const [coupon, setCoupon] = useState([]);
+    var token = JSON.parse(sessionStorage.getItem("token"));
+    const config = { headers: { 'Authorization': 'Bearer ' + token } };
     useEffect(() => {
         let Baseurl = `http://192.168.101.102/api/GettingCouponById-${coupon_id}`;
-        axios.get(Baseurl).then(async (responce) => {
+        axios.get(Baseurl,config).then(async (responce) => {
             setCoupon(responce.data);
         });
     }, [])
@@ -21,8 +23,9 @@ export default function Updatecoupon() {
         $("#message").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
         $("small").text("");
         var data = new FormData(e.target);
+       
         const BaseUrl = `http://192.168.101.102/api/UpdateCouponbyid-${coupon_id}`;
-        await axios.post(BaseUrl, data)
+        await axios.post(BaseUrl, data,config)
             .then((response) => {
                 let message = response.data.message;
                 Swal.fire({

@@ -7,17 +7,78 @@ import { Rating } from '@mui/material';
 import SelectQuantity from './SelectQuantity';
 import { Link } from 'react-router-dom';
 import { BsBookmarkHeartFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import { ADD_CART, ADD_WISHLIST } from '../../ReduxStore/Action';
+import store from '../../ReduxStore/Store';
 
 
 
-export default function ViewDetails({ product, setBuyproduct,addWishList }) {
-    const addToWishlist = (id)=>{
+export default function ViewDetails({ product }) {
 
+    const userdata = useSelector((state) => state.userdata);
+    const wishlist = useSelector((state) => state.wishlist);
+    const addWishList = async (product) => {
+        try {
+            var data = {
+                userId: userdata.id,
+                productId: product.id,
+            }
+        } catch (err) {
+            Swal.fire({
+                title: 'Wishlist..',
+                type: 'error',
+                icon: 'error',
+                text: "Please logn in first..!",
+            });
+            return err;
+        }
+        const found = wishlist.some(items => items == product.id);
+        if (!found) {
+            try {
+                var token = JSON.parse(sessionStorage.getItem("token"));
+                const config = { headers: { 'Authorization': 'Bearer ' + token } };
+                var baseURL = `http://192.168.101.102/api/addOrCreate`;
+                await axios.post(baseURL, data, config)
+                    .then(response => {
+                        Swal.fire({
+                            title: 'Wishlist..',
+                            type: 'success',
+                            icon: 'success',
+                            text: `${response.data.message}`,
+                        });
+                        store.dispatch({ type: ADD_WISHLIST, payload: product.id })
+                        // (setWishlist(wishlist => [...wishlist, product.id]));
+                        sessionStorage.setItem('wishlist', JSON.stringify([...wishlist, product.id]));
+                    }).catch(
+                        (error) => {
+                            console.log(error);
+                        }
+                    )
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            Swal.fire({
+                title: 'Wishlist..',
+                type: 'success',
+                icon: 'success',
+                text: `Already in wishlist..`,
+            });
+        }
     }
     const rating = (parseInt(product.rating));
+    const Buyproduct = useSelector((state) => state.buyproduct);
+    function setBuyproduct(product) {
+        const found = Buyproduct.some(items => items.id === product.id);
+        if (!found) {
+            store.dispatch({ type: ADD_CART, payload: product })
+            // (setbuyproduct([...Buyproduct, product]))
+        }
+    }
 
     function ChangeQuantity(id, quantity) {
-
     }
     $(`#star${rating}`).attr('checked', "checked")
     function stock() {

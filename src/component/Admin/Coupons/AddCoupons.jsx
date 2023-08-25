@@ -7,14 +7,16 @@ import Swal from 'sweetalert2';
 
 export default function AddCoupons() {
 
-    const AddCoupon = async(e) => {
+    const AddCoupon = async (e) => {
         e.preventDefault();
         $("#message").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
         $("small").text("");
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         var data = new FormData(e.target);
         const BaseUrl = "http://192.168.101.102/api/addCoupons";
-        await axios.post(BaseUrl, data)
-            .then((response) =>     {
+        await axios.post(BaseUrl, data,config)
+            .then((response) => {
                 let message = response.data.message;
                 Swal.fire({
                     title: 'New Coupons..',

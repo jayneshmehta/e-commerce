@@ -8,10 +8,12 @@ import FilterByPrice from '../component/ProductListing/FilterByPrice';
 import usePagination from '../component/ProductListing/usePagination';
 import Sortingdiv from '../component/ProductListing/Sortingdiv';
 import { BsArrowRight } from 'react-icons/bs';
+
 import $ from 'jquery';
-import ApiCalls from '../ApiCalls';
-export default function ProductListing({ userdata, addWishList }) {
-  const products = ApiCalls();
+import { useSelector } from 'react-redux';
+export default function ProductListing({ /* addWishList */ }) {
+
+  const products = useSelector((state)=> state.product);
   const [filterProduct, setFilterProduct] = useState([]);
   const [newrating, setRating] = useState([1, 2, 3, 4, 5]);
   const [categoryId, setCategoryId] = useState(0);
@@ -143,7 +145,7 @@ export default function ProductListing({ userdata, addWishList }) {
           <FilterByRating filter={handleRatingChange} />
         </div>
         <div className="col-9 overflow-auto " >
-          <FilteredProduct products={_DATA.currentData()} userdata={userdata} addWishList={addWishList} />
+          <FilteredProduct products={_DATA.currentData()} /* addWishList={addWishList} */ />
         </div>
       </div>
     </div >

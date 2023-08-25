@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import $ from 'jquery';
 import axios from 'axios';
+import GoogleButton from 'react-google-button';
 import Swal from 'sweetalert2';
 import FormInput from '../component/Forms/FormInput';
+import store from '../ReduxStore/Store';
+import { IS_LOGIN, SET_WISHLIST, USER_DATA } from '../ReduxStore/Action';
 
-export default function Login({ setLoggedIn }) {
+export default function Login() {
 
     const [Passwordchanged, setPasswordchanged] = useState(false)
 
@@ -40,13 +43,17 @@ export default function Login({ setLoggedIn }) {
                 $(`#Err_email`).text('');
                 $(`#Err_password`).text('');
                 sessionStorage.setItem("user", JSON.stringify(response.data.user));
-                setLoggedIn(sessionStorage.getItem('user'))
+                store.dispatch({ type: IS_LOGIN, payload: sessionStorage.getItem('user') })
+                store.dispatch({ type: USER_DATA, payload: response.data.user });
+                store.dispatch({ type: SET_WISHLIST, payload: response.data.wishlist });
                 sessionStorage.setItem("wishlist", JSON.stringify(response.data.wishlist));
+                sessionStorage.setItem("token", JSON.stringify(response.data.token));
                 sessionStorage.setItem("login", "Login Successfull :) ");
                 $("#msg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
                 navigate("/");
             }).catch(
                 (error) => {
+                    console.log(error);
                     $(`#Err_email`).text('');
                     $(`#Err_password`).text('');
                     var errors = error.response.data.errors;
@@ -58,7 +65,6 @@ export default function Login({ setLoggedIn }) {
                 }
             )
     }
-
     const changePassword = async (e) => {
         e.preventDefault();
         var error = false;
@@ -139,7 +145,6 @@ export default function Login({ setLoggedIn }) {
                 }
             )
     }
-
     async function sendsmsotp() {
         $(`#Err_contactNo`).text('');
         var baseURL = 'http://192.168.101.102/api/sendsmsotp';
@@ -166,6 +171,23 @@ export default function Login({ setLoggedIn }) {
             )
     }
 
+    useEffect(() => {
+        signinWithgoogle();
+    }, [])
+
+    const [Googleurl, setGoogleurl] = useState('')
+
+    const signinWithgoogle = async () => {
+        var baseURL = 'http://192.168.101.102/api/auth/google';
+        await axios.get(baseURL)
+            .then(({ data }) => {
+                setGoogleurl(data);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+
     return (
         <div className="container">
             <div className="container py-5 h-100">
@@ -177,7 +199,7 @@ export default function Login({ setLoggedIn }) {
                     </div>
                     <div className="card p-3  shadow col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                         <h2 className='text-dark'>Login : </h2>
-                        <form className='pt-3 py-5' id='loginform' method='POST' onSubmit={(e) => loginform(e)}>
+                        <form className='pt-3 pt-5 pb-3' id='loginform' method='POST' onSubmit={(e) => loginform(e)}>
                             <FormInput label={"Email address : "} placeholder={"Enter email"} name={"email"} type={'email'} id={'email'} />
 
                             <FormInput label={"Password : "} placeholder={"Enter password"} name={"password"} type={'password'} id={'password'} />
@@ -197,6 +219,9 @@ export default function Login({ setLoggedIn }) {
                             <div className='text-center d-flex justify-content-center mt-2' id='msg'>
                             </div>
                         </form>
+                        <div className="row rounded ">
+                            <a href={Googleurl} className='mx-auto d-flex justify-content-center' ><GoogleButton className='rounded mx-auto' /></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -249,6 +274,7 @@ export default function Login({ setLoggedIn }) {
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>

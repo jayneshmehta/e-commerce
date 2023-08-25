@@ -5,9 +5,10 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-export default function ReviewProduct({ product, userdata, getreviews }) {
+import { useSelector } from 'react-redux';
+export default function ReviewProduct({ product, getreviews }) {
     var features = []
-
+    const userdata = useSelector((state) => state.userdata);
     if (!sessionStorage.getItem("user")) {
         $('#submit').attr("disabled", true);
     }
@@ -15,10 +16,12 @@ export default function ReviewProduct({ product, userdata, getreviews }) {
         e.preventDefault();
         let formdata = new FormData(e.target);
         formdata.append('features', features)
-        formdata.append('userId', userdata['id'])
+        formdata.append('userId', userdata.id)
         formdata.append('productId', product.id)
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         var baseURL = "http://192.168.101.102/api/addReview";
-        await axios.post(baseURL, formdata)
+        await axios.post(baseURL, formdata, config)
             .then(response => {
                 toast.success(response.data.message);
                 getreviews();
@@ -45,7 +48,6 @@ export default function ReviewProduct({ product, userdata, getreviews }) {
             $(`#${this.id}`).removeClass('bg-light');
             $(`#${this.id}`).addClass('bg-warning');
         };
-        console.log(features);
     })
     return (
         <div className="">

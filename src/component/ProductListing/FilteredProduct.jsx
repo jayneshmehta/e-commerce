@@ -8,8 +8,13 @@ import { BsBookmarkHeartFill } from 'react-icons/bs';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import $ from 'jquery';
- 
-export default function FilteredProduct({addWishList, products, userdata }) {
+import { ADD_WISHLIST } from '../../ReduxStore/Action';
+import store from '../../ReduxStore/Store';
+import { useSelector } from 'react-redux';
+
+export default function FilteredProduct({/* addWishList, */ products }) {
+  const userdata = useSelector((state) => state.userdata);
+  const wishlist = useSelector((state) => state.wishlist);
 
   if (products.length === 0) {
     return (<div className="container ">
@@ -25,12 +30,54 @@ export default function FilteredProduct({addWishList, products, userdata }) {
     </div>
     )
   }
-
-  const addToWishlist = async (id) => {
-    let product = products.find(item => {
-      return item.id == id;
-    })
-    addWishList(product);
+  const addWishList = async (product) => {
+    try {
+      var data = {
+        userId: userdata.id,
+        productId: product.id,
+      }
+    } catch (err) {
+      Swal.fire({
+        title: 'Wishlist..',
+        type: 'error',
+        icon: 'error',
+        text: "Please logn in first..!",
+      });
+      return err;
+    }
+    const found = wishlist.some(items => items == product.id);
+    if (!found) {
+      try {
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
+        var baseURL = `http://192.168.101.102/api/addOrCreate`;
+        await axios.post(baseURL, data, config)
+          .then(response => {
+            Swal.fire({
+              title: 'Wishlist..',
+              type: 'success',
+              icon: 'success',
+              text: `${response.data.message}`,
+            });
+            store.dispatch({ type: ADD_WISHLIST, payload: product.id })
+            // (setWishlist(wishlist => [...wishlist, product.id]));
+            sessionStorage.setItem('wishlist', JSON.stringify([...wishlist, product.id]));
+          }).catch(
+            (error) => {
+              console.log(error);
+            }
+          )
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      Swal.fire({
+        title: 'Wishlist..',
+        type: 'success',
+        icon: 'success',
+        text: `Already in wishlist..`,
+      });
+    }
   }
 
   return (
@@ -43,7 +90,7 @@ export default function FilteredProduct({addWishList, products, userdata }) {
                 <img src={item.thumbnail} className='img-fluid p-1 rounded ' style={{ width: '300px', height: '180px' }} alt={item.title} />
               </div>
               <div className='col-8 p-2'>
-                <button className="fs-4 p-1 m-0 pt-0 btn btn-outline-danger btn-icon float-end me-2" id={`wishlist_${item.id}`} onClick={() => addToWishlist(item.id)}>
+                <button className="fs-4 p-1 m-0 pt-0 btn btn-outline-danger btn-icon float-end me-2" id={`wishlist_${item.id}`} onClick={() => addWishList(item)}>
                   <BsBookmarkHeartFill />
                 </button>
                 <Link to={'/product'} state={item.id} className='text-decoration-none text-dark'><h5 className='text-capitalize productlink' >{item.title}</h5></Link>

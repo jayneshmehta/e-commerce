@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-export default function PriceSummary({ coupon, Buyproduct, delivery, handelSubmit, loggedIn }) {
+export default function PriceSummary({ coupon, Buyproduct, delivery, handelSubmit }) {
+    const loggedIn = useSelector((state) => state.loggedIn);
     var Subtotal = 0;
     var lastprice = 0;
     var Discount = 0;

@@ -1,14 +1,15 @@
 import React from 'react'
 import Userinfo from './Userinfo'
+import { useSelector } from 'react-redux';
 
-export default function Main({ userdata }) {
+export default function Main({userdata}) {
     var address = (userdata?.address == null) ? "No Address" : userdata.address
     return (
         <div>
             <div className="card">
                 <div className="card-body">
                     <h5 className='card-title fw-bolder'>Personal info</h5>
-                    <Userinfo userdata={userdata} />
+                    <Userinfo data={userdata}/>
                     <hr></hr>
                     <div className="card">
                         <div className="card-body">

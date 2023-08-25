@@ -2,7 +2,7 @@ import React from 'react'
 import ViewImages from './SingleProduct/ViewImages';
 import ViewDetails from './SingleProduct/ViewDetails';
 
-export default function ProductDetails({product , images , setBuyproduct,addWishList}) {
+export default function ProductDetails({product , images }) {
 
 
   return (
@@ -14,7 +14,7 @@ export default function ProductDetails({product , images , setBuyproduct,addWish
               <ViewImages images={images} thumbnail={product.thumbnail}/>
             </div>
             <div className="col-8  ps-3"> 
-              <ViewDetails product={product} setBuyproduct={setBuyproduct} addWishList={addWishList}/>
+              <ViewDetails product={product}  />
             </div>
           </div>
         </article>

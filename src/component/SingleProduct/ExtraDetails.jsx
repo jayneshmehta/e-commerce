@@ -3,13 +3,13 @@ import ProductDiscription from './ProductDiscription'
 import SimilarProducts from './SimilarProducts'
 import { ToastContainer } from 'react-toastify'
 
-export default function ExtraDetails({ product, userdata }) {
+export default function ExtraDetails({ product }) {
     return (
         <div className='container'>
 
             <div className="row mt-3 mb-3" >
                 <div className="col-8" >
-                    <ProductDiscription product={product} userdata={userdata} />
+                    <ProductDiscription product={product} />
                 </div>
                 <div className="col-4">
                     <div className="card text-start ">

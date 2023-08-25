@@ -6,8 +6,12 @@ import { FaTshirt, FaUsers } from 'react-icons/fa'
 import { FiLogOut, FiPower } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { IS_ADMINLOGIN } from '../../ReduxStore/Action'
+import store from '../../ReduxStore/Store'
+import { useSelector } from 'react-redux'
 
-export default function AdminNavbar({ setAdminLoggedIn, adminLoggedIn }) {
+export default function AdminNavbar() {
+    const adminLoggedIn = useSelector((state) => state.adminLoggedIn); 
     const Logout = () => {
         Swal.fire({
             title: 'Are you sure you want to logout..?',
@@ -17,7 +21,8 @@ export default function AdminNavbar({ setAdminLoggedIn, adminLoggedIn }) {
         }).then((result) => {
             if (result.isConfirmed) {
                 sessionStorage.removeItem('admin')
-                setAdminLoggedIn(false);
+                sessionStorage.removeItem('token')
+                store.dispatch({ type: IS_ADMINLOGIN, payload: false })
                 Swal.fire({
                     title: 'Logout',
                     type: 'success',

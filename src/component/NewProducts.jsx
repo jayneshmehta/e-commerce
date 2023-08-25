@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import ApiCalls from '../ApiCalls';
+import { useSelector } from 'react-redux';
 
 export default function NewProducts({ title, countOfProduct }) {
-  const product = ApiCalls();
+  const product = useSelector((state) => state.product);
   function getMultipleRandom(product, num) {
     const shuffled = [...product].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, num);

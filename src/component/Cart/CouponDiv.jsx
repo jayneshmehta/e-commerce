@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import $ from 'jquery';
 
-export default function CouponDiv({setcoupon}) {
+export default function CouponDiv({ setcoupon }) {
     const checkCoupon = async (e) => {
         e.preventDefault();
         let formdata = new FormData(e.target);
@@ -10,17 +10,19 @@ export default function CouponDiv({setcoupon}) {
         var name = $("#name").val();
         if (name == "") {
             $("#Err_coupon").html(`<p class='text-center text-danger'>Enter a coupon Code.. </p>`)
-        }else{
+        } else {
+            var token = JSON.parse(sessionStorage.getItem("token"));
+            const config = { headers: { 'Authorization': 'Bearer ' + token } };
             let baseURL = `http://192.168.101.102/api/getCouponsByName-${name}`;
-            await axios.get(baseURL)
+            await axios.get(baseURL,config)
                 .then(response => {
-                if((response.data.status)){
-                    $("#Err_coupon").html(`<p class='text-center text-success'>${response.data.message}</p>`);
-                    setcoupon(parseInt(response.data.discount));
-                }else{
-                    setcoupon(0);
-                    $("#Err_coupon").html(`<p class='text-center text-danger'>${response.data.message}</p>`);
-                }
+                    if ((response.data.status)) {
+                        $("#Err_coupon").html(`<p class='text-center text-success'>${response.data.message}</p>`);
+                        setcoupon(parseInt(response.data.discount));
+                    } else {
+                        setcoupon(0);
+                        $("#Err_coupon").html(`<p class='text-center text-danger'>${response.data.message}</p>`);
+                    }
                 }).catch(
                     (error) => {
                         if (error.response.data.errors) {
@@ -29,7 +31,7 @@ export default function CouponDiv({setcoupon}) {
                                 $(`#Err_${x}`).text(errors[x]);
                             }
                         }
-                        
+
                         let message = error.response.data.message;
                         $("#Err_coupon").html(`<p class='text-center text-danger'>${message}</p>`)
                     }

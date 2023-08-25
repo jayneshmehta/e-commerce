@@ -4,14 +4,19 @@ import Swal from 'sweetalert2';
 import OrdersGroupCard from '../component/Orders/OrdersGroupCard';
 import TrackOrderModal from '../component/Orders/TrackOrderModal';
 import EmptyOrderlist from '../component/Orders/EmptyOrderlist';
+import { useSelector } from 'react-redux';
 
-export default function Orders({ userdata }) {
+export default function Orders() {
+  const userdata = useSelector((state) => state.userdata);
   const [allOrders, setallOrders] = useState([])
   const [ordersByGroupId, setordersByGroupId] = useState([])
+  
   async function getOrders() {
     try {
+      var token = JSON.parse(sessionStorage.getItem("token"));
+      const config = { headers: { 'Authorization': 'Bearer ' + token } };
       var baseURL = `http://192.168.101.102/api/getOrdersByUser-${userdata.id}`;
-      await axios.get(baseURL)
+      await axios.get(baseURL,config)
         .then(response => {
           setallOrders(response.data);
         }).catch(

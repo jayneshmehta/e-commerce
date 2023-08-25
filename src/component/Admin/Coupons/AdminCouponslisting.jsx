@@ -10,9 +10,13 @@ import DataTable from 'datatables.net-dt';
 
 export default function AdminCouponslisting() {
     const [coupons, setCoupons] = useState([])
+    var token = JSON.parse(sessionStorage.getItem("token"));
+    const config = { headers: { 'Authorization': 'Bearer ' + token } };
     const getCoupons = () => {
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         var baseURL = 'http://192.168.101.102/api/getCoupons';
-        axios.get(baseURL).then((response) => {
+        axios.get(baseURL,config).then((response) => {
             setCoupons(response.data);
         });
     }
@@ -25,9 +29,9 @@ export default function AdminCouponslisting() {
         const data = {
             status: event.target.checked,
         }
-
+       
         const BaseUrl = `http://192.168.101.102/api/UpdatecouponStatus-${id}`;
-        await axios.post(BaseUrl, data)
+        await axios.post(BaseUrl, data ,config)
             .then((response) => {
                 let message = response.data.message;
                 Swal.fire({
@@ -57,12 +61,10 @@ export default function AdminCouponslisting() {
         }, 500);
     }, [coupons]);
 
-    const deletebtn = async (e) => {
-        e.preventDefault();
-        var id = (e.target.id).split("_")[1];
+    const deletebtn = async (id) => {
         try {
-            var baseURL = `http://192.168.101.102/api/products/DeletingProductById-${id}`;
-            await axios.delete(baseURL)
+            var baseURL = `http://192.168.101.102/api/deleteCouponbyid-${id}`;
+            await axios.delete(baseURL,config)
                 .then(response => {
                     Swal.fire({
                         title: 'Delete..',
@@ -125,7 +127,7 @@ export default function AdminCouponslisting() {
                                                         </div></td>
                                                         <td className=" border border-dark border-2 " >{items.ExpireDate}</td>
                                                         <td className=" border border-dark border-2 " >
-                                                            <button className='btn btn-danger delete' id={"del_" + items.id} onClick={(e) => { deletebtn(e) }} ><AiTwotoneDelete /></button>
+                                                            <button className='btn btn-danger delete' id={"del_" + items.id} onClick={() => { deletebtn(items.id) }} ><AiTwotoneDelete /></button>
                                                             <Link to={"/admin/updateCoupon"} className='btn btn-warning ms-3' state={items.id}><FaPencilAlt /></Link>
                                                         </td>
                                                     </tr>

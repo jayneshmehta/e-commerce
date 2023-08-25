@@ -3,8 +3,10 @@ import FormInput from '../Forms/FormInput'
 import $ from 'jquery'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { IS_ADMINLOGIN } from '../../ReduxStore/Action';
+import store from '../../ReduxStore/Store';
 
-export default function AdminLogin({setAdminLoggedIn}) {
+export default function AdminLogin() {
     const navigate = useNavigate();
     const loginform = async function (e) {
         e.preventDefault();
@@ -16,8 +18,9 @@ export default function AdminLogin({setAdminLoggedIn}) {
                 $(`#Err_email`).text('');
                 $(`#Err_password`).text('');
                 sessionStorage.setItem("admin", JSON.stringify(response.data.user));
+                sessionStorage.setItem("token", JSON.stringify(response.data.token));
                 $("#msg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
-                setAdminLoggedIn(true);
+                store.dispatch({ type: IS_ADMINLOGIN, payload: true })
                 navigate("/admin");
             }).catch(
                 (error) => {

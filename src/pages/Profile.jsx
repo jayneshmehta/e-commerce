@@ -1,38 +1,50 @@
-import React, { useEffect, useState } from 'react'
-import { Breadcrumbs, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
-import Main from '../component/Profile/Main'
+import React, { useEffect, useState } from 'react';
+import { Breadcrumbs, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import Main from '../component/Profile/Main';
 import Swal from 'sweetalert2';
 import Editprofile from '../component/Profile/Editprofile';
 import Orders from './Orders';
 import Wishlist from './Wishlist';
+import { IS_LOGIN, SET_WISHLIST, USER_DATA } from '../ReduxStore/Action';
+import store from '../ReduxStore/Store';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
-export default function Profile({ setLoggedIn, userdata, setUserdata, products, wishlist, setWishlist, setBuyproduct }) {
- 
+export default function Profile() {
+  const userdata = useSelector((state) => state.userdata);
   const Logout = () => {
     Swal.fire({
       title: 'Are you sure you want to logout..?',
       showDenyButton: true,
       icon: 'warning',
       confirmButtonText: 'Yes',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        sessionStorage.removeItem('user')
-        sessionStorage.removeItem('wishlist')
-        sessionStorage.removeItem('cart')
-        setLoggedIn(sessionStorage.getItem('user'))
-        Swal.fire({
-          title: 'Logout',
-          type: 'success',
-          icon: 'success',
-          text: 'You are loged out successfully..',
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
+        var baseURL = `http://192.168.101.102/api/logout-${userdata.id}`;
+        await axios.get(baseURL, config).then((response) => {
+          sessionStorage.removeItem('user')
+          sessionStorage.removeItem('wishlist')
+          sessionStorage.removeItem('cart')
+          sessionStorage.removeItem('token')
+          store.dispatch({ type: USER_DATA, payload: [] });
+          store.dispatch({ type: SET_WISHLIST, payload: [] });
+          store.dispatch({ type: IS_LOGIN, payload: false });
+          Swal.fire({
+            title: 'Logout',
+            type: 'success',
+            icon: 'success',
+            text: `${response.data.message}`,
+          });
         });
       }
     })
   }
 
   return (
-    <div className="container mt-3" style={{minHeight:"100vh"}}>
+    <div className="container mt-3" style={{ minHeight: "100vh" }}>
       <Breadcrumbs aria-label="breadcrumb" className='my-3'>
         <Link className='text-decoration-none' color="text.primary" to="/">Home</Link>
         <Typography color="text.primary">profile</Typography>
@@ -63,15 +75,15 @@ export default function Profile({ setLoggedIn, userdata, setUserdata, products, 
               <Main userdata={userdata} />
             </article>
             <article className="tab-pane" id="Orders" role="tabpanel">
-              <Orders userdata={userdata} />
+              <Orders />
             </article>
 
             <article className="tab-pane" id="wishlist" role="tabpanel">
-              <Wishlist products={products} wishlist={wishlist} setWishlist={setWishlist} userdata={userdata} setBuyproduct={setBuyproduct} />
+              <Wishlist />
             </article>
 
             <article className="tab-pane " id="edit" role="tabpanel">
-              <Editprofile userdata={userdata} setUserdata={setUserdata} />
+              <Editprofile userdata={userdata} />
             </article>
           </div>
         </div>

@@ -3,20 +3,25 @@ import $ from 'jquery';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
+import store from '../../ReduxStore/Store';
+import { USER_DATA } from '../../ReduxStore/Action';
 
 
-export default function Editprofile({ userdata,setUserdata }) {
-    var profile = (userdata.profile == null) ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThxpx8l6QoJJO1-jbWEyJikEZblAfQutrYbzwPMZHCNA&s" : "http://192.168.101.102/"+userdata.profile;
-    const navigate = useNavigate();
-    async function edit(e) {
+export default function Editprofile({userdata}) {
+    // const userdata = useSelector((state) => state.userdata);
+    var profile = (userdata?.profile == null) ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThxpx8l6QoJJO1-jbWEyJikEZblAfQutrYbzwPMZHCNA&s" : "http://192.168.101.102/"+userdata.profile;
+    const edit =  async (e) => {
         e.preventDefault();
         $("small").text("");
         var data = new FormData(e.target);
-        var baseURL = `http://192.168.101.102/api/UpdateUserbyid-${userdata.id}`;
+        var baseURL = `http://192.168.101.102/api/UpdateUserbyid-${userdata?.id}`;
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
-        await axios.post(baseURL, data)
+        await axios.post(baseURL,data,config)
             .then(response => {
-                setUserdata(response.data.user);
+                store.dispatch({ type: USER_DATA, payload: response.data.user });
                 sessionStorage.setItem("user",JSON.stringify(response.data.user));
                 $("#msg").html(`<p class='text-center text-success'>${response.data.message}</p>`)
                 Swal.fire({
@@ -85,25 +90,25 @@ export default function Editprofile({ userdata,setUserdata }) {
                                     <div className="col-8 mb-3">
                                         <label htmlFor="name" className="form-label">Name</label>
                                         <input type="name"
-                                            className="form-control" name="name" id="name" defaultValue={userdata.name} aria-describedby="Err_name" placeholder="Enter name" />
+                                            className="form-control" name="name" id="name" defaultValue={userdata?.name} aria-describedby="Err_name" placeholder="Enter name" />
                                         <small id="Err_name" className="form-text text-danger"></small>
                                     </div>
                                     <div className="col-8 mb-3">
                                         <label htmlFor="email" className="form-label">Email</label>
                                         <input type="email"
-                                            className="form-control" name="email" id="email" defaultValue={userdata.email} aria-describedby="Err_email" placeholder="Enter email" />
+                                            className="form-control" name="email" id="email" defaultValue={userdata?.email} aria-describedby="Err_email" placeholder="Enter email" />
                                         <small id="email" className="form-text text-danger"></small>
                                     </div>
                                     <div className="col-8 mb-3">
                                         <label htmlFor="contactNo" className="form-label">Contact No </label>
                                         <input type="text"
-                                            className="form-control" name="contactNo" id="contactNo" defaultValue={userdata.contactNo} aria-describedby="Err_contactNo" placeholder="Enter contact no" />
+                                            className="form-control" name="contactNo" id="contactNo" defaultValue={userdata?.contactNo} aria-describedby="Err_contactNo" placeholder="Enter contact no" />
                                         <small id="Err_contactNo" className="form-text text-danger"></small>
                                     </div>
                                     <div className="col-8 mb-3">
                                         <label htmlFor="address" className="form-label">Address</label>
                                         <input type="text"
-                                            className="form-control" name="address" id="address" defaultValue={userdata.address} aria-describedby="Err_address" placeholder="Enter Address" />
+                                            className="form-control" name="address" id="address" defaultValue={userdata?.address} aria-describedby="Err_address" placeholder="Enter Address" />
                                         <small id="Err_address" className="form-text text-danger"></small>
                                     </div>
                                     <button type="submit" className="col-3 btn btn-outline-primary">Submit</button>

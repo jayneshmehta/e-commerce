@@ -2,8 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import SmallBuyProcuct from '../Payment/SmallBuyProcuct';
 import $ from 'jquery';
-import Swal from 'sweetalert2';
 
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
+import Invoice from '../../Invoice';
 export default function OrdersGroupCard({ groupId }) {
     const [ordersByGroup, setordersByGroup] = useState([]);
 
@@ -15,16 +17,19 @@ export default function OrdersGroupCard({ groupId }) {
         address: "",
         total_amount: 0,
         payment: '',
+        orders: "",
     });
 
     async function getOrders() {
         try {
+            var token = JSON.parse(sessionStorage.getItem("token"));
+            const config = { headers: { 'Authorization': 'Bearer ' + token } };
             var baseURL = `http://192.168.101.102/api/getOrdersBygroupId-${groupId}`;
-            await axios.get(baseURL)
+            await axios.get(baseURL,config)
                 .then(response => {
-                    var total = 0;
+                    var total = 0 ;
                     setordersByGroup(response.data);
-                    total += parseInt(response.data.map((items) => { return items.TotalAmount }));
+                    response.data.map((items) => {  return total += parseFloat(items.TotalAmount)});
                     setdata({
                         id: response.data.id,
                         status: response.data[0]?.status,
@@ -33,6 +38,7 @@ export default function OrdersGroupCard({ groupId }) {
                         address: response.data[0]?.ShippingAddress,
                         total_amount: total,
                         payment: response.data[0]?.paymentType,
+                        orders : response.data,
                     });
                 }).catch(
                     (error) => {
@@ -47,11 +53,14 @@ export default function OrdersGroupCard({ groupId }) {
         getOrders();
     }, []);
 
-    const CancleOrder = async (id) => {
+    const CancleOrder = async (id) => 
+    {
         var data = {
             status: 'Cancelled',
         }
         try {
+            var token = JSON.parse(sessionStorage.getItem("token"));
+            const config = { headers: { 'Authorization': 'Bearer ' + token } };
             var baseURL = `http://192.168.101.102/api/UpdateStatus-${id}`;
             Swal.fire({
                 title: 'Are you sure you want to cancel this order..?',
@@ -59,7 +68,7 @@ export default function OrdersGroupCard({ groupId }) {
                 icon: 'warning',
                 confirmButtonText: 'Yes',
             }).then(async (result) => {
-                await axios.post(baseURL, data)
+                await axios.post(baseURL, data,config)
                     .then(response => {
                         if (result.isConfirmed) {
                             Swal.fire({
@@ -148,6 +157,7 @@ export default function OrdersGroupCard({ groupId }) {
             i++;
         }
     }
+
     return (
         <div className="card border-primary mb-4 ">
             <div className="card-body">
@@ -162,18 +172,19 @@ export default function OrdersGroupCard({ groupId }) {
                         (data.status != "Cancelled") &&
                         <div className='gap-2'>
                             <button className="btn me-2 btn-outline-danger" onClick={() => CancleOrder(groupId)}>Cancel order</button>
-                            <button className=" btn btn-primary" onClick={() => Openmodel(groupId)}> Track order</button>
+                            <button className=" btn btn-primary me-2" onClick={() => Openmodel(groupId)}> Track order</button>
+                            <Link className=" btn btn-success" to={"/showInvoice"} state={data}>Show Invoice</Link>
                         </div>
                     }
                 </header>
                 <hr />
                 <div className="row gx-0">
                     <div className="row gx-0 p-2">
-                        <div className="col-lg-6 px-2 ">
+                        <div className="col-6 px-2 ">
                             <p className="mb-0 text-muted">Shipping address</p>
                             <p className="m-0"> {data.address} </p>
                         </div>
-                        <div className="col-lg-4 px-2  border-start">
+                        <div className="col-4 px-2  border-start">
                             <p className="mb-0 text-muted">Payment</p>
                             <p className="m-0">
                                 <span className="text-success"> {data.payment}  </span> <br />
@@ -183,7 +194,7 @@ export default function OrdersGroupCard({ groupId }) {
                         </div>
                     </div>
                     <hr />
-                    <ul className="row  d-flex flex-wrap">
+                    <ul className="row d-flex flex-wrap">
                         {
                             ordersByGroup.map((item, index) => {
                                 return (

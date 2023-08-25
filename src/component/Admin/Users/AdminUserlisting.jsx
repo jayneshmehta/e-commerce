@@ -54,8 +54,10 @@ export default function AdminUserlisting() {
         const data = {
             status: event.target.checked,
         }
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         const BaseUrl = `http://192.168.101.102/api/changePrivilege-${id}`;
-        await axios.post(BaseUrl, data)
+        await axios.post(BaseUrl, data , config)
             .then((response) => {
                 let message = response.data.message;
                 Swal.fire({
@@ -67,15 +69,18 @@ export default function AdminUserlisting() {
                 setisAdmin(event.target.checked);
             })
             .catch((error) => {
+                console.log(error);
                 if (error.response.data.errors) {
                     var errors = error.response.data.errors;
-                    Swal.fire({
-                        title: 'Privilege Updated..',
-                        type: 'error',
-                        icon: 'error',
-                        text: `${errors}`,
-                    });
+                }else{
+                    var errors = error.response.data.message;
                 }
+                Swal.fire({
+                    title: 'Privilege Updated..',
+                    type: 'error',
+                    icon: 'error',
+                    text: `${errors}`,
+                });
             })
     };
 

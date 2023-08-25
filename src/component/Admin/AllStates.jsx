@@ -20,8 +20,10 @@ export default function ProductsWithSub_category() {
 export const deleteProduct = async (e, table) => {
     var id = (e.target.id).split("_")[1];
     try {
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         var baseURL = `http://192.168.101.102/api/products/DeletingProductById-${id}`;
-        await axios.delete(baseURL)
+        await axios.delete(baseURL,config)
             .then((response) => {
                 Swal.fire({
                     title: 'Delete..',
@@ -51,9 +53,11 @@ export const deleteProduct = async (e, table) => {
 
 export const GetUsers = () => {
     const [users, setUsers] = useState([])
+    var token = JSON.parse(sessionStorage.getItem("token"));
+    const config = { headers: { 'Authorization': 'Bearer ' + token } };
     const getUsers = () => {
         var baseURL = 'http://192.168.101.102/api/user/getUsers';
-        axios.get(baseURL).then((response) => {
+        axios.get(baseURL,config).then((response) => {
             setUsers(response.data);
         });
     }
@@ -67,8 +71,10 @@ export const deleteUser = async (e, table) => {
     e.preventDefault();
     var id = (e.target.id).split("_")[1];
     try {
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         var baseURL = `http://192.168.101.102/api/user/DeletingUserById-${id}`;
-        await axios.delete(baseURL)
+        await axios.delete(baseURL,config)
             .then(response => {
                 Swal.fire({
                     title: 'Delete..',
@@ -90,12 +96,13 @@ export const deleteUser = async (e, table) => {
 }
 
 export const GetOrders = () => {
-
+    var token = JSON.parse(sessionStorage.getItem("token"));
+    const config = { headers: { 'Authorization': 'Bearer ' + token } };
     const [orders, setOrders] = useState([])
 
     const getOrders = async () => {
         var baseURL = 'http://192.168.101.102/api/orders';
-        await axios.get(baseURL).then((response) => {
+        await axios.get(baseURL,config).then((response) => {
             setOrders(response.data);
         });
     }
@@ -114,8 +121,10 @@ export const Statusbtn = async (e, table) => {
     }
     var id = (e.target.id).split("_")[1];
     try {
+        var token = JSON.parse(sessionStorage.getItem("token"));
+        const config = { headers: { 'Authorization': 'Bearer ' + token } };
         var baseURL = `http://192.168.101.102/api/UpdateStatus-${id}`;
-        await axios.post(baseURL, data)
+        await axios.post(baseURL, data,config)
             .then(response => {
                 Swal.fire({
                     title: 'Status..',
@@ -147,8 +156,10 @@ export const updateOrder = async (e) => {
     $("#message").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
     $("small").text("");
     var data = new FormData(e.target);
+    var token = JSON.parse(sessionStorage.getItem("token"));
+    const config = { headers: { 'Authorization': 'Bearer ' + token } };
     const BaseUrl = `http://192.168.101.102/api/UpdateOrders-${id}`;
-    await axios.post(BaseUrl, data)
+    await axios.post(BaseUrl, data,config)
         .then((response) => {
             let message = response.data.message;
             Swal.fire({

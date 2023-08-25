@@ -11,20 +11,18 @@ import AfterLogin from './AfterLogin';
 import BeforeLogin from './BeforeLogin';
 import AdminNavbar from './Admin/AdminNavbar';
 
-export default function Navbar({ count,wishlistcount,setAdminLoggedIn,adminLoggedIn }) {
+export default function Navbar() {
     const [category, setcategory] = useState([])
     const {pathname} = useLocation();
     const isAdmin = /(.*)\/admin(.*)/;
-
+    
     var baseURL = 'http://192.168.101.102/api/categorys';
     useEffect(() => {
         axios.get(baseURL).then((response) => {
             setcategory(response.data)
         });
     }, []);
-    var categorys = category.map((items, index) => {
-        return <option value={items.id} key={index}>{items.name}</option>
-    });
+
     var admin = pathname.match(isAdmin);
     var userExist = false;
     if (sessionStorage.getItem('user')) {
@@ -38,7 +36,7 @@ export default function Navbar({ count,wishlistcount,setAdminLoggedIn,adminLogge
                     <Link to={'/'} className='text-muted text-decoration-none '><img src={logo192} className='App-logo me-2' alt="logo" style={{ height: "40px" }} />
                         <span className='pt-1 fw-bold fs-4 text-primary'>React</span></Link>
                 </div>
-                {   admin?<AdminNavbar setAdminLoggedIn={setAdminLoggedIn} adminLoggedIn={adminLoggedIn}/>:userExist ? <AfterLogin count={count} wishlistcount={wishlistcount}/> : <BeforeLogin />
+                {   admin?<AdminNavbar/>:userExist ? <AfterLogin /> : <BeforeLogin />
                 }
             </div>
         </nav>

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Productcard from './Productcard';
 import Carousel from 'react-multi-carousel';
 import ApiCalls from '../ApiCalls';
+import { useSelector } from 'react-redux';
 
 
 export default function OffersOfDay() {
-    var countDownDate = new Date("Aug 20 , 2023 15:37:25").getTime();
-    const product = ApiCalls();
+    var countDownDate = new Date("Aug 28 , 2023 15:37:25").getTime();
+    const product = useSelector((state) => state.product);
     // Update the count down every 1 second
     const [days, setDays] = useState(0)
     const [hours, setHours] = useState(0)

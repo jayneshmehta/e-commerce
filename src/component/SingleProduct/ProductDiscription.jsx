@@ -4,7 +4,7 @@ import ShowReview from './ShowReview'
 import axios from 'axios';
 import ReviewGraph from './ReviewGraph';
 
-export default function ProductDiscription({ product, userdata }) {
+export default function ProductDiscription({ product }) {
     const [review, setreview] = useState([]);
     function getreviews() {
         let Baseurl = `http://192.168.101.102/api/review/GettingreviewBproductId-${product.id}`;
@@ -39,13 +39,13 @@ export default function ProductDiscription({ product, userdata }) {
                         {product.description}
                     </article>
                     <article className="tab-pane active" id="reviews" role="tabpanel">
-                        <ReviewGraph  review={review} />
+                        <ReviewGraph  review={review}  />
                         <div className='overflow-auto p-3 bg-light rounded' style={{ maxHeight: '260px' }}>
                             <ShowReview review={review} />
                         </div>
                         <hr />
                         <h3 className="fw-bolder">Write a Review</h3>
-                        <ReviewProduct product={product} userdata={userdata} getreviews={getreviews} />
+                        <ReviewProduct product={product} getreviews={getreviews} />
                     </article>
                     <article className="tab-pane" id="shipping" role="tabpanel">
                         <h6>Shipping information </h6>
