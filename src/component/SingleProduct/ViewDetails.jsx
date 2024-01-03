@@ -10,6 +10,7 @@ import { BsBookmarkHeartFill } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import env from "react-dotenv";
 import { ADD_CART, ADD_WISHLIST } from '../../ReduxStore/Action';
 import store from '../../ReduxStore/Store';
 
@@ -39,7 +40,7 @@ export default function ViewDetails({ product }) {
             try {
                 var token = JSON.parse(sessionStorage.getItem("token"));
                 const config = { headers: { 'Authorization': 'Bearer ' + token } };
-                var baseURL = `http://192.168.101.102/api/addOrCreate`;
+                var baseURL = `${env.API_URL}addOrCreate`;
                 await axios.post(baseURL, data, config)
                     .then(response => {
                         Swal.fire({

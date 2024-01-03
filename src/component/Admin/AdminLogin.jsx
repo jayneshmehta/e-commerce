@@ -2,6 +2,7 @@ import React from 'react'
 import FormInput from '../Forms/FormInput'
 import $ from 'jquery'; 
 import axios from 'axios';
+import env from "react-dotenv";
 import { useNavigate } from 'react-router-dom';
 import { IS_ADMINLOGIN } from '../../ReduxStore/Action';
 import store from '../../ReduxStore/Store';
@@ -10,7 +11,7 @@ export default function AdminLogin() {
     const navigate = useNavigate();
     const loginform = async function (e) {
         e.preventDefault();
-        var baseURL = 'http://192.168.101.102/api/admin/login';
+        var baseURL = env.API_URL+'admin/login';
         var formdata = new FormData(e.target);
         $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
         await axios.post(baseURL, formdata)

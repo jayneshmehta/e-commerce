@@ -35,11 +35,12 @@ import store from './ReduxStore/Store';
 import { useSelector } from 'react-redux';
 import { GET_PRODUCT } from './ReduxStore/Action';
 import Notification from './pages/Notification';
+import env from "react-dotenv";
 
 
 export default function App() {
   const getProduct = async () => {
-    var baseURL = 'http://192.168.101.102/api/products';
+    var baseURL = env.API_URL+'products';
     await axios.get(baseURL).then((response) => {
       store.dispatch({ type: GET_PRODUCT, payload: response.data })
     });

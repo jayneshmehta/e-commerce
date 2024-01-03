@@ -10,6 +10,7 @@ import $ from 'jquery';
 import SmallBuyProcuct from '../component/Payment/SmallBuyProcuct'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import env from "react-dotenv";
 
 export default function Payment() {
   
@@ -103,7 +104,7 @@ export default function Payment() {
             }
             var token = JSON.parse(sessionStorage.getItem("token"));
             const config = { headers: { 'Authorization': 'Bearer ' + token } };
-            var baseURL = 'http://192.168.101.102/api/orders';
+            var baseURL = env.API_URL+'orders';
             axios.post(baseURL, (data),config)
                 .then(response => {
                     Swal.fire({

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import ListingCategory from './ListingCategory';
 import axios from 'axios';
+import env from "react-dotenv";
 
 export default function FilterByProduct({filter}) {
     const [category, setCategory] = useState([])
-    var baseURL1 = 'http://192.168.101.102/api/categorys';
+    var baseURL1 = env.API_URL+'categorys';
     useEffect(() => {
         axios.get(baseURL1).then((response1) => {
             setCategory(response1.data);
@@ -12,7 +13,7 @@ export default function FilterByProduct({filter}) {
     }, []);
 
     const [sub_category, setSub_Category] = useState([])
-    var baseURL2 = 'http://192.168.101.102/api/sub_category';
+    var baseURL2 = env.API_URL+'sub_category';
     useEffect(() => {
         axios.get(baseURL2).then((response2) => {
             setSub_Category(response2.data);

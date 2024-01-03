@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
@@ -34,7 +35,7 @@ export default function AddProduct() {
   }
 
   const [category, setCategory] = useState([])
-  var baseURL1 = 'http://192.168.101.102/api/categorys';
+  var baseURL1 = env.API_URL+'categorys';
   useEffect(() => {
     axios.get(baseURL1).then((response1) => {
       setCategory(response1.data);
@@ -44,7 +45,7 @@ export default function AddProduct() {
   const getSubCategory = (e) => {
     var id = e.target.value;
     $("#category_id").html('<option value=" ">Choose Sub_categories </option>');
-    var baseURL2 = `http://192.168.101.102/api/getSub_categoryByCategoryId-${id}`;
+    var baseURL2 = `${env.API_URL}getSub_categoryByCategoryId-${id}`;
     axios.get(baseURL2).then((response2) => {
       response2.data.map((item) => {
       return item.Sub_category_Name

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios';
+import env from "react-dotenv";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import CategoryName from './CategoryName'
@@ -12,9 +13,9 @@ export default function CategoryProduct({ url, title, Category, Sub_Category }) 
     const [product, setProduct] = useState([])
     useEffect(() => {
         if (Sub_Category) {
-            var baseURL = `http://192.168.101.102/api/products/GettingProductBySub_CategoryId-${Sub_Category}`;
+            var baseURL = `${env.API_URL}products/GettingProductBySub_CategoryId-${Sub_Category}`;
         } else {
-            var baseURL = `http://192.168.101.102/api/products/GettingProductByCategoryId-${Category}`;
+            var baseURL = `${env.API_URL}products/GettingProductByCategoryId-${Category}`;
         }
         axios.get(baseURL).then((response) => {
             setProduct(response.data);

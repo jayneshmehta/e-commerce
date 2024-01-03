@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import OrdersGroupCard from '../component/Orders/OrdersGroupCard';
@@ -15,7 +16,7 @@ export default function Orders() {
     try {
       var token = JSON.parse(sessionStorage.getItem("token"));
       const config = { headers: { 'Authorization': 'Bearer ' + token } };
-      var baseURL = `http://192.168.101.102/api/getOrdersByUser-${userdata.id}`;
+      var baseURL = `${env.API_URL}getOrdersByUser-${userdata.id}`;
       await axios.get(baseURL,config)
         .then(response => {
           setallOrders(response.data);

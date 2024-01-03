@@ -7,6 +7,7 @@ import { FaSadCry } from 'react-icons/fa';
 import { BsBookmarkHeartFill } from 'react-icons/bs';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import env from "react-dotenv";
 import $ from 'jquery';
 import { ADD_WISHLIST } from '../../ReduxStore/Action';
 import store from '../../ReduxStore/Store';
@@ -50,7 +51,7 @@ export default function FilteredProduct({/* addWishList, */ products }) {
       try {
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        var baseURL = `http://192.168.101.102/api/addOrCreate`;
+        var baseURL = `${env.API_URL}addOrCreate`;
         await axios.post(baseURL, data, config)
           .then(response => {
             Swal.fire({

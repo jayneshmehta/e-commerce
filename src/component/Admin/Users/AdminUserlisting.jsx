@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Loading from '../Loading';
@@ -26,7 +27,7 @@ export default function AdminUserlisting() {
         const data = {
             status: event.target.checked,
         }
-        const BaseUrl = `http://192.168.101.102/api/UpdateuserStatus-${id}`;
+        const BaseUrl = `${env.API_URL}UpdateuserStatus-${id}`;
         await axios.post(BaseUrl, data)
             .then((response) => {
                 let message = response.data.message;
@@ -56,7 +57,7 @@ export default function AdminUserlisting() {
         }
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        const BaseUrl = `http://192.168.101.102/api/changePrivilege-${id}`;
+        const BaseUrl = `${env.API_URL}changePrivilege-${id}`;
         await axios.post(BaseUrl, data , config)
             .then((response) => {
                 let message = response.data.message;

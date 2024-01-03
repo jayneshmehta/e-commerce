@@ -1,6 +1,7 @@
 import React from 'react'
 import StatusOptions from './StatusOptions'
 import axios from 'axios';
+import env from "react-dotenv";
 import Swal from 'sweetalert2';
 import $ from 'jquery';
 import { updateOrder } from '../AllStates';
@@ -14,7 +15,7 @@ export default function UpdateStatusForm({ orderData, setOrderdata }) {
     //     $("#message").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
     //     $("small").text("");
     //     var data = new FormData(e.target);
-    //     const BaseUrl = `http://192.168.101.102/api/UpdateOrders-${id}`;
+    //     const BaseUrl = `${env.API_URL}UpdateOrders-${id}`;
     //     await axios.post(BaseUrl, data)
     //         .then((response) => {
     //             let message = response.data.message;

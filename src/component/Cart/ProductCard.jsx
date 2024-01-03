@@ -6,6 +6,7 @@ import store from '../../ReduxStore/Store';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import env from "react-dotenv";
 
 export default function ProductCard({ items, ChangeQuantity, wishlistpage }) {
     const Buyproduct = useSelector((state) => state.buyproduct);
@@ -38,7 +39,7 @@ export default function ProductCard({ items, ChangeQuantity, wishlistpage }) {
             try {
                 var token = JSON.parse(sessionStorage.getItem("token"));
                 const config = { headers: { 'Authorization': 'Bearer ' + token } };
-                var baseURL = `http://192.168.101.102/api/addOrCreate`;
+                var baseURL = `${env.API_URL}addOrCreate`;
                 await axios.post(baseURL, data, config)
                     .then(response => {
                         Swal.fire({

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import env from "react-dotenv";
 import { Link, useLocation } from 'react-router-dom';
 import Breadcrump from '../component/Breadcrump'
 import ProductDetails from '../component/ProductDetails'
@@ -14,7 +15,7 @@ export default function ViewProduct({addWishList}) {
     const [product, setProduct] = useState([]);
     const [images, setImages] = useState([]);
     useEffect(() => {
-      let Baseurl = `http://192.168.101.102/api/products/GettingProductById-${product_id}`;
+      let Baseurl = `${env.API_URL}products/GettingProductById-${product_id}`;
       axios.get(Baseurl).then(async (responce) => {
         setProduct(responce.data);
         setImages(await responce.data.images?.split(','));

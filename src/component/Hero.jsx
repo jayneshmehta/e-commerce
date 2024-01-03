@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios';
+import env from "react-dotenv";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import CarouselAds from './CarouselAds';
@@ -9,7 +10,7 @@ import $ from 'jquery';
 
 export default function Hero({setCategory}) {
     const [sub_category, setsub_category] = useState([])
-    var baseURL = 'http://192.168.101.102/api/sub_category';
+    var baseURL = env.API_URL+'sub_category';
     useEffect(() => {
         axios.get(baseURL).then((response) => {
             setsub_category(response.data)

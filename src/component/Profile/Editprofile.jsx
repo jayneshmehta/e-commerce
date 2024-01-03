@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
+import env from "react-dotenv";
 import { Navigate, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
@@ -15,7 +16,7 @@ export default function Editprofile({userdata}) {
         e.preventDefault();
         $("small").text("");
         var data = new FormData(e.target);
-        var baseURL = `http://192.168.101.102/api/UpdateUserbyid-${userdata?.id}`;
+        var baseURL = `${env.API_URL}UpdateUserbyid-${userdata?.id}`;
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
         $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);

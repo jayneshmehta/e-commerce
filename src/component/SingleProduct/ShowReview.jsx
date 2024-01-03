@@ -1,5 +1,6 @@
 import { Rating } from '@mui/material';
 import axios from 'axios';
+import env from "react-dotenv";
 import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { FaStar } from 'react-icons/fa';

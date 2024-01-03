@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import ReviewProduct from './ReviewProduct'
 import ShowReview from './ShowReview'
 import axios from 'axios';
+import env from "react-dotenv";
 import ReviewGraph from './ReviewGraph';
 
 export default function ProductDiscription({ product }) {
     const [review, setreview] = useState([]);
     function getreviews() {
-        let Baseurl = `http://192.168.101.102/api/review/GettingreviewBproductId-${product.id}`;
+        let Baseurl = `${env.API_URL}review/GettingreviewBproductId-${product.id}`;
         axios.get(Baseurl).then(async (responce) => {
             setreview([]);
             setreview(responce.data);

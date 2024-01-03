@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import FormInput from '../../Forms/FormInput'
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import env from "react-dotenv";
 import $ from 'jquery';
 import Swal from 'sweetalert2';
 
@@ -12,7 +13,7 @@ export default function Updatecoupon() {
     var token = JSON.parse(sessionStorage.getItem("token"));
     const config = { headers: { 'Authorization': 'Bearer ' + token } };
     useEffect(() => {
-        let Baseurl = `http://192.168.101.102/api/GettingCouponById-${coupon_id}`;
+        let Baseurl = `${env.API_URL}GettingCouponById-${coupon_id}`;
         axios.get(Baseurl,config).then(async (responce) => {
             setCoupon(responce.data);
         });
@@ -24,7 +25,7 @@ export default function Updatecoupon() {
         $("small").text("");
         var data = new FormData(e.target);
        
-        const BaseUrl = `http://192.168.101.102/api/UpdateCouponbyid-${coupon_id}`;
+        const BaseUrl = `${env.API_URL}UpdateCouponbyid-${coupon_id}`;
         await axios.post(BaseUrl, data,config)
             .then((response) => {
                 let message = response.data.message;

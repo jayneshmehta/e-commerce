@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import $ from 'jquery';
 import axios from 'axios';
+import env from "react-dotenv";
 import GoogleButton from 'react-google-button';
 import Swal from 'sweetalert2';
 import FormInput from '../component/Forms/FormInput';
@@ -35,7 +36,7 @@ export default function Login() {
     }, [Passwordchanged])
     const loginform = async function (e) {
         e.preventDefault();
-        var baseURL = 'http://192.168.101.102/api/login';
+        var baseURL = env.API_URL+'login';
         var formdata = new FormData(e.target);
         $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
         await axios.post(baseURL, formdata)
@@ -88,7 +89,7 @@ export default function Login() {
                     fpassword: fpassword,
                     contactNo: contactNo,
                 }
-                var baseURL = 'http://192.168.101.102/api/changePassword';
+                var baseURL = env.API_URL+'changePassword';
                 await axios.post(baseURL, (data))
                     .then(response => {
                         let message = response.data.message;
@@ -124,7 +125,7 @@ export default function Login() {
             otp: otp,
             contactNo: contactNo
         }
-        var baseURL = 'http://192.168.101.102/api/verifysmsotp';
+        var baseURL = env.API_URL+'verifysmsotp';
         await axios.post(baseURL, (data))
             .then(response => {
                 let message = response.data.message;
@@ -147,7 +148,7 @@ export default function Login() {
     }
     async function sendsmsotp() {
         $(`#Err_contactNo`).text('');
-        var baseURL = 'http://192.168.101.102/api/sendsmsotp';
+        var baseURL = env.API_URL+'sendsmsotp';
         var contactNo = $("#contactNo").val();
         var data = {
             contactNo: contactNo,
@@ -178,7 +179,7 @@ export default function Login() {
     const [Googleurl, setGoogleurl] = useState('')
 
     const signinWithgoogle = async () => {
-        var baseURL = 'http://192.168.101.102/api/auth/google';
+        var baseURL = env.API_URL+'auth/google';
         await axios.get(baseURL)
             .then(({ data }) => {
                 setGoogleurl(data);

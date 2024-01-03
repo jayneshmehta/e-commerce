@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../component/Cart/ProductCard'
 import axios from 'axios';
+import env from "react-dotenv";
 import Swal from 'sweetalert2';
 import EmptyCart from '../component/Cart/EmptyCart';
 import EmpltyWishlist from '../component/Wishlist/EmpltyWishlist';

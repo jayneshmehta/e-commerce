@@ -2,6 +2,7 @@ import { Rating } from '@mui/material';
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
+import env from "react-dotenv";
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

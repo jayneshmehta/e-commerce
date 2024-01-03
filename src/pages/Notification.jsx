@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { GET_NOTIFICATION } from '../ReduxStore/Action';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import env from "react-dotenv";
 import store from '../ReduxStore/Store';
 import { AiFillStar, AiOutlineLogin } from 'react-icons/ai';
 import { GrUpdate } from 'react-icons/gr';
@@ -16,7 +17,7 @@ export default function Notification() {
     const getNotification = async () => {
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        var baseURL = `http://192.168.101.102/api/notificationById-${userdata.id}`;
+        var baseURL = `${env.API_URL}notificationById-${userdata.id}`;
         await axios.get(baseURL, config).then((response) => {
             store.dispatch({ type: GET_NOTIFICATION, payload: response.data })
         });

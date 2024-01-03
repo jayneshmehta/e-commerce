@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React from 'react';
 import $ from 'jquery';
 
@@ -13,7 +14,7 @@ export default function CouponDiv({ setcoupon }) {
         } else {
             var token = JSON.parse(sessionStorage.getItem("token"));
             const config = { headers: { 'Authorization': 'Bearer ' + token } };
-            let baseURL = `http://192.168.101.102/api/getCouponsByName-${name}`;
+            let baseURL = `${env.API_URL}getCouponsByName-${name}`;
             await axios.get(baseURL,config)
                 .then(response => {
                     if ((response.data.status)) {

@@ -1,6 +1,7 @@
 import React from 'react'
 import logo192 from "./logo192.png";
 import axios from 'axios';
+import env from "react-dotenv";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Swal from "sweetalert2"; 
@@ -16,7 +17,7 @@ export default function Navbar() {
     const {pathname} = useLocation();
     const isAdmin = /(.*)\/admin(.*)/;
     
-    var baseURL = 'http://192.168.101.102/api/categorys';
+    var baseURL = env.API_URL+'categorys';
     useEffect(() => {
         axios.get(baseURL).then((response) => {
             setcategory(response.data)

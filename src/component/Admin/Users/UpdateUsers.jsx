@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import $ from 'jquery';
@@ -9,7 +10,7 @@ export default function UpdateUsers() {
     const user_id = location.state;
     const [user, setUser] = useState([]);
     useEffect(() => {
-        let Baseurl = `http://192.168.101.102/api/user/GettingUserById-${user_id}`;
+        let Baseurl = `${env.API_URL}user/GettingUserById-${user_id}`;
         axios.get(Baseurl).then(async (responce) => {
             setUser(responce.data);
         });
@@ -20,7 +21,7 @@ export default function UpdateUsers() {
         $("#message").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
         $("small").text("");
         var data = new FormData(e.target);
-        const BaseUrl = `http://192.168.101.102/api/UpdateUserbyid-${user_id}`;
+        const BaseUrl = `${env.API_URL}UpdateUserbyid-${user_id}`;
         await axios.post(BaseUrl, data)
             .then((response) => {
                 let message = response.data.message;

@@ -1,11 +1,12 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 export default function SimilarProducts({ category }) {
 
     const [product, setProduct] = useState([])
-    var baseURL = `http://192.168.101.102/api/products/GettingProductBySub_CategoryId-${category}`;
+    var baseURL = `${env.API_URL}products/GettingProductBySub_CategoryId-${category}`;
     useMemo(() => {
         axios.get(baseURL).then((response) => {
             setProduct(response.data);

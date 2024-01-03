@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import $ from 'jquery';
 import axios from 'axios';
+import env from "react-dotenv";
 import FormInput from '../component/Forms/FormInput';
 export default function Register() {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function Register() {
     //     $(`#Err_email`).text('');
     //     var otp = $("#otp").val();
     //     var email = $("#email").val().trim();
-    //     var baseURL = 'http://192.168.101.102/api/verifyOtp';
+    //     var baseURL = env.API_URL+'verifyOtp';
     //     var data = {
     //         email: email,
     //         otp: otp,
@@ -54,7 +55,7 @@ export default function Register() {
     //         $("#msg").html(`<div class="spinner-border" role="status"><span class="sr-only"></span></div>`);
     //         var name = $("#name").val().trim()
     //         var email = $("#email").val().trim()
-    //         var baseURL = 'http://192.168.101.102/api/sendmail';
+    //         var baseURL = env.API_URL+'sendmail';
     //         var data = {
     //             email: email,
     //             name: name,
@@ -79,7 +80,7 @@ export default function Register() {
     async function register(e) {
         e.preventDefault();
         $(`small`).text('');
-        var baseURL = 'http://192.168.101.102/api/register';
+        var baseURL = env.API_URL+'register';
         if ($("#password").val() !== $("#confrim_password").val()) {
             $("#Err_Cpassword").text("Passward Doesn't match..");
         } else {

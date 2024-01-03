@@ -1,8 +1,8 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Loading from '../Loading';
-import Swal from 'sweetalert2';
 import DataTable from 'datatables.net-dt';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import { FaPencilAlt } from 'react-icons/fa';
@@ -17,7 +17,53 @@ export default function AdminProductlisting() {
 
   useEffect(() => {
     setTimeout(() => {
-      table = new DataTable('#table');
+      console.log("hellloooooo");
+      table = new DataTable('#table', 
+          {
+            pagingType: "full_numbers",
+            pageLength: 20,
+            processing: true,
+            dom: "Bfrtip",
+            select: {
+              style: "single",
+            },
+
+            buttons: [
+              {
+                extend: "pageLength",
+                className: "btn btn-secondary bg-secondary",
+              },
+              {
+                extend: "copy",
+                className: "btn btn-secondary bg-secondary",
+              },
+              {
+                extend: "excel",
+                className: "btn btn-secondary bg-secondary",
+              },
+              {
+                extend: "csv",
+                className: "btn btn-secondary bg-secondary",
+              },
+              {
+                extend: "print",
+                customize: function (win) {
+                  $(win.document.body).css("font-size", "10pt");
+                  $(win.document.body)
+                    .find("table")
+                    .addClass("compact")
+                    .css("font-size", "inherit");
+                },
+                className: "btn btn-secondary bg-secondary",
+              },
+            ],
+
+            lengthMenu: [
+              [10, 20, 30, 50, -1],
+              [10, 20, 30, 50, "All"],
+            ],
+          }
+        );
     }, 500);
   }, [product]);
 

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import { AiTwotoneDelete } from 'react-icons/ai';
 import { FaPencilAlt } from 'react-icons/fa';
@@ -15,7 +16,7 @@ export default function AdminCouponslisting() {
     const getCoupons = () => {
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        var baseURL = 'http://192.168.101.102/api/getCoupons';
+        var baseURL = env.API_URL+'getCoupons';
         axios.get(baseURL,config).then((response) => {
             setCoupons(response.data);
         });
@@ -30,7 +31,7 @@ export default function AdminCouponslisting() {
             status: event.target.checked,
         }
        
-        const BaseUrl = `http://192.168.101.102/api/UpdatecouponStatus-${id}`;
+        const BaseUrl = `${env.API_URL}UpdatecouponStatus-${id}`;
         await axios.post(BaseUrl, data ,config)
             .then((response) => {
                 let message = response.data.message;
@@ -63,7 +64,7 @@ export default function AdminCouponslisting() {
 
     const deletebtn = async (id) => {
         try {
-            var baseURL = `http://192.168.101.102/api/deleteCouponbyid-${id}`;
+            var baseURL = `${env.API_URL}deleteCouponbyid-${id}`;
             await axios.delete(baseURL,config)
                 .then(response => {
                     Swal.fire({

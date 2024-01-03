@@ -10,6 +10,7 @@ import { IS_LOGIN, SET_WISHLIST, USER_DATA } from '../ReduxStore/Action';
 import store from '../ReduxStore/Store';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import env from "react-dotenv";
 
 export default function Profile() {
   const userdata = useSelector((state) => state.userdata);
@@ -23,7 +24,7 @@ export default function Profile() {
       if (result.isConfirmed) {
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        var baseURL = `http://192.168.101.102/api/logout-${userdata.id}`;
+        var baseURL = `${env.API_URL}logout-${userdata.id}`;
         await axios.get(baseURL, config).then((response) => {
           sessionStorage.removeItem('user')
           sessionStorage.removeItem('wishlist')

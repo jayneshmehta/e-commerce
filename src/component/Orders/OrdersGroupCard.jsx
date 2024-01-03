@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import SmallBuyProcuct from '../Payment/SmallBuyProcuct';
 import $ from 'jquery';
@@ -24,7 +25,7 @@ export default function OrdersGroupCard({ groupId }) {
         try {
             var token = JSON.parse(sessionStorage.getItem("token"));
             const config = { headers: { 'Authorization': 'Bearer ' + token } };
-            var baseURL = `http://192.168.101.102/api/getOrdersBygroupId-${groupId}`;
+            var baseURL = `${env.API_URL}getOrdersBygroupId-${groupId}`;
             await axios.get(baseURL,config)
                 .then(response => {
                     var total = 0 ;
@@ -61,7 +62,7 @@ export default function OrdersGroupCard({ groupId }) {
         try {
             var token = JSON.parse(sessionStorage.getItem("token"));
             const config = { headers: { 'Authorization': 'Bearer ' + token } };
-            var baseURL = `http://192.168.101.102/api/UpdateStatus-${id}`;
+            var baseURL = `${env.API_URL}UpdateStatus-${id}`;
             Swal.fire({
                 title: 'Are you sure you want to cancel this order..?',
                 showDenyButton: true,

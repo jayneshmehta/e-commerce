@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import DataTable from 'datatables.net-dt';
 import Swal from 'sweetalert2';
@@ -8,6 +9,15 @@ import UpdateStatusForm from './UpdateStatusForm';
 import { FaPencilAlt } from 'react-icons/fa';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import { GetOrders, Statusbtn } from '../AllStates';
+import "jquery/dist/jquery.min.js";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "datatables.net-buttons/js/dataTables.buttons.js";
+import "datatables.net-buttons/js/buttons.colVis.js";
+import "datatables.net-buttons/js/buttons.flash.js";
+import "datatables.net-buttons/js/buttons.html5.js";
+import "datatables.net-buttons/js/buttons.print.js";
+import $ from "jquery";
 
 export default function AdminOrderslisting() {
     const [orderdata, setOrderdata] = useState([])
@@ -16,7 +26,52 @@ export default function AdminOrderslisting() {
     let table;
     useEffect(() => {
         setTimeout(() => {
-            table = new DataTable('#table');
+            table = new DataTable('#table',
+                {
+                    pagingType: "full_numbers",
+                    pageLength: 20,
+                    processing: true,
+                    dom: "Bfrtip",
+                    select: {
+                        style: "single",
+                    },
+
+                    buttons: [
+                        {
+                            extend: "pageLength",
+                            className: "btn btn-secondary bg-secondary",
+                        },
+                        {
+                            extend: "copy",
+                            className: "btn btn-secondary bg-secondary",
+                        },
+                        {
+                            extend: "excel",
+                            className: "btn btn-secondary bg-secondary",
+                        },
+                        {
+                            extend: "csv",
+                            className: "btn btn-secondary bg-secondary",
+                        },
+                        {
+                            extend: "print",
+                            customize: function (win) {
+                                $(win.document.body).css("font-size", "10pt");
+                                $(win.document.body)
+                                    .find("table")
+                                    .addClass("compact")
+                                    .css("font-size", "inherit");
+                            },
+                            className: "btn btn-secondary bg-secondary",
+                        },
+                    ],
+
+                    lengthMenu: [
+                        [10, 20, 30, 50, -1],
+                        [10, 20, 30, 50, "All"],
+                    ],
+                }
+            );
         }, 500);
     }, [orders]);
 
@@ -34,8 +89,8 @@ export default function AdminOrderslisting() {
             console.log(id);
             var token = JSON.parse(sessionStorage.getItem("token"));
             const config = { headers: { 'Authorization': 'Bearer ' + token } };
-            var baseURL = `http://192.168.101.102/api/DeletingOrderById-${id}`;
-            await axios.delete(baseURL,config)
+            var baseURL = `${env.API_URL}DeletingOrderById-${id}`;
+            await axios.delete(baseURL, config)
                 .then(response => {
                     Swal.fire({
                         title: 'Delete..',

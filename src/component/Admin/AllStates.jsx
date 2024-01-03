@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import $ from 'jquery';
@@ -6,7 +7,7 @@ import $ from 'jquery';
 export default function ProductsWithSub_category() {
     const [product, setProduct] = useState([])
     const getProducts = async () => {
-        var baseURL = 'http://192.168.101.102/api/productsWithSub_category';
+        var baseURL = env.API_URL+'productsWithSub_category';
         await axios.get(baseURL).then(async (response) => {
             setProduct(response.data);
         });
@@ -22,7 +23,7 @@ export const deleteProduct = async (e, table) => {
     try {
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        var baseURL = `http://192.168.101.102/api/products/DeletingProductById-${id}`;
+        var baseURL = `${env.API_URL}products/DeletingProductById-${id}`;
         await axios.delete(baseURL,config)
             .then((response) => {
                 Swal.fire({
@@ -56,7 +57,7 @@ export const GetUsers = () => {
     var token = JSON.parse(sessionStorage.getItem("token"));
     const config = { headers: { 'Authorization': 'Bearer ' + token } };
     const getUsers = () => {
-        var baseURL = 'http://192.168.101.102/api/user/getUsers';
+        var baseURL = env.API_URL+'user/getUsers';
         axios.get(baseURL,config).then((response) => {
             setUsers(response.data);
         });
@@ -73,7 +74,7 @@ export const deleteUser = async (e, table) => {
     try {
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        var baseURL = `http://192.168.101.102/api/user/DeletingUserById-${id}`;
+        var baseURL = `${env.API_URL}user/DeletingUserById-${id}`;
         await axios.delete(baseURL,config)
             .then(response => {
                 Swal.fire({
@@ -101,7 +102,7 @@ export const GetOrders = () => {
     const [orders, setOrders] = useState([])
 
     const getOrders = async () => {
-        var baseURL = 'http://192.168.101.102/api/orders';
+        var baseURL = env.API_URL+'orders';
         await axios.get(baseURL,config).then((response) => {
             setOrders(response.data);
         });
@@ -123,7 +124,7 @@ export const Statusbtn = async (e, table) => {
     try {
         var token = JSON.parse(sessionStorage.getItem("token"));
         const config = { headers: { 'Authorization': 'Bearer ' + token } };
-        var baseURL = `http://192.168.101.102/api/UpdateStatus-${id}`;
+        var baseURL = `${env.API_URL}UpdateStatus-${id}`;
         await axios.post(baseURL, data,config)
             .then(response => {
                 Swal.fire({
@@ -158,7 +159,7 @@ export const updateOrder = async (e) => {
     var data = new FormData(e.target);
     var token = JSON.parse(sessionStorage.getItem("token"));
     const config = { headers: { 'Authorization': 'Bearer ' + token } };
-    const BaseUrl = `http://192.168.101.102/api/UpdateOrders-${id}`;
+    const BaseUrl = `${env.API_URL}UpdateOrders-${id}`;
     await axios.post(BaseUrl, data,config)
         .then((response) => {
             let message = response.data.message;

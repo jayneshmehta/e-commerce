@@ -1,4 +1,5 @@
 import axios from 'axios';
+import env from "react-dotenv";
 import React, { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom';
 import Loading from '../component/Admin/Loading';
@@ -13,7 +14,7 @@ export default function GoogleLogin() {
     }, [])
 
     const signinWithgoogle = async () =>{
-        var baseURL = `http://192.168.101.102/api/auth/callback/google${callBackdata}`;
+        var baseURL = `${env.API_URL}auth/callback/google${callBackdata}`;
         await axios.get(baseURL)
         .then((response) => {
             // console.log(response); 

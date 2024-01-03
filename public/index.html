@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-  <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <!-- <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script> -->
-  <style>
-    /* .scroller {
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link
+      href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <!-- <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script> -->
+    <style>
+      /* .scroller {
       height: 100%;
       width: 100%;
       overflow: hidden;
@@ -32,7 +43,7 @@
       transform: scale(1.1);
     } */
 
-    /* .scroller:hover {
+      /* .scroller:hover {
       overflow-x: scroll;
     }
 
@@ -40,209 +51,209 @@
       overflow-y: scroll;
     } */
 
-    /*Icon progressbar*/
-    #progressbar {
-      margin-bottom: 30px;
-      overflow: hidden;
-      color: #455A64;
-      padding-left: 0px;
-      margin-top: 30px;
-    }
+      /*Icon progressbar*/
+      #progressbar {
+        margin-bottom: 30px;
+        overflow: hidden;
+        color: #455a64;
+        padding-left: 0px;
+        margin-top: 30px;
+      }
 
-    #progressbar li {
-      list-style-type: none;
-      font-size: 13px;
-      width: 25%;
-      float: left;
-      position: relative;
-      font-weight: 400;
-    }
+      #progressbar li {
+        list-style-type: none;
+        font-size: 13px;
+        width: 25%;
+        float: left;
+        position: relative;
+        font-weight: 400;
+      }
 
-    #progressbar .step0:before {
-      font-family: FontAwesome;
-      content: "\f10c";
-      color: rgb(255, 255, 255);
-    }
+      #progressbar .step0:before {
+        font-family: FontAwesome;
+        content: "\f10c";
+        color: rgb(255, 255, 255);
+      }
 
-    #progressbar .step1:before {
-      font-family: FontAwesome;
-      content: "\f10c";
-      color: #fff;
-    }
+      #progressbar .step1:before {
+        font-family: FontAwesome;
+        content: "\f10c";
+        color: #fff;
+      }
 
-    #progressbar .step2:before {
-      font-family: FontAwesome;
-      content: "\f10c";
-      color: #fff;
-    }
+      #progressbar .step2:before {
+        font-family: FontAwesome;
+        content: "\f10c";
+        color: #fff;
+      }
 
-    #progressbar .step3:before {
-      font-family: FontAwesome;
-      content: "\f10c";
-      color: #fff;
-    }
+      #progressbar .step3:before {
+        font-family: FontAwesome;
+        content: "\f10c";
+        color: #fff;
+      }
 
-    #progressbar li:before {
-      width: 40px;
-      height: 40px;
-      line-height: 45px;
-      display: block;
-      font-size: 20px;
-      background: #C5CAE9;
-      border-radius: 50%;
-      margin: auto;
-      padding: 0px;
-    }
+      #progressbar li:before {
+        width: 40px;
+        height: 40px;
+        line-height: 45px;
+        display: block;
+        font-size: 20px;
+        background: #c5cae9;
+        border-radius: 50%;
+        margin: auto;
+        padding: 0px;
+      }
 
-    /*ProgressBar connectors*/
-    #progressbar li:after {
-      content: '';
-      width: 100%;
-      height: 12px;
-      background: #a2abe6;
-      position: absolute;
-      left: 0;
-      top: 16px;
-      z-index: -1;
-    }
+      /*ProgressBar connectors*/
+      #progressbar li:after {
+        content: "";
+        width: 100%;
+        height: 12px;
+        background: #a2abe6;
+        position: absolute;
+        left: 0;
+        top: 16px;
+        z-index: -1;
+      }
 
-    #progressbar li:last-child:after {
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      position: absolute;
-      left: -50%;
-    }
+      #progressbar li:last-child:after {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        position: absolute;
+        left: -50%;
+      }
 
-    #progressbar li:nth-child(2):after,
-    #progressbar li:nth-child(3):after {
-      left: -50%;
-    }
+      #progressbar li:nth-child(2):after,
+      #progressbar li:nth-child(3):after {
+        left: -50%;
+      }
 
-    #progressbar li:first-child:after {
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-      position: absolute;
-      left: 50%;
-    }
+      #progressbar li:first-child:after {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        position: absolute;
+        left: 50%;
+      }
 
-    #progressbar li:last-child:after {
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-    }
+      #progressbar li:last-child:after {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
 
-    #progressbar li:first-child:after {
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-    }
+      #progressbar li:first-child:after {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
 
-    /*Color number of the step and the connector before it*/
-    #progressbar li.active:before,
-    #progressbar li.active:after {
-      background: #361a71;
-    }
+      /*Color number of the step and the connector before it*/
+      #progressbar li.active:before,
+      #progressbar li.active:after {
+        background: #361a71;
+      }
 
-    #progressbar li.active:before {
-      font-family: FontAwesome;
-      content: "\f058";
-    }
+      #progressbar li.active:before {
+        font-family: FontAwesome;
+        content: "\f058";
+      }
 
-    .icon {
-      width: 60px;
-      height: 60px;
-      margin-right: 15px;
-    }
+      .icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 15px;
+      }
 
-    .icon-content {
-      padding-bottom: 20px;
-    }
+      .icon-content {
+        padding-bottom: 20px;
+      }
 
-    .card {
-      background-color: #fff;
-      box-shadow: 2px 4px 15px 0px rgb(249, 249, 249);
-      z-index: 0
-    }
+      .card {
+        background-color: #fff;
+        box-shadow: 2px 4px 15px 0px rgb(249, 249, 249);
+        z-index: 0;
+      }
 
-    small {
-      font-size: 12px !important
-    }
+      small {
+        font-size: 12px !important;
+      }
 
-    .a {
-      justify-content: space-between !important
-    }
+      .a {
+        justify-content: space-between !important;
+      }
 
-    .border-line {
-      border-right: 1px solid rgb(226, 206, 226)
-    }
+      .border-line {
+        border-right: 1px solid rgb(226, 206, 226);
+      }
 
-    .card-footer img {
-      opacity: 0.3
-    }
+      .card-footer img {
+        opacity: 0.3;
+      }
 
-    .card-footer h5 {
-      font-size: 1.1em;
-      color: #8C9EFF;
-      cursor: pointer
-    }
+      .card-footer h5 {
+        font-size: 1.1em;
+        color: #8c9eff;
+        cursor: pointer;
+      }
 
-    .scroller::-webkit-scrollbar {
-      display: none;
-    }
+      .scroller::-webkit-scrollbar {
+        display: none;
+      }
 
-    .productlink:hover {
-      color: blue !important;
-    }
+      .productlink:hover {
+        color: blue !important;
+      }
 
-    .rate {
-      float: left;
-    }
+      .rate {
+        float: left;
+      }
 
-    .rate:not(:checked)>input {
-      position: absolute;
-      top: -9999px;
-    }
+      .rate:not(:checked) > input {
+        position: absolute;
+        top: -9999px;
+      }
 
-    .rate:not(:checked)>label {
-      float: left;
-      width: 1em;
-      overflow: hidden;
-      white-space: nowrap;
-      cursor: pointer;
-      font-size: 30px;
-      color: #ccc;
-    }
+      .rate:not(:checked) > label {
+        float: left;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+      }
 
-    .rate:not(:checked)>label:before {
-      content: '★ ';
-    }
+      .rate:not(:checked) > label:before {
+        content: "★ ";
+      }
 
-    .rate>input:checked~label {
-      color: #fc8200;
-    }
+      .rate > input:checked ~ label {
+        color: #fc8200;
+      }
 
-    .rate:not(:checked)>label:hover,
-    .rate:not(:checked)>label:hover~label {
-      color: #fc8200;
-    }
+      .rate:not(:checked) > label:hover,
+      .rate:not(:checked) > label:hover ~ label {
+        color: #fc8200;
+      }
 
-    .rate>input:checked+label:hover,
-    .rate>input:checked+label:hover~label,
-    .rate>input:checked~label:hover,
-    .rate>input:checked~label:hover~label,
-    .rate>label:hover~input:checked~label {
-      color: #fc8200;
-    }
+      .rate > input:checked + label:hover,
+      .rate > input:checked + label:hover ~ label,
+      .rate > input:checked ~ label:hover,
+      .rate > input:checked ~ label:hover ~ label,
+      .rate > label:hover ~ input:checked ~ label {
+        color: #fc8200;
+      }
 
-    .filterlist:hover {
-      border-left: 2px solid #fc008f;
-      background: rgb(239, 199, 246) !important;
-    }
+      .filterlist:hover {
+        border-left: 2px solid #fc008f;
+        background: rgb(239, 199, 246) !important;
+      }
 
-    .selectedlist {
-      border-left: 2px solid #fc008f;
-      background: rgb(239, 199, 246) !important;
-    }
-  </style>
-  <!--
+      .selectedlist {
+        border-left: 2px solid #fc008f;
+        background: rgb(239, 199, 246) !important;
+      }
+    </style>
+    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -251,14 +262,18 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <title>React App</title>
-  <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-</head>
+    <title>React App</title>
+    <link
+      rel="stylesheet"
+      href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <script id="react-dotenv" src="./env.js"></script>
+  </head>
 
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-  <!--
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -268,17 +283,20 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  <script>
-    $(document).on('click', ".productlink", function () {
-      window.scrollTo(0, 0);
-    })
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
-    integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
-    crossorigin="anonymous"></script>
-</body>
-
+    <script>
+      $(document).on("click", ".productlink", function () {
+        window.scrollTo(0, 0);
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+      integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

@@ -2,6 +2,7 @@ import React from 'react'
 import { imagesPreview } from '../AllStates'
 import FormInput from '../../Forms/FormInput';
 import axios from 'axios';
+import env from "react-dotenv";
 import $ from 'jquery';
 import Swal from 'sweetalert2';
 

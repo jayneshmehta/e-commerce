@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
+import env from "react-dotenv";
 import Swal from 'sweetalert2';
 import { imagesPreview } from '../AllStates';
 
