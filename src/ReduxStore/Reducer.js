@@ -1,4 +1,4 @@
-import { ADD_CART, ADD_WISHLIST, GET_NOTIFICATION, GET_PRODUCT, IS_ADMINLOGIN, IS_LOGIN, REMOVE_CART, REMOVE_WISHLIST, SET_WISHLIST, USER_DATA } from "./Action";
+import { ADD_CART, ADD_WISHLIST, GET_NOTIFICATION, GET_PRODUCT, IS_ADMINLOGIN, IS_LOGIN, REMOVE_CART, REMOVE_WISHLIST, SET_WISHLIST, USER_DATA , TEMP_PRODUCT } from "./Action";
 
 export default function reducer(state, action) {
     switch (action.type) {
@@ -42,6 +42,11 @@ export default function reducer(state, action) {
         case GET_NOTIFICATION:
             state.notifications = action.payload;
             return { ...state, notifications: state.notifications };
+
+        case TEMP_PRODUCT:
+            state.tempProduct = action.payload;
+            return { ...state, tempProduct: state.tempProduct };
+
         default:
             return state;
     }

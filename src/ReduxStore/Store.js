@@ -3,6 +3,7 @@ import reducer from "./Reducer";
 
 export let defaultState = {
     product:[],
+    tempProduct:[],
     userdata:JSON.parse(sessionStorage.getItem('user'))||"",
     wishlist:JSON.parse(sessionStorage.getItem('wishlist'))||"",
     loggedIn:(sessionStorage.getItem('user') === null) ? false : true,

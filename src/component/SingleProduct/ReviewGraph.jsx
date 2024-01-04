@@ -6,6 +6,8 @@ export default function ReviewGraph({ review }) {
     var total = 0;
     var total_count = 0;
     var reviews = 0;
+    if(review){
+        
     for (let i = 1; i <= 5; i++) {
         var count = 0;
         review.map((items) => {
@@ -21,6 +23,7 @@ export default function ReviewGraph({ review }) {
             count: count,
         })
     }
+}
     const [ratingCount, setratingCount] = useState(review?.length);
     const [avgRating, setAvgRating] = useState(0);
     useEffect(() => {

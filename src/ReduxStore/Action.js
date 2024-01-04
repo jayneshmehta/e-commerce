@@ -1,4 +1,5 @@
 export const GET_PRODUCT = 'GET_PRODUCT';
+export const TEMP_PRODUCT = 'TEMP_PRODUCT';
 export const ADD_WISHLIST = 'ADD_WISHLIST';
 export const USER_DATA = 'USER_DATA';
 export const IS_LOGIN = 'IS_LOGIN';
